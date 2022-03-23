@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DevStream</title>
+    <link>https://dtm.dev/</link>
+    <description>Recent content on DevStream</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://dtm.dev/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>https://dtm.dev/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://dtm.dev/about/</guid>
+      <description>What is DevStream Imagine you are starting a new project or ramping up a new team. Before writing the first line of code, you have to figure out the tools to run an effective SDLC process and from development to deployment.
+Typically, you&amp;rsquo;d need the following pieces in place to work effectively:
+ Project management software or issue tracking tools (JIRA, etc.) Source code management (GitHub, Bitbucket, etc.) Continuous integration tools (Jenkins, CircleCI, Travis CI, etc.</description>
+    </item>
+    
+  </channel>
+</rss>
