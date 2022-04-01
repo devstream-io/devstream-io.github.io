@@ -1,4 +1,93 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – DevStream blog</title><link>https://dtm.dev/</link><description>Recent content in DevStream blog on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://dtm.dev/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Creating a DevStream (dtm) Plugin for Anything</title><link>https://dtm.dev/blog/creating-a-devstream-dtm-plugin-for-anything/</link><pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/blog/creating-a-devstream-dtm-plugin-for-anything/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – DevStream blog</title><link>https://dtm.dev/</link><description>Recent content in DevStream blog on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://dtm.dev/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: v0.3.1 Release Note</title><link>https://dtm.dev/blog/v0.3.1-release-note/</link><pubDate>Thu, 31 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/blog/v0.3.1-release-note/</guid><description>
+&lt;h2 id="download-devstream-v031">Download DevStream v0.3.1&lt;/h2>
+&lt;p>Official Releases for Different Platforms:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://devstream.gateway.scarf.sh/releases/v0.3.1/dtm-darwin-arm64">dtm-darwin-arm64&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://devstream.gateway.scarf.sh/releases/v0.3.1/dtm-darwin-amd64">dtm-darwin-amd64&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://devstream.gateway.scarf.sh/releases/v0.3.1/dtm-linux-amd64">dtm-linux-amd64&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>We also support installation by brew: &lt;code>brew install devstream-io/devstream/dtm&lt;/code>. Example:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>$ brew install devstream-io/devstream/dtm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ce5c00;font-weight:bold">==&lt;/span>&amp;gt; Downloading https://github.com/devstream-io/homebrew-devstream/releases/download/dtm-0.3.1/dtm-0.3.1.arm64_monterey.bottle.tar.gz
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ce5c00;font-weight:bold">==&lt;/span>&amp;gt; Downloading from https://objects.githubusercontent.com/github-production-release-asset-2e65be/474804179/268d59c6-9b12-419e-ac75-e77e87428d3b?X-Amz-Algorit
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic">######################################################################## 100.0%&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ce5c00;font-weight:bold">==&lt;/span>&amp;gt; Installing dtm from devstream-io/devstream
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ce5c00;font-weight:bold">==&lt;/span>&amp;gt; Pouring dtm-0.3.1.arm64_monterey.bottle.tar.gz
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>🍺 /opt/homebrew/Cellar/dtm/0.3.1: &lt;span style="color:#0000cf;font-weight:bold">3&lt;/span> files, 13.5MB
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ce5c00;font-weight:bold">==&lt;/span>&amp;gt; Running &lt;span style="color:#4e9a06">`&lt;/span>brew cleanup dtm&lt;span style="color:#4e9a06">`&lt;/span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Hide these hints with HOMEBREW_NO_ENV_HINTS &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>see &lt;span style="color:#4e9a06">`&lt;/span>man brew&lt;span style="color:#4e9a06">`&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ dtm version
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0.3.1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;em>Developers&amp;rsquo; note: technically, this version isn&amp;rsquo;t backward compatible with v0.3.0; so it shouldn&amp;rsquo;t be v0.3.1, but rather, v1.0.0. However, we are not ready for making it &amp;ldquo;v1.0.0&amp;rdquo; just yet, so please forgive us for this one-time exception of not following the SEMVER rules.&lt;/em>&lt;/p>
+&lt;h2 id="major-changes-since-v030">Major Changes since v0.3.0&lt;/h2>
+&lt;p>First things first: we have a new logo now! Check out our &lt;a href="https://github.com/merico-dev/stream#readme=">README.md&lt;/a>.&lt;/p>
+&lt;p>Our website is live now, too. Visit us:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://dtm.dev/">homepage&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.dtm.dev/">blog&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.dtm.dev/en/latest/">docs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://medium.com/devstream">Medium&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://dev.to/devstream">dev.to&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="core">Core&lt;/h2>
+&lt;ul>
+&lt;li>Version improvement. This is a breaking change. Now, dtm will automatically download matching versions of plugins without having to specify the version of each plugin in the config.&lt;/li>
+&lt;li>Installation via brew is supported now: brew install devstream-io/devstream/dtm. Thanks to @algobot76.&lt;/li>
+&lt;/ul>
+&lt;h2 id="develop">Develop&lt;/h2>
+&lt;ul>
+&lt;li>dtm develop now generates more scaffolding code for you so that you can easily create a new plugin. If you are interested, read &lt;a href="https://blog.dtm.dev/post/2022-03/creating-a-plugin/">this blog post&lt;/a>.&lt;/li>
+&lt;li>We support multi-threaded build now, thanks to @algobot76.&lt;/li>
+&lt;li>Makefile is greatly improved so that when you create a new plugin, you don&amp;rsquo;t have to change the Makefile at all. Thanks to @summingyu.&lt;/li>
+&lt;li>We can automatically release a new version now.&lt;/li>
+&lt;li>A big refactor including directory name, document name, etc. Thanks to @imxw, @summingyu, etc.&lt;/li>
+&lt;/ul>
+&lt;h2 id="docs">Docs&lt;/h2>
+&lt;ul>
+&lt;li>A new doc about the &amp;ldquo;output&amp;rdquo; feature is created.&lt;/li>
+&lt;li>A new doc about the dtm destroy command is created.&lt;/li>
+&lt;li>Our docs are now available on &lt;a href="https://docs.dtm.dev/en/latest/">readthedocs.io&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="detailed-changes">Detailed Changes&lt;/h2>
+&lt;ul>
+&lt;li>Refactor: unify the parameter type naming of various plugins to Options by @summingyu in &lt;a href="https://github.com/merico-dev/stream/pull/327">https://github.com/merico-dev/stream/pull/327&lt;/a>&lt;/li>
+&lt;li>Docs dtm destroy by @IronCore864 in &lt;a href="https://github.com/merico-dev/stream/pull/340">https://github.com/merico-dev/stream/pull/340&lt;/a>&lt;/li>
+&lt;li>docs: add output documentation by @IronCore864 in &lt;a href="https://github.com/merico-dev/stream/pull/341">https://github.com/merico-dev/stream/pull/341&lt;/a>&lt;/li>
+&lt;li>fix(develop template): fix update_go_nameTpl by @warren830 in &lt;a href="https://github.com/merico-dev/stream/pull/344">https://github.com/merico-dev/stream/pull/344&lt;/a>&lt;/li>
+&lt;li>fix(develop template): fix NAME_plugin_md_dirTpl by @warren830 in &lt;a href="https://github.com/merico-dev/stream/pull/343">https://github.com/merico-dev/stream/pull/343&lt;/a>&lt;/li>
+&lt;li>refactor(trello): consistent entry logic with other plugins by @daniel-hutao in &lt;a href="https://github.com/merico-dev/stream/pull/346">https://github.com/merico-dev/stream/pull/346&lt;/a>&lt;/li>
+&lt;li>chore: change params to options for main.go template by @imxw in &lt;a href="https://github.com/merico-dev/stream/pull/347">https://github.com/merico-dev/stream/pull/347&lt;/a>&lt;/li>
+&lt;li>refactor(argocdapp/devlake/trello/gitlabci/githubactions-nodejs): keep consistent with the &lt;code>plugin template&lt;/code> by @warren830 in &lt;a href="https://github.com/merico-dev/stream/pull/345">https://github.com/merico-dev/stream/pull/345&lt;/a>&lt;/li>
+&lt;li>Feat: version improvement by @lfbdev in &lt;a href="https://github.com/merico-dev/stream/pull/337">https://github.com/merico-dev/stream/pull/337&lt;/a>&lt;/li>
+&lt;li>fix: main-builder.yaml -&amp;gt; main-pushed.yml at README.md by @daniel-hutao in &lt;a href="https://github.com/merico-dev/stream/pull/349">https://github.com/merico-dev/stream/pull/349&lt;/a>&lt;/li>
+&lt;li>feat(develop/create-plugin): adding more common logic in template by @daniel-hutao in &lt;a href="https://github.com/merico-dev/stream/pull/350">https://github.com/merico-dev/stream/pull/350&lt;/a>&lt;/li>
+&lt;li>ci: e2e-test from &lt;code>actions&lt;/code> to &lt;code>eks&lt;/code> by @daniel-hutao in &lt;a href="https://github.com/merico-dev/stream/pull/322">https://github.com/merico-dev/stream/pull/322&lt;/a>&lt;/li>
+&lt;li>refactor(cmd): keep all plugins dirname-in-cmd == plugin-name by @daniel-hutao in &lt;a href="https://github.com/merico-dev/stream/pull/352">https://github.com/merico-dev/stream/pull/352&lt;/a>&lt;/li>
+&lt;li>fix: change main_go_dir to &lt;code>cmd/plugin/&lt;/code> by @imxw in &lt;a href="https://github.com/merico-dev/stream/pull/354">https://github.com/merico-dev/stream/pull/354&lt;/a>&lt;/li>
+&lt;li>chore: update .gitignore to ignore .vscode directory by @algobot76 in &lt;a href="https://github.com/merico-dev/stream/pull/353">https://github.com/merico-dev/stream/pull/353&lt;/a>&lt;/li>
+&lt;li>Refactor some Plugins to Be Consistent with The Plugin Template by @summingyu in &lt;a href="https://github.com/merico-dev/stream/pull/355">https://github.com/merico-dev/stream/pull/355&lt;/a>&lt;/li>
+&lt;li>docs: update readme with new logo by @IronCore864 in &lt;a href="https://github.com/merico-dev/stream/pull/356">https://github.com/merico-dev/stream/pull/356&lt;/a>&lt;/li>
+&lt;li>chore: revert the workflow name with &amp;lsquo;main builder&amp;rsquo; by @daniel-hutao in &lt;a href="https://github.com/merico-dev/stream/pull/357">https://github.com/merico-dev/stream/pull/357&lt;/a>&lt;/li>
+&lt;li>Refactor: Automatically build the makefile from the cmd directory by @summingyu in &lt;a href="https://github.com/merico-dev/stream/pull/358">https://github.com/merico-dev/stream/pull/358&lt;/a>&lt;/li>
+&lt;li>feat: trigger GitHub actions after some specific comments by @daniel-hutao in &lt;a href="https://github.com/merico-dev/stream/pull/362">https://github.com/merico-dev/stream/pull/362&lt;/a>&lt;/li>
+&lt;li>refactor(plugin): adapt for the plugin generation tool by @imxw in &lt;a href="https://github.com/merico-dev/stream/pull/359">https://github.com/merico-dev/stream/pull/359&lt;/a>&lt;/li>
+&lt;li>Refactor: be consistent with the plugin template by @summingyu in &lt;a href="https://github.com/merico-dev/stream/pull/363">https://github.com/merico-dev/stream/pull/363&lt;/a>&lt;/li>
+&lt;li>ci: improve makefile for multi-threaded build and readme by @IronCore864 in &lt;a href="https://github.com/merico-dev/stream/pull/366">https://github.com/merico-dev/stream/pull/366&lt;/a>&lt;/li>
+&lt;li>Automated Release script and workflow by @lfbdev in &lt;a href="https://github.com/merico-dev/stream/pull/360">https://github.com/merico-dev/stream/pull/360&lt;/a>&lt;/li>
+&lt;li>fix: GitHub actions error - API rate limit exceeded by @daniel-hutao in &lt;a href="https://github.com/merico-dev/stream/pull/368">https://github.com/merico-dev/stream/pull/368&lt;/a>&lt;/li>
+&lt;li>feat: remove plugin version from config by @IronCore864 in &lt;a href="https://github.com/merico-dev/stream/pull/369">https://github.com/merico-dev/stream/pull/369&lt;/a>&lt;/li>
+&lt;li>fix: install goimports at &lt;code>main builder&lt;/code> &amp;amp; &lt;code>automated-release&lt;/code> workflow by @daniel-hutao in &lt;a href="https://github.com/merico-dev/stream/pull/370">https://github.com/merico-dev/stream/pull/370&lt;/a>&lt;/li>
+&lt;li>chore: remove the suffix &lt;code>_plugin&lt;/code> with all plugin docs under &lt;code>docs/plugins&lt;/code> by @daniel-hutao in &lt;a href="https://github.com/merico-dev/stream/pull/371">https://github.com/merico-dev/stream/pull/371&lt;/a>&lt;/li>
+&lt;li>fix: install goimports at e2t-test workflow job by @daniel-hutao in &lt;a href="https://github.com/merico-dev/stream/pull/373">https://github.com/merico-dev/stream/pull/373&lt;/a>&lt;/li>
+&lt;li>feat: prepare for v0.3.1 release by @IronCore864 in &lt;a href="https://github.com/merico-dev/stream/pull/375">https://github.com/merico-dev/stream/pull/375&lt;/a>&lt;/li>
+&lt;li>fix: fix the return error by @lfbdev in &lt;a href="https://github.com/merico-dev/stream/pull/376">https://github.com/merico-dev/stream/pull/376&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="new-contributors">New Contributors&lt;/h2>
+&lt;ul>
+&lt;li>@algobot76 made their first contribution in &lt;a href="https://github.com/merico-dev/stream/pull/353">https://github.com/merico-dev/stream/pull/353&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Full Changelog&lt;/strong>: &lt;a href="https://github.com/merico-dev/stream/compare/v0.3.0...v0.3.1">https://github.com/merico-dev/stream/compare/v0.3.0...v0.3.1&lt;/a>&lt;/p></description></item><item><title>Blog: Creating a DevStream (dtm) Plugin for Anything</title><link>https://dtm.dev/blog/creating-a-devstream-dtm-plugin-for-anything/</link><pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/blog/creating-a-devstream-dtm-plugin-for-anything/</guid><description>
 &lt;img src="https://dtm.dev/blog/creating-a-devstream-dtm-plugin-for-anything/featured-background_hubced0a870f76eab482d622a0dd2f964e_408122_640x0_resize_q75_catmullrom.jpg" width="640" height="427"/>
 &lt;p>Yes, the title of this post isn&amp;rsquo;t bluffing: you can actually create a plugin for just about anything that takes your fancy.&lt;/p>
 &lt;blockquote>
