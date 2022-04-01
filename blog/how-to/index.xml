@@ -1,0 +1,521 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – How-to About DevStream</title><link>https://dtm.dev/blog/how-to/</link><description>Recent content in How-to About DevStream on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://dtm.dev/blog/how-to/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Creating a DevStream (dtm) Plugin for Anything</title><link>https://dtm.dev/blog/creating-a-devstream-dtm-plugin-for-anything/</link><pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/blog/creating-a-devstream-dtm-plugin-for-anything/</guid><description>
+&lt;img src="https://dtm.dev/blog/creating-a-devstream-dtm-plugin-for-anything/featured-background_hubced0a870f76eab482d622a0dd2f964e_408122_640x0_resize_q75_catmullrom.jpg" width="640" height="427"/>
+&lt;p>Yes, the title of this post isn&amp;rsquo;t bluffing: you can actually create a plugin for just about anything that takes your fancy.&lt;/p>
+&lt;blockquote>
+&lt;p>In my previous article, I walked you guys through DevStream&amp;rsquo;s codebase.&lt;/p>
+&lt;p>If you haven&amp;rsquo;t read it yet, here&amp;rsquo;s a quick link for you:&lt;/p>
+&lt;p>&lt;a href="../hello-world">Hello, world!&lt;/a>.&lt;/p>
+&lt;/blockquote>
+&lt;p>In this blog, we will walk you through the steps of creating a DevStream plugin from scratch with an example.&lt;/p>
+&lt;hr>
+&lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
+&lt;img class="card-img-top" src="https://dtm.dev/blog/creating-a-devstream-dtm-plugin-for-anything/featured-background_hubced0a870f76eab482d622a0dd2f964e_408122_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
+&lt;div class="card-body px-0 pt-2 pb-0">
+&lt;p class="card-text">
+A cat outside a lake side Starbucks, Chengdu, China.
+&lt;small class="text-muted">&lt;br/>Photo: Tiexin Guo / CC-BY-CA&lt;/small>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;hr>
+&lt;blockquote>
+&lt;p>English version: &lt;a href="../creating-a-devstream-dtm-plugin-for-anything/">《Creating a DevStream (dtm) Plugin for Anything》&lt;/a>Author: @Tiexin Guo(郭铁心)&lt;/p>
+&lt;p>中文版：&lt;a href="../../zh/blog/creating-a-devstream-dtm-plugin-for-anything/">《给 DevStream (dtm) 开发一个插件，整合一切你想要的功能》&lt;/a>作者：@胡涛(Daniel Hu)&lt;/p>
+&lt;/blockquote>
+&lt;hr>
+&lt;h2 id="what-is-devstream">What is DevStream&lt;/h2>
+&lt;p>DevStream is an amazing tool that lets you install, update, manage, and integrate your DevOps tools quickly and flexibly.&lt;/p>
+&lt;p>Not to brag, but with DevStream, you can have your own DevOps toolchain that is specifically tailored to your need up and running in 5 minutes.&lt;/p>
+&lt;p>Don&amp;rsquo;t believe it? Check out our &lt;a href="https://docs.dtm.dev/en/latest/">docs&lt;/a> and follow the quickstart guide!&lt;/p>
+&lt;h2 id="existing-plugins">Existing Plugins&lt;/h2>
+&lt;p>At the moment of publishing this article, we already support the following tools:&lt;/p>
+&lt;ul>
+&lt;li>Trello (including integration with GitHub)&lt;/li>
+&lt;li>Jira (integration with GitHub)&lt;/li>
+&lt;li>GitHub Repository bootstrapping (for Go)&lt;/li>
+&lt;li>GitHub Actions (for Go, Python, and Nodejs)&lt;/li>
+&lt;li>GitLab CI (for Go)&lt;/li>
+&lt;li>Jenkins (installation)&lt;/li>
+&lt;li>ArgoCD&lt;/li>
+&lt;li>ArgoCD Application (the deployment of your apps)&lt;/li>
+&lt;li>Prometheus + Grafana&lt;/li>
+&lt;li>DevLake&lt;/li>
+&lt;li>OpenLDAP&lt;/li>
+&lt;/ul>
+&lt;p>We aim to have 50 plugins at the end of 2022!&lt;/p>
+&lt;p>Check out our &lt;a href="https://github.com/merico-dev/stream">README&lt;/a> for the latest status.&lt;/p>
+&lt;h2 id="why-would-i-want-to-create-a-devstream-plugin">Why Would I Want to Create a DevStream Plugin&lt;/h2>
+&lt;p>Wait. YOU ALREADY HAVE TONS OF PLUGINS! Why on earth would I want to create yet another one?&lt;/p>
+&lt;p>I agree with you.&lt;/p>
+&lt;p>Can I get a show of hands, who here has made a DevStream plugin before?&lt;/p>
+&lt;p>Very few, if any, I guess.&lt;/p>
+&lt;p>However (I know it&amp;rsquo;s just a fancy &amp;ldquo;but&amp;rdquo;), there are, in fact, things that you want to build a plugin for:&lt;/p>
+&lt;ul>
+&lt;li>Maybe you are building a nice and shiny DevOps tool, and you want to be able to set it up quickly without any hassle. You would have to write some automation scripts for it anyway, right? DevStream got you covered.&lt;/li>
+&lt;li>Maybe you even need to integrate your tool with other tools to get the most out of it and you really don&amp;rsquo;t want to reinvent a lot of wheels just to manage those boring integrations. Again, DevStream got you covered.&lt;/li>
+&lt;li>Maybe you have both internal tools and open-source tools whose installation and integration need to be automated. The open-source tools are fine, but how to manage those internal ones and integrate them? DevStream got you covered.&lt;/li>
+&lt;/ul>
+&lt;p>Or, maybe you just want to learn Go&amp;rsquo;s plugin, become a contributor, join our community and earn your certification (maybe a small present, too, who knows.) No problem.&lt;/p>
+&lt;p>No matter what your intention is and what thing you want to achieve, DevStream got you covered.&lt;/p>
+&lt;p>So hang tight, let&amp;rsquo;s get started.&lt;/p>
+&lt;h2 id="design-a-local-file-plugin">Design: A &amp;ldquo;Local File&amp;rdquo; Plugin&lt;/h2>
+&lt;p>In this example, let&amp;rsquo;s build something dum but simple, just to show you the process of creating a plugin.&lt;/p>
+&lt;p>We are creating a &amp;ldquo;local file&amp;rdquo; plugin. You specify the name and the content, and the plugin will create a local file for you. Let&amp;rsquo;s decide how we are going to use this plugin:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">tools&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">name&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">my-file&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">plugin&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">localfile&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">options&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">filename&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">foo.txt&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">content&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#4e9a06">&amp;#34;hello, world&amp;#34;&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Basically:&lt;/p>
+&lt;ul>
+&lt;li>the name of the plugin: &lt;code>localfile&lt;/code>&lt;/li>
+&lt;li>options of the plugin:
+&lt;ul>
+&lt;li>filename&lt;/li>
+&lt;li>content&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>The plugin will create a file with desired content according to this piece of config.&lt;/p>
+&lt;h2 id="scaffolding-automagically">Scaffolding Automagically&lt;/h2>
+&lt;p>First, let&amp;rsquo;s clone the DevStream repo and generate some scaffolding code:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>git clone git@github.com:merico-dev/stream.git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87">cd&lt;/span> stream
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># builds dtm locally to make sure it&amp;#39;s using the same dependencies as your new plugin&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make build-core
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./dtm develop create-plugin --name&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>localfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>There will be some useful output to guide you through the whole process.&lt;/p>
+&lt;p>Now, if we do a &lt;code>git status&lt;/code>, we can see some new stuff are already created automagically:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>$ git status
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>On branch main
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Your branch is up to date with &lt;span style="color:#4e9a06">&amp;#39;origin/main&amp;#39;&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Untracked files:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>use &lt;span style="color:#4e9a06">&amp;#34;git add &amp;lt;file&amp;gt;...&amp;#34;&lt;/span> to include in what will be committed&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cmd/plugin/localfile/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> docs/plugins/localfile.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> internal/pkg/plugin/localfile/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Let&amp;rsquo;s have a quick recap of the directory structure:&lt;/p>
+&lt;h3 id="cmd">cmd/&lt;/h3>
+&lt;p>&lt;code>cmd/plugin/localfile/main.go&lt;/code> is the main entrance of your plugin. But here you don&amp;rsquo;t need to do anything; nothing.&lt;/p>
+&lt;p>&lt;code>dtm&lt;/code> has already generated the code for you, including the interfaces that you must implement.&lt;/p>
+&lt;h3 id="docs">docs/&lt;/h3>
+&lt;p>&lt;code>docs/plugins/localfile.md&lt;/code> is the automatically generated documentation.&lt;/p>
+&lt;p>Yep, I know &lt;code>dtm&lt;/code> is automagic, but it can&amp;rsquo;t read your mind. I&amp;rsquo;m afraid that you will have to write your own doc.&lt;/p>
+&lt;p>But hey, at least here you get a reminder that you need to create a doc :)&lt;/p>
+&lt;h3 id="internalpkg">internal/pkg/&lt;/h3>
+&lt;p>&lt;code>internal/pkg/plugin/localfile&lt;/code> has your plugin&amp;rsquo;s main logic.&lt;/p>
+&lt;p>Here, we need to:&lt;/p>
+&lt;ul>
+&lt;li>define your input parameters (options);&lt;/li>
+&lt;li>implement the validation of the input parameters;&lt;/li>
+&lt;li>implement four mandatory interfaces.&lt;/li>
+&lt;/ul>
+&lt;h2 id="core-concepts">Core Concepts&lt;/h2>
+&lt;h3 id="configstateresource">Config/State/Resource&lt;/h3>
+&lt;p>Before explaining interfaces and implementing them, let&amp;rsquo;s have a look at how DevStream actually works:&lt;/p>
+&lt;ul>
+&lt;li>&lt;em>Config&lt;/em> is a list of tools, each of which has a name, plugin, options, etc.&lt;/li>
+&lt;li>&lt;em>State&lt;/em> is a map containing each tool&amp;rsquo;s name, plugin, options, etc. It&amp;rsquo;s used to store the result of &lt;code>dtm&lt;/code>&amp;rsquo;s last action.&lt;/li>
+&lt;li>&lt;em>Resource&lt;/em> is the tool that the plugin created. The &lt;code>Read&lt;/code> interface returns a description of that resource, which should be the same as the &lt;em>State&lt;/em> if nothing has been changed after &lt;code>dtm&lt;/code>&amp;rsquo;s last action.&lt;/li>
+&lt;/ul>
+&lt;p>DevStream decides what to do based on your &lt;em>Config&lt;/em>, the &lt;em>State&lt;/em>, and the &lt;em>Resource&lt;/em>&amp;rsquo;s status. See the flowchart below:&lt;/p>
+&lt;p>&lt;img src="https://dtm.dev/img/config_state_resource.png" alt="">&lt;/p>
+&lt;h3 id="interfaces">Interfaces&lt;/h3>
+&lt;p>A quick recap: each DevStream plugin must satisfy the following four interfaces:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Create&lt;/code>&lt;/li>
+&lt;li>&lt;code>Read&lt;/code>&lt;/li>
+&lt;li>&lt;code>Update&lt;/code>&lt;/li>
+&lt;li>&lt;code>Delete&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>Return values:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Create&lt;/code> and &lt;code>Update&lt;/code> return two values &lt;code>(map[string]interface{}, error)&lt;/code>. The first return value is considered as the &lt;em>State&lt;/em>, which will be stored in DevStream&amp;rsquo;s state file.&lt;/li>
+&lt;li>&lt;code>Read&lt;/code>&amp;rsquo;s first return value is a description of the &lt;em>Resource&lt;/em>, which should be the same as the &lt;em>State&lt;/em> if nothing has changed.&lt;/li>
+&lt;li>&lt;code>Delete&lt;/code> returns &lt;code>(true, nil)&lt;/code> if there is no error; otherwise it returns &lt;code>(false, error)&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h2 id="coding">Coding&lt;/h2>
+&lt;h3 id="input-optionsvalidation">Input Options/Validation&lt;/h3>
+&lt;p>Now let&amp;rsquo;s open &lt;code>internal/pkg/plugin/localfile/options.go&lt;/code> and add options according to our design in the previous section.&lt;/p>
+&lt;p>The &lt;code>internal/pkg/plugin/localfile/options.go&lt;/code> should look like:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">package&lt;/span> &lt;span style="color:#000">localfile&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic">// Options is the struct for configurations of the localfile plugin.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">type&lt;/span> &lt;span style="color:#000">Options&lt;/span> &lt;span style="color:#204a87;font-weight:bold">struct&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">Filename&lt;/span> &lt;span style="color:#204a87;font-weight:bold">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">Content&lt;/span> &lt;span style="color:#204a87;font-weight:bold">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Let&amp;rsquo;s also implement the validation function of the input options.&lt;/p>
+&lt;p>Open &lt;code>internal/pkg/plugin/localfile/validate.go&lt;/code> and change the logic to verify the options. It should look like this:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">package&lt;/span> &lt;span style="color:#000">localfile&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">import&lt;/span> &lt;span style="color:#4e9a06">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic">// validate validates the options provided by the core.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">validate&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000">Options&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">[]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">error&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">res&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#204a87">make&lt;/span>&lt;span style="color:#000;font-weight:bold">([]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">options&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Filename&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">==&lt;/span> &lt;span style="color:#4e9a06">&amp;#34;&amp;#34;&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">res&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#204a87">append&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">res&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">fmt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Errorf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;filename does not exist&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">res&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="create">Create()&lt;/h3>
+&lt;p>We want to create the file based on the input options. So, let&amp;rsquo;s do just that in the file &lt;code>internal/pkg/plugin/localfile/create.go&lt;/code>.&lt;/p>
+&lt;p>OK, talk is cheap, show me the code:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">package&lt;/span> &lt;span style="color:#000">localfile&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">import&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/mitchellh/mapstructure&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/merico-dev/stream/pkg/util/log&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">Create&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span> &lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{})&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{},&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">var&lt;/span> &lt;span style="color:#000">opts&lt;/span> &lt;span style="color:#000">Options&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">mapstructure&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Decode&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">errs&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">validate&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#204a87">len&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">errs&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">for&lt;/span> &lt;span style="color:#000">_&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">e&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">range&lt;/span> &lt;span style="color:#000">errs&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">log&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Errorf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;Options error: %s.&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">e&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">fmt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Errorf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;opts are illegal&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">writefile&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Filename&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Content&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">status&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;filename&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Filename&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;content&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Content&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">status&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you compare the code above to the code generated by &lt;code>dtm develop&lt;/code>, you will see that we basically did nothing here. We only filled some blanks which are marked by &lt;code>dtm&lt;/code>&amp;rsquo;s comment. The same is true for all the other interfaces.&lt;/p>
+&lt;p>&lt;em>A small tip: here, we can put the function &lt;code>writefile&lt;/code> in &lt;code>internal/pkg/plugin/localfile/localfile.go&lt;/code>, so that the code is better organized.&lt;/em>&lt;/p>
+&lt;p>The &lt;code>localfile.go&lt;/code> will look like this:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">package&lt;/span> &lt;span style="color:#000">localfile&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">import&lt;/span> &lt;span style="color:#4e9a06">&amp;#34;os&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">writefile&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">filename&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">content&lt;/span> &lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">f&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">os&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Create&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">filename&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">defer&lt;/span> &lt;span style="color:#000">f&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Close&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">_&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#000">f&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">WriteString&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">content&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="read">Read()&lt;/h3>
+&lt;p>Let&amp;rsquo;s also implement the &lt;code>Read&lt;/code> interface.&lt;/p>
+&lt;p>The logic is simple: we want to try to see if the file exists or not, and if yes, what&amp;rsquo;s the filename and content.&lt;/p>
+&lt;p>&lt;code>internal/pkg/plugin/localfile/read.go&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">package&lt;/span> &lt;span style="color:#000">localfile&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">import&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;os&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;strings&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/mitchellh/mapstructure&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/merico-dev/stream/pkg/util/log&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">Read&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span> &lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{})&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{},&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">var&lt;/span> &lt;span style="color:#000">opts&lt;/span> &lt;span style="color:#000">Options&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">mapstructure&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Decode&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">errs&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">validate&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#204a87">len&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">errs&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">for&lt;/span> &lt;span style="color:#000">_&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">e&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">range&lt;/span> &lt;span style="color:#000">errs&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">log&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Errorf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;Options error: %s.&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">e&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">fmt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Errorf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;opts are illegal&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">content&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">os&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">ReadFile&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Filename&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">strings&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Contains&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">err&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Error&lt;/span>&lt;span style="color:#000;font-weight:bold">(),&lt;/span> &lt;span style="color:#4e9a06">&amp;#34;no such file or directory&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">status&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;filename&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Filename&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;content&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#204a87">string&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">content&lt;/span>&lt;span style="color:#000;font-weight:bold">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">status&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>On the return value:&lt;/p>
+&lt;ul>
+&lt;li>If the file doesn&amp;rsquo;t exist, return nil, no error, because it means the resource hasn&amp;rsquo;t been created yet (or deleted by somebody)&lt;/li>
+&lt;li>If the file exists, return the &amp;ldquo;status&amp;rdquo; of it and no error.&lt;/li>
+&lt;li>Otherwise, return nil and the error.&lt;/li>
+&lt;/ul>
+&lt;h3 id="update">Update()&lt;/h3>
+&lt;p>&lt;code>Update&lt;/code> will be triggered if &lt;code>Read&lt;/code> returns a different result than what&amp;rsquo;s recorded in the &lt;em>State&lt;/em>.&lt;/p>
+&lt;p>For the implementation, since we are updating a file, it&amp;rsquo;s the same as &lt;code>Create&lt;/code>, so we can actually reuse it here without duplicated code:&lt;/p>
+&lt;p>&lt;code>internal/pkg/plugin/localfile/update.go&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">package&lt;/span> &lt;span style="color:#000">localfile&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">Update&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span> &lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{})&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{},&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">Create&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="delete">Delete()&lt;/h3>
+&lt;p>Last but not least, let&amp;rsquo;s implement the &lt;code>Delete&lt;/code> interface.&lt;/p>
+&lt;p>&lt;code>internal/pkg/plugin/localfile/delete.go&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">package&lt;/span> &lt;span style="color:#000">localfile&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">import&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;os&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/mitchellh/mapstructure&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/merico-dev/stream/pkg/util/log&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">Delete&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span> &lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{})&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">bool&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">var&lt;/span> &lt;span style="color:#000">opts&lt;/span> &lt;span style="color:#000">Options&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">mapstructure&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Decode&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">false&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">errs&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">validate&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#204a87">len&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">errs&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">for&lt;/span> &lt;span style="color:#000">_&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">e&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">range&lt;/span> &lt;span style="color:#000">errs&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">log&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Errorf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;Options error: %s.&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">e&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">false&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">fmt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Errorf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;opts are illegal&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">os&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Remove&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Filename&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">false&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">true&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Just delete the file; nothing to look at here.&lt;/p>
+&lt;h2 id="build">Build&lt;/h2>
+&lt;p>Now that we finished coding, let&amp;rsquo;s build our new plugin. Our Makefile now supports building a specific plugin only:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>make build-plugin.localfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="test">Test&lt;/h2>
+&lt;p>First, let&amp;rsquo;s create a config file &lt;code>config-localfile-test.yaml&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">tools&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">name&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">my-file&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">plugin&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">localfile&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">options&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">filename&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">foo.txt&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">content&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#4e9a06">&amp;#34;hello, world&amp;#34;&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now, let&amp;rsquo;s &lt;code>apply&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>$ ./dtm -y apply -f config-localfile-test.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply started.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Using dir &amp;lt;.devstream&amp;gt; to store plugins.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Tool my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> found in config but doesn&lt;span style="color:#a40000">&amp;#39;&lt;/span>t exist in the state, will be created.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Start executing the plan.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Changes count: 1.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing progress: 1/1. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Processing: my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> -&amp;gt; Create ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Plugin my-file&lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> Create &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> All plugins applied successfully.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply finished.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>As we can see, the plugin has created our file successfully. To verify, you can open the &amp;ldquo;foo.txt&amp;rdquo; file to have a look.&lt;/p>
+&lt;p>If we &lt;code>apply&lt;/code> again, nothing should happen, since the file is already created with the desired content:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>$ ./dtm -y apply -f config-localfile-test.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:30:43 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply started.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:30:43 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Using dir &amp;lt;.devstream&amp;gt; to store plugins.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:30:45 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> No changes &lt;span style="color:#204a87;font-weight:bold">done&lt;/span> since last apply. There is nothing to &lt;span style="color:#204a87;font-weight:bold">do&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:30:45 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply finished.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>But, what if somebody changed the content of &amp;ldquo;foo.txt&amp;rdquo;? Let&amp;rsquo;s experiment:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>$ &lt;span style="color:#204a87">echo&lt;/span> &lt;span style="color:#4e9a06">&amp;#34;changed&amp;#34;&lt;/span> &amp;gt; foo.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ./dtm -y apply -f config-localfile-test.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply started.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Using dir &amp;lt;.devstream&amp;gt; to store plugins.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Tool my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> drifted from the state, will be updated.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Start executing the plan.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Changes count: 1.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing progress: 1/1. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Processing: my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> -&amp;gt; Update ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Plugin my-file&lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> Update &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> All plugins applied successfully.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply finished.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can see that the file has drifted from the state, so it will be updated. After the operation, the file&amp;rsquo;s content is changed back to what we defined in our config.&lt;/p>
+&lt;p>Heck, let&amp;rsquo;s even try deleting this file and see what happens:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>$ rm foo.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ./dtm -y apply -f config-localfile-test.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply started.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Using dir &amp;lt;.devstream&amp;gt; to store plugins.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Tool my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> state found but it seems the tool isn&lt;span style="color:#a40000">&amp;#39;&lt;/span>t created, will be created.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Start executing the plan.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Changes count: 1.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing progress: 1/1. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Processing: my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> -&amp;gt; Create ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Plugin my-file&lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> Create &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> All plugins applied successfully.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply finished.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Apparently, DevStream thought the file should exist according to the state, but it doesn&amp;rsquo;t, so it is created again.&lt;/p>
+&lt;p>Last, let&amp;rsquo;s try to &lt;code>delete&lt;/code> this file with &lt;code>dtm&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>$ ./dtm -y delete -f config-localfile-test.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Delete started.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Using dir &amp;lt;.devstream&amp;gt; to store plugins.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Tool my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> will be deleted.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Start executing the plan.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Changes count: 1.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing progress: 1/1. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Processing: my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> -&amp;gt; Delete ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Prepare to delete &lt;span style="color:#4e9a06">&amp;#39;my-file_localfile&amp;#39;&lt;/span> from States.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Plugin my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> delete &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> All plugins deleted successfully.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Delete finished.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hooray!&lt;/p>
+&lt;h2 id="summary">Summary&lt;/h2>
+&lt;p>I&amp;rsquo;m sorry that I put the &amp;ldquo;TL;DR&amp;rdquo; at the end; it&amp;rsquo;s only because I want you to have a global feeling of DevStream. But for advanced developers, here&amp;rsquo;s a &amp;ldquo;TL;DR&amp;rdquo; (or use it as a checklist) for you:&lt;/p>
+&lt;ul>
+&lt;li>Run &lt;code>dtm develop create-plugin --name=your-plugin&lt;/code>.&lt;/li>
+&lt;li>Do a &lt;code>git status&lt;/code>, then:
+&lt;ul>
+&lt;li>find the generated files&lt;/li>
+&lt;li>edit/code at the places where there is already a comment mark&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Pay special attention to the return value of the interfaces. Figure out the relationship between &lt;em>State&lt;/em> and &lt;em>Resource&lt;/em>. What the interfaces return decides how this plugin will behave.&lt;/li>
+&lt;li>Last but not least, update the documentation.&lt;/li>
+&lt;/ul>
+&lt;p>If you enjoy reading this post, please like, comment, and subscribe! I will see you next time.&lt;/p></description></item><item><title>Blog: Hello, World</title><link>https://dtm.dev/blog/hello-world/</link><pubDate>Mon, 21 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/blog/hello-world/</guid><description>
+&lt;img src="https://dtm.dev/blog/hello-world/featured-background_hu34961e30f9257864937cf0fe28917ce5_796839_640x0_resize_q75_catmullrom.jpg" width="640" height="479"/>
+&lt;p>Hello, and welcome to the DevStream blog!&lt;/p>
+&lt;p>In this very first &amp;ldquo;hello world&amp;rdquo; post, I will:&lt;/p>
+&lt;ul>
+&lt;li>give you a high-level picture of how DevStream functions;&lt;/li>
+&lt;li>walk you through our codebase;&lt;/li>
+&lt;li>explain briefly how to create your own plugin.&lt;/li>
+&lt;/ul>
+&lt;p>If you haven&amp;rsquo;t heard of DevStream yet, please have a quick glance over our &lt;a href="https://github.com/merico-dev/stream">README&lt;/a>.&lt;/p>
+&lt;p>Without further adieu, let&amp;rsquo;s get started.&lt;/p>
+&lt;hr>
+&lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
+&lt;img class="card-img-top" src="https://dtm.dev/blog/hello-world/featured-background_hu34961e30f9257864937cf0fe28917ce5_796839_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
+&lt;div class="card-body px-0 pt-2 pb-0">
+&lt;p class="card-text">
+Dong'an Lake, Chengdu, China.
+&lt;small class="text-muted">&lt;br/>Photo: Tiexin Guo / CC-BY-CA&lt;/small>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;hr>
+&lt;blockquote>
+&lt;p>English version: &lt;a href="../hello-world">《Hello, World》&lt;/a>Author: @Tiexin Guo(郭铁心)&lt;/p>
+&lt;p>中文版：&lt;a href="../../zh/blog/hello-world/">《你好，世界》&lt;/a>作者：@胡涛(Daniel Hu)&lt;/p>
+&lt;/blockquote>
+&lt;hr>
+&lt;h2 id="tldr">TL;DR&lt;/h2>
+&lt;p>Too bad, there isn&amp;rsquo;t one. But don&amp;rsquo;t close the tab right away; let me tell you a story.&lt;/p>
+&lt;p>Most of the time, I&amp;rsquo;m a &amp;ldquo;normal&amp;rdquo; end-user. And by &amp;ldquo;normal&amp;rdquo;, I mean I don&amp;rsquo;t bother myself with creating GitHub issues and pull requests and follow the updates for days (if not weeks). I love and use open-source projects, but that&amp;rsquo;s about it. Perhaps when I&amp;rsquo;m in an extremely good (or bad) mood, I will open up a discussion to give some feedback (or WTFs) and ramble about it. I don&amp;rsquo;t really contribute on a daily basis, though. Don&amp;rsquo;t get me wrong: I&amp;rsquo;d love it if I had more time; but I work a 9-to-5 job to live, just like most of the readers do.&lt;/p>
+&lt;p>If you are like me, should you read this post anyway?&lt;/p>
+&lt;p>Well, yes. Because although this article is about DevStream, it isn&amp;rsquo;t. We will cover quite some topics that are non-specific to DevStream. We will discuss generic topics about &lt;a href="https://en.wikipedia.org/wiki/42_(number)#The_Hitchhiker's_Guide_to_the_Galaxy">life, the universe, and everything&lt;/a>. Hang tight. Here we go.&lt;/p>
+&lt;hr>
+&lt;h2 id="criticism-wanted">Criticism Wanted&lt;/h2>
+&lt;p>&lt;a href="https://www.producthunt.com/posts/devstream-1">We released early (Mar 2nd, 2022.)&lt;/a> Maybe a little bit too early, one would say. We weren&amp;rsquo;t in stealth mode for long; 8 weeks, tops.&lt;/p>
+&lt;p>Of course, that wasn&amp;rsquo;t a mistake. We didn&amp;rsquo;t accidentally click the &amp;ldquo;publish&amp;rdquo; button on Product Hunt and leak it out. We did this pretty much on purpose. In fact, even before our version 0.1 was released, we had already decided to aim for an early release. It&amp;rsquo;s pretty much by design. Since it&amp;rsquo;s still early and immature, &lt;em>there might be bugs.&lt;/em> I know you probably want to swear already, but bear with me:&lt;/p>
+&lt;p>I mean, technically, we could work on it for a much longer period, polish it up, add more features, support more tools, and what have you. But in that case, we might end up with something &lt;em>we&lt;/em> thought is perfect but utterly useless to &lt;em>you&lt;/em>, which is what really matters.&lt;/p>
+&lt;p>All we had was an idea. We didn&amp;rsquo;t know &amp;ldquo;how&amp;rdquo;, or even &amp;ldquo;what&amp;rdquo;. All we knew is, we wanted to build something that is useful for the end-users. So why not release it to the users and ask them to tell us what to build and how to build?&lt;/p>
+&lt;p>The idea isn&amp;rsquo;t mine, though. It would be arrogant if I said that I invented that. In fact, I learned it from lean manufacturing and agile development. To be honest, if I learned only one thing from lean manufacturing and agile, it&amp;rsquo;s that we should reduce the product-to-customer cycle. It&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/The_Toyota_Way">The Toyota Way&lt;/a>.&lt;/p>
+&lt;p>OK, enough rambling. If you are interested in DevStream, simply go to our &lt;a href="https://github.com/merico-dev/stream">GitHub repo&lt;/a>, follow our README and quickstart, and have a go. I&amp;rsquo;m sure you will have some &amp;ldquo;WTF&amp;rdquo; moments during your first try, in which case, don&amp;rsquo;t hesitate to head to our &lt;a href="https://github.com/merico-dev/stream/issues">GitHub Issues page&lt;/a> and hit the &amp;ldquo;New Issue&amp;rdquo; button hard. We have prepared a few templates there to help you quickly get your dissatisfaction out of your system. Heck, you can even create an issue about the issue templates themselves. For helpful contributions, we will give you a &amp;ldquo;good first issue&amp;rdquo; label and who knows, probably the marketing team will reach out and award you with a little physical prize as well!&lt;/p>
+&lt;hr>
+&lt;h2 id="intrigued">Intrigued?&lt;/h2>
+&lt;p>Then let&amp;rsquo;s dive a little deeper into it.&lt;/p>
+&lt;h3 id="architecture">Architecture&lt;/h3>
+&lt;p>A picture is worth a thousand words:&lt;/p>
+&lt;p>&lt;img src="https://github.com/merico-dev/stream/blob/main/docs/images/architecture-overview.png?raw=true" alt="architecture-overview">&lt;/p>
+&lt;p>We use the &lt;a href="https://pkg.go.dev/plugin">Go plugin&lt;/a>. I know this is kind of a big topic so here I&amp;rsquo;m only going to talk about it briefly:&lt;/p>
+&lt;ul>
+&lt;li>First of all, we want to support many DevOps tools, and one tool corresponding to one plugin sounds natural.&lt;/li>
+&lt;li>Second of all, although there are other ways to do the &amp;ldquo;core-plugin&amp;rdquo; architecture, we reviewed Go&amp;rsquo;s plugin and it met our needs.&lt;/li>
+&lt;li>Oops, I thought there was a &amp;ldquo;third&amp;rdquo; or &amp;ldquo;last but not least&amp;rdquo;, but there isn&amp;rsquo;t. Sorry.&lt;/li>
+&lt;/ul>
+&lt;h3 id="state">State&lt;/h3>
+&lt;p>We consider DevStream (CLI tool &lt;code>dtm&lt;/code>, don&amp;rsquo;t ask me why; it&amp;rsquo;s another whole story. Read &lt;a href="https://github.com/merico-dev/stream#why-dtm">this&lt;/a> if you enjoy stories) as a &amp;ldquo;&lt;a href="https://en.wikipedia.org/wiki/Finite-state_machine">state machine&lt;/a>&amp;rdquo;.&lt;/p>
+&lt;p>Simply put, given input and the current state, DevStream will calculate what to do, so that &amp;ldquo;what you want&amp;rdquo; (what you described in the input) is &amp;ldquo;what you get&amp;rdquo;.&lt;/p>
+&lt;p>If you are interested, read more &lt;a href="https://github.com/merico-dev/stream/blob/main/docs/core_concept.md">here&lt;/a>.&lt;/p>
+&lt;h3 id="directory-structure">Directory structure&lt;/h3>
+&lt;p>We follow Golang&amp;rsquo;s &lt;a href="https://github.com/golang-standards/project-layout">standard project layout&lt;/a>. But don&amp;rsquo;t click that link, it&amp;rsquo;s too long and too verbose and contains probably many things you don&amp;rsquo;t immediately need right now. Continue to read the TL;DR version:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>/cmd&lt;/code>: main applications for this project. &lt;em>Don&amp;rsquo;t put a lot of code in the application directory. If you think the code can be imported and used in other projects, then it should live in the &lt;code>/pkg&lt;/code> directory. If the code is not reusable or if you don&amp;rsquo;t want others to reuse it, put that code in the &lt;code>/internal&lt;/code> directory.&lt;/em>&lt;/li>
+&lt;li>&lt;code>/pkg&lt;/code>: library code that&amp;rsquo;s ok to use by external apps. &lt;em>Other projects will import these libs expecting them to work, so think twice before you put something here.&lt;/em>&lt;/li>
+&lt;li>&lt;code>/internal&lt;/code>: private application and library code; things you don&amp;rsquo;t want others to import in their own apps.&lt;/li>
+&lt;li>&lt;code>/hack&lt;/code>: contains many scripts that ensure continuous development of DevStream. We didn&amp;rsquo;t invent this; we simply stole &lt;a href="https://github.com/kubernetes/kubernetes/tree/master/hack">Kubernetes&amp;rsquo; idea&lt;/a>.&lt;/li>
+&lt;li>&lt;code>/build&lt;/code>: packaging and CI-related stuff.&lt;/li>
+&lt;li>&lt;code>/docs&lt;/code>: pretty much self-explanatory. Need I say more?&lt;/li>
+&lt;li>&lt;code>/examples&lt;/code>: examples for your apps or public libs. Here we use it to store some sample configurations.&lt;/li>
+&lt;/ul>
+&lt;p>Of course, this isn&amp;rsquo;t the only way to set up a repo structure for a Golang app. If you are a beginner, though, this can save you some time. For example, after reading this, you should know that if you want to find the entrance of the app, you shall look into the &lt;code>cmd&lt;/code> folder. That&amp;rsquo;s where the main app lives.&lt;/p>
+&lt;h3 id="core--plugin">Core / Plugin&lt;/h3>
+&lt;ul>
+&lt;li>Core code: &lt;a href="https://github.com/merico-dev/stream/tree/main/internal/pkg/pluginengine">https://github.com/merico-dev/stream/tree/main/internal/pkg/pluginengine&lt;/a>&lt;/li>
+&lt;li>Plugins Code: &lt;a href="https://github.com/merico-dev/stream/tree/main/internal/pkg/plugin">https://github.com/merico-dev/stream/tree/main/internal/pkg/plugin&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="how-exactly-does-dtm-apply-work-is-it-automatic-or-automagic">How Exactly Does &lt;code>dtm apply&lt;/code> Work? Is it &amp;ldquo;Automatic&amp;rdquo;, or &amp;ldquo;Automagic&amp;rdquo;?&lt;/h3>
+&lt;ol>
+&lt;li>It all starts with &lt;a href="https://github.com/merico-dev/stream/blob/main/cmd/devstream/main.go">&lt;code>/cmd/devstream/main.go&lt;/code>&lt;/a>.&lt;/li>
+&lt;li>It executes the &lt;code>apply&lt;/code> command in &lt;a href="https://github.com/merico-dev/stream/blob/main/cmd/devstream/apply.go">&lt;code>/cmd/devstream/apply.go&lt;/code>&lt;/a>.&lt;/li>
+&lt;li>The &lt;em>Engine&lt;/em> &lt;a href="https://github.com/merico-dev/stream/tree/main/internal/pkg/pluginengine">&lt;code>/internal/pkg/pluginengine&lt;/code>&lt;/a> runs the logic for &lt;code>apply&lt;/code> at &lt;a href="https://github.com/merico-dev/stream/blob/main/internal/pkg/pluginengine/cmd_apply.go">&lt;code>/internal/pkg/pluginengine/cmd_apply.go&lt;/code>&lt;/a>.&lt;/li>
+&lt;/ol>
+&lt;p>Then, happy digging around in the &amp;ldquo;Apply&amp;rdquo; function!&lt;/p>
+&lt;hr>
+&lt;h2 id="you-release-waaaaay-too-slow-i-want-the-latest-stuff-now">You Release Waaaaay Too Slow! I WANT THE LATEST STUFF!! NOW!!!&lt;/h2>
+&lt;p>Alright, alright, here you go.&lt;/p>
+&lt;p>First, install Go. If you haven&amp;rsquo;t done so, please refer to the &lt;a href="https://go.dev/doc/install">official doc here&lt;/a>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>git clone https://github.com/merico-dev/stream.git &lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#204a87">cd&lt;/span> stream
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>go install golang.org/x/tools/cmd/goimports@latest
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># make sure your GOPATH/bin is in your PATH&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># for example, run this:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87">export&lt;/span> &lt;span style="color:#000">PATH&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>&lt;span style="color:#4e9a06">`&lt;/span>go env GOPATH&lt;span style="color:#4e9a06">`&lt;/span>/bin:&lt;span style="color:#000">$PATH&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make build
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># after you run &amp;#34;make build&amp;#34;, you DO NOT need to run &amp;#34;dtm init&amp;#34; anymore&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># run &amp;#34;dtm apply&amp;#34;, &amp;#34;dtm delete&amp;#34; directly&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># because &amp;#34;init&amp;#34; will try to download plugins from the internet,&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># instead of using what you just built&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>dtm apply -f path_to_your_config.yaml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;h2 id="want-more">Want More?&lt;/h2>
+&lt;p>Congratulations if you have followed so far. Why not go the extra mile by creating a new plugin of your own and play with it?&lt;/p>
+&lt;p>Each plugin needs to implement four interfaces, defined as follows:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/merico-dev/stream/blob/main/internal/pkg/pluginengine/plugin.go#L12">&lt;code>Create&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/merico-dev/stream/blob/main/internal/pkg/pluginengine/plugin.go#L13">&lt;code>Read&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/merico-dev/stream/blob/main/internal/pkg/pluginengine/plugin.go#L14">&lt;code>Update&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/merico-dev/stream/blob/main/internal/pkg/pluginengine/plugin.go#L16">&lt;code>Delete&lt;/code>&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Refer to an existing plugin for more detail. For example, &lt;a href="https://github.com/merico-dev/stream/blob/main/cmd/argocd/main.go">this one&lt;/a>.&lt;/p>
+&lt;p>I know, I know, before you complain, let me tell you this: due to the nature that each plugin is in fact a separate thing from others, there will be some duplicated scaffolding, copying, and pasting when you try to create a new plugin.&lt;/p>
+&lt;p>EXCEPT I WON&amp;rsquo;T ALLOW IT TO HAPPEN.&lt;/p>
+&lt;p>Good news! We created a tool to make it a whole lot easier for you. NO COPY-PASTE. Run:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>dtm develop create-plugin --name&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>my-pluing-name-here
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>and we will bootstrap the required code, files, and directory structure for you. How about that? Happy hacking, buddy!&lt;/p>
+&lt;p>If you enjoy reading this post, please like, comment, and subscribe! I will see you next time.&lt;/p></description></item></channel></rss>

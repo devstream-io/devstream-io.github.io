@@ -1,0 +1,581 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – DevStream Blog</title><link>https://dtm.dev/zh/blog/</link><description>Recent content in DevStream Blog on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://dtm.dev/zh/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: DevStream Community Contributors</title><link>https://dtm.dev/zh/blog/devstream-community-contributors/</link><pubDate>Thu, 31 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/zh/blog/devstream-community-contributors/</guid><description>
+&lt;img src="https://dtm.dev/zh/blog/devstream-community-contributors/featured-background_hu7daadfa63160154b78ca53981d447506_4746096_640x0_resize_q75_catmullrom.jpg" width="640" height="404"/>
+&lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
+&lt;img class="card-img-top" src="https://dtm.dev/zh/blog/devstream-community-contributors/featured-background_hu7daadfa63160154b78ca53981d447506_4746096_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
+&lt;div class="card-body px-0 pt-2 pb-0">
+&lt;p class="card-text">
+三星堆纪念品马克杯
+&lt;small class="text-muted">&lt;br/>Photo: Daniel Hu / CC-BY-CA&lt;/small>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;p>三月新晋贡献者&lt;/p>
+&lt;p>001-徐武
+002-陈映初
+003-余苏明
+004-谢开天&lt;/p>
+&lt;hr>
+&lt;h2 id="2022-年-3-月新晋贡献者">2022 年 3 月新晋贡献者&lt;/h2>
+&lt;hr>
+&lt;h3 id="徐武">徐武&lt;/h3>
+&lt;hr>
+&lt;p>&lt;img src="./xuwu.jpeg" alt="">&lt;/p>
+&lt;h3 id="陈映初">陈映初&lt;/h3>
+&lt;hr>
+&lt;p>&lt;img src="./chenyingchu.jpeg" alt="">&lt;/p>
+&lt;h3 id="余苏明">余苏明&lt;/h3>
+&lt;hr>
+&lt;p>&lt;img src="./yusuming.jpeg" alt="">&lt;/p>
+&lt;h3 id="谢开天">谢开天&lt;/h3>
+&lt;hr>
+&lt;p>&lt;img src="./xiekaitian.jpeg" alt="">&lt;/p></description></item><item><title>Blog: Creating a DevStream (dtm) Plugin for Anything</title><link>https://dtm.dev/zh/blog/creating-a-devstream-dtm-plugin-for-anything/</link><pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/zh/blog/creating-a-devstream-dtm-plugin-for-anything/</guid><description>
+&lt;img src="https://dtm.dev/zh/blog/creating-a-devstream-dtm-plugin-for-anything/featured-background_hubced0a870f76eab482d622a0dd2f964e_408122_640x0_resize_q75_catmullrom.jpg" width="640" height="427"/>
+&lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
+&lt;img class="card-img-top" src="https://dtm.dev/zh/blog/creating-a-devstream-dtm-plugin-for-anything/featured-background_hubced0a870f76eab482d622a0dd2f964e_408122_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
+&lt;div class="card-body px-0 pt-2 pb-0">
+&lt;p class="card-text">
+成都兴隆湖畔星巴克门口的猫
+&lt;small class="text-muted">&lt;br/>Photo: Tiexin Guo / CC-BY-CA&lt;/small>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;p>你没看错，这个标题不是在瞎吹，不管你想加什么奇奇怪怪的功能到 DevStream 里面，都可以通过自定义一个新插件来实现。（当然请不要试图通过插件方式实现 dtm 命令去根据用户心情改变日志颜色啥的。）&lt;/p>
+&lt;blockquote>
+&lt;p>还记得上一篇文章吗？我们介绍过 DevStream 的代码库。没看过？这是链接：&lt;/p>
+&lt;p>&lt;a href="../hello-world">你好，世界！&lt;/a>.&lt;/p>
+&lt;/blockquote>
+&lt;p>今天我们准备通过一个小 demo 程序来展示如何从零开发一个新插件。&lt;/p>
+&lt;hr>
+&lt;blockquote>
+&lt;p>English version: &lt;a href="https://dtm.dev/blog/creating-a-devstream-dtm-plugin-for-anything/">《Creating a DevStream (dtm) Plugin for Anything》&lt;/a>Author: @Tiexin Guo(郭铁心)&lt;/p>
+&lt;p>中文版：&lt;a href="../creating-a-devstream-dtm-plugin-for-anything/">《给 DevStream (dtm) 开发一个插件，整合一切你想要的功能》&lt;/a>作者：@胡涛(Daniel Hu)&lt;/p>
+&lt;/blockquote>
+&lt;hr>
+&lt;h2 id="一句话总结-什么重音是停顿-devstream">一句话总结: 什么（重音），是（停顿） DevStream？&lt;/h2>
+&lt;p>DevStream 是一个能够快速安装、更新、管理、整合你的 DevOps 工具的工具。不要为此感到惊讶。&lt;/p>
+&lt;p>不是我吹，你用 DevStream 可能在 5 分钟内造一条自己“梦想中”的 DevOps 工具链。&lt;/p>
+&lt;p>别不信呀，你试过没有？要是不行，欢迎评论区里喷我。&lt;/p>
+&lt;p>怎么试？我们有 &lt;a href="https://docs.dtm.dev/en/latest/">文档&lt;/a> 呀，打开，然后找到 Quick Start 章节，对着敲！&lt;/p>
+&lt;p>（应该没有人注意到这一段不止一句话吧）&lt;/p>
+&lt;h2 id="现在已经有哪些插件了呢">现在已经有哪些插件了呢？&lt;/h2>
+&lt;p>截止本文发稿，我们已经支持如下插件：&lt;/p>
+&lt;ul>
+&lt;li>Trello (包括和 GitHub 的集成)&lt;/li>
+&lt;li>Jira (包括和 GitHub 的集成)&lt;/li>
+&lt;li>GitHub Repository bootstrapping (Go 语言)&lt;/li>
+&lt;li>GitHub Actions (Go、Python 还有 Nodejs)&lt;/li>
+&lt;li>GitLab CI (Go 语言)&lt;/li>
+&lt;li>Jenkins (安装)&lt;/li>
+&lt;li>ArgoCD&lt;/li>
+&lt;li>ArgoCD Application (部署你的 apps)&lt;/li>
+&lt;li>Prometheus + Grafana&lt;/li>
+&lt;li>DevLake&lt;/li>
+&lt;li>OpenLDAP&lt;/li>
+&lt;/ul>
+&lt;p>我们的目标今年内实现 50 个插件！&lt;/p>
+&lt;p>（请到我们的 &lt;a href="https://github.com/merico-dev/stream">README&lt;/a> 查看最新动态）&lt;/p>
+&lt;h2 id="为什么需要自定义开发-devstream-插件">为什么需要自定义开发 DevStream 插件？&lt;/h2>
+&lt;p>或许你会说：你们已经有很多插件了呀，为什么我还要开发自己的插件？&lt;/p>
+&lt;p>你说的对。&lt;/p>
+&lt;p>但是。&lt;/p>
+&lt;p>总有例外。&lt;/p>
+&lt;p>比如：&lt;/p>
+&lt;ul>
+&lt;li>或许你正在开发一个很酷的 DevOps 工具，你想要快速部署、配置这个工具，这时候你或许不可避免地要写一堆运维脚本来实现你的想法，是不？DevStream 懂你。&lt;/li>
+&lt;li>或许你想要把你的工具和其他已有工具做一个整合，但是可能你懒得花太多精力干这些事情。DevStream 懂你。&lt;/li>
+&lt;li>或许你有一些不想（或者不能？不允许？）开源的工具，同时想要将这些工具与开源工具链做一个整合，然后呢？DevStream 懂你。&lt;/li>
+&lt;/ul>
+&lt;p>或者你只是想体验一下 Go 的 plugins 机制怎么玩，然后给 DevStream 提交一些 pr，接着成为一个光荣的“Contributor”，进而一路打怪，变成“Member”、“Reviewer”，或者是“Approver”，乃至“Manager”？&lt;/p>
+&lt;p>当然这个过程也会伴随着很多漂亮的证书，或者是各种社区为你准备的小礼物，不管是出发点是什么，总之 DevSteram 懂你！！！&lt;/p>
+&lt;p>废话少说，我们开始吧！&lt;/p>
+&lt;h2 id="设计一个叫做--local-file-的插件">设计：一个叫做 &amp;ldquo;Local File&amp;rdquo; 的插件&lt;/h2>
+&lt;p>来，我们通过一个简单的 demo 插件学习“开发新插件”那些事。&lt;/p>
+&lt;p>这个插件的名字叫做：“localfile”，功能是根据我们指定的文件名和文件内容来创建一个本地文件，当然这个文件的名字就是我们给的 filename，而内容就是我们给的 content：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">tools&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">name&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">my-file&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">plugin&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">localfile&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">options&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">filename&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">foo.txt&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">content&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#4e9a06">&amp;#34;hello, world&amp;#34;&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>可以看到：&lt;/p>
+&lt;ul>
+&lt;li>plugin: &lt;code>localfile&lt;/code> 插件名&lt;/li>
+&lt;li>options: 插件配置
+&lt;ul>
+&lt;li>filename: 指定文件名&lt;/li>
+&lt;li>content: 指定文件内容&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="来变个魔法凭空生成插件骨架">来，变个魔法，凭空生成插件骨架&lt;/h2>
+&lt;p>首先我们 clone 一份 DevStream 源码，然后尝试生成一些脚手架代码：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>git clone git@github.com:merico-dev/stream.git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87">cd&lt;/span> stream
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># builds dtm locally to make sure it&amp;#39;s using the same dependencies as your new plugin&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make build-core
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./dtm develop create-plugin --name&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>localfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>请留意 &lt;code>./dtm develop create-plugin --name=localfile&lt;/code> 这个命令的输出日志！你一定会看到惊喜！贴出来？我不。我要你自己去看！&lt;/p>
+&lt;p>现在让我们敲一个 &lt;code>git status&lt;/code> 命令，看到了吗？dtm 为我们做了些啥？&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>$ git status
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>On branch main
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Your branch is up to date with &lt;span style="color:#4e9a06">&amp;#39;origin/main&amp;#39;&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Untracked files:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>use &lt;span style="color:#4e9a06">&amp;#34;git add &amp;lt;file&amp;gt;...&amp;#34;&lt;/span> to include in what will be committed&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cmd/plugin/localfile/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> docs/plugins/localfile_plugin.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> internal/pkg/plugin/localfile/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="回忆下目录结构">回忆下目录结构&lt;/h2>
+&lt;h3 id="cmdpluginlocalfilemaingo">cmd/plugin/localfile/main.go&lt;/h3>
+&lt;p>插件的入口，主函数入口，但是别动这个文件，因为 &lt;code>dtm&lt;/code> 知道你的意图，已经为你改好了。&lt;/p>
+&lt;h3 id="docspluginslocalfilemd">docs/plugins/localfile.md&lt;/h3>
+&lt;p>这是自动生成的文档。&lt;/p>
+&lt;p>没错，我是说过 &lt;code>dtm&lt;/code> 很神奇，但是再神奇它也不知道你的新插件具体是干啥的。所以这个文档的具体内容还是得你自己来填写。&lt;/p>
+&lt;p>对对对，是是是，我知道你不喜欢写文档，但是没办法，&lt;code>dtm&lt;/code> 只能帮你到这里。至少，你不需要手动创建文件了嘛。&lt;/p>
+&lt;h3 id="internalpkgpluginlocalfile">internal/pkg/plugin/localfile&lt;/h3>
+&lt;p>你的插件主要代码逻辑都在这里。你需要：&lt;/p>
+&lt;ul>
+&lt;li>定义你的输入参数(options)；&lt;/li>
+&lt;li>实现参数校验；&lt;/li>
+&lt;li>实现4个主要接口。&lt;/li>
+&lt;/ul>
+&lt;h2 id="核心概念配置状态资源">核心概念：配置、状态、资源&lt;/h2>
+&lt;p>这里还是需要贴个英文：&lt;/p>
+&lt;p>&lt;strong>配置、状态、资源 == Config / State / Resource&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://dtm.dev/img/config_state_resource.png" alt="">&lt;/p>
+&lt;p>在具体写代码逻辑前，我们还是需要先知道 DevStream 是怎么工作的：&lt;/p>
+&lt;ul>
+&lt;li>配置(Config)：是工具(tools)列表，每一个工具有其对应的 name、plugin、options 等配置项。&lt;/li>
+&lt;li>状态(State)：是一个 map，包含每个工具的 name、plugin 和 options 等，主要用来存储 &lt;code>dtm&lt;/code> 上一次操作的结果。&lt;/li>
+&lt;li>资源(Resource)：指的是插件创建出来的具体工具实例。&lt;code>Read&lt;/code> 接口返回的就是一个资源的描述信息，这个信息理论上应该和状态里保存的信息完全一致（如果这个资源没有被通过其他途径修改）。&lt;/li>
+&lt;/ul>
+&lt;p>DevStream 会根据 &lt;em>Config&lt;/em>、&lt;em>State&lt;/em> 和 &lt;em>Resource&lt;/em> 的状态来决定下一步做什么。比如：&lt;/p>
+&lt;ul>
+&lt;li>如果你上一次成功执行 &lt;code>dtm apply&lt;/code> 之后什么变化也没有发生，然后你再次运行 &lt;code>dtm apply&lt;/code>，这时候啥也不会发生。&lt;/li>
+&lt;li>如果你上一次成功执行 &lt;code>dtm apply&lt;/code> 之后，改了一下配置，然后你再次运行 &lt;code>dtm apply&lt;/code>，那么接着会发生什么？当然是 &lt;code>dtm&lt;/code> 会去更新 State，操作 Resource，从而让你的新配置生效。&lt;/li>
+&lt;li>如果你悄悄动了部署好的工具，也就是 Resource 发生了变化，甚至是你直接删了这个 Resource。虽然 &lt;code>dtm&lt;/code> 很难受。但是 &lt;code>dtm&lt;/code> 坚强。&lt;code>dtm&lt;/code> 会尝试根据 Config 和 State 来恢复你的工具。&lt;/li>
+&lt;/ul>
+&lt;h2 id="差不多开始详细讲接口了">差不多开始详细讲接口了&lt;/h2>
+&lt;p>每个 DevStream 插件都必须实现如下四个接口：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Create&lt;/code>&lt;/li>
+&lt;li>&lt;code>Read&lt;/code>&lt;/li>
+&lt;li>&lt;code>Update&lt;/code>&lt;/li>
+&lt;li>&lt;code>Delete&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>返回值：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Create&lt;/code> 和 &lt;code>Update &lt;/code> 返回两个值：&lt;code>(map[string]interface{}, error)&lt;/code>。第一个返回值，当然就是状态了，我们会将其存到 State 里。第二个就不需要解释了吧。还是解释下：如果发生了错误，那么请返回这个错误。&lt;/li>
+&lt;li>&lt;code>Read&lt;/code> 也有两个返回值，第一个是资源(Resource)的描述，这个值应该和上面表示 State 的返回值相同（如果资源没有发生变化）。&lt;/li>
+&lt;li>&lt;code>Delete&lt;/code> 一切顺利就返回 &lt;code>(true, nil)&lt;/code> 当然反之就返回 &lt;code>(false, error)&lt;/code>。&lt;/li>
+&lt;/ul>
+&lt;h2 id="实现-options-和参数校验">实现 Options 和参数校验&lt;/h2>
+&lt;p>好，让我们打开 &lt;code>internal/pkg/plugin/localfile/options.go&lt;/code> 文件，开始实现 Options 对象：&lt;/p>
+&lt;p>结果大概是这样：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">package&lt;/span> &lt;span style="color:#000">localfile&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic">// Options is the struct for configurations of the localfile plugin.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">type&lt;/span> &lt;span style="color:#000">Options&lt;/span> &lt;span style="color:#204a87;font-weight:bold">struct&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">Filename&lt;/span> &lt;span style="color:#204a87;font-weight:bold">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">Content&lt;/span> &lt;span style="color:#204a87;font-weight:bold">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>接着来实现这个 Options 的校验逻辑，打开 &lt;code>internal/pkg/plugin/localfile/validate.go&lt;/code> 文件，开始写代码。&lt;/p>
+&lt;p>结果大概是这样：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">package&lt;/span> &lt;span style="color:#000">localfile&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">import&lt;/span> &lt;span style="color:#4e9a06">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic">// validate validates the options provided by the core.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">validate&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000">Options&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">[]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">error&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">res&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#204a87">make&lt;/span>&lt;span style="color:#000;font-weight:bold">([]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">options&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Filename&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">==&lt;/span> &lt;span style="color:#4e9a06">&amp;#34;&amp;#34;&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">res&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#204a87">append&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">res&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">fmt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Errorf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;filename does not exist&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">res&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="实现-curd-接口">实现 CURD 接口&lt;/h2>
+&lt;h3 id="增删改查之---create">增删改查之 - Create&lt;/h3>
+&lt;p>我们要根据输入的 options 来实现 create 逻辑，ok，打开 &lt;code>internal/pkg/plugin/localfile/create.go&lt;/code> 文件，开始挥毫泼墨吧！&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">package&lt;/span> &lt;span style="color:#000">localfile&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">import&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/mitchellh/mapstructure&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/merico-dev/stream/pkg/util/log&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">Create&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span> &lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{})&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{},&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">var&lt;/span> &lt;span style="color:#000">opts&lt;/span> &lt;span style="color:#000">Options&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">mapstructure&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Decode&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">errs&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">validate&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#204a87">len&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">errs&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">for&lt;/span> &lt;span style="color:#000">_&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">e&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">range&lt;/span> &lt;span style="color:#000">errs&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">log&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Errorf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;Options error: %s.&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">e&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">fmt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Errorf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;opts are illegal&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">writefile&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Filename&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Content&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">status&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;filename&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Filename&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;content&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Content&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">status&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>是不是发现这里其实相比 &lt;code>dtm develop&lt;/code> 创建的脚手架代码，多出来没几行。没错，就是那么简单。其他接口也是。&lt;/p>
+&lt;p>有个小细节：这里的 &lt;code>writefile&lt;/code> 函数被放到了 &lt;code>internal/pkg/plugin/localfile/localfile.go&lt;/code>，这样看起来更清晰一些。&lt;/p>
+&lt;p>所以 &lt;code>localfile.go&lt;/code> 文件看起来就是这样的：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">package&lt;/span> &lt;span style="color:#000">localfile&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">import&lt;/span> &lt;span style="color:#4e9a06">&amp;#34;os&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">writefile&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">filename&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">content&lt;/span> &lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">f&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">os&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Create&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">filename&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">defer&lt;/span> &lt;span style="color:#000">f&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Close&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">_&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#000">f&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">WriteString&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">content&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="增删改查之---read">增删改查之 - Read&lt;/h3>
+&lt;p>让我们继续来实现 &lt;code>Read&lt;/code> 接口吧！&lt;/p>
+&lt;p>这里的逻辑很简单，就是看下文件在不在，看下内容对不对：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>internal/pkg/plugin/localfile/read.go&lt;/code>:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">package&lt;/span> &lt;span style="color:#000">localfile&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">import&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;os&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;strings&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/mitchellh/mapstructure&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/merico-dev/stream/pkg/util/log&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">Read&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span> &lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{})&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{},&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">var&lt;/span> &lt;span style="color:#000">opts&lt;/span> &lt;span style="color:#000">Options&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">mapstructure&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Decode&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">errs&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">validate&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#204a87">len&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">errs&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">for&lt;/span> &lt;span style="color:#000">_&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">e&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">range&lt;/span> &lt;span style="color:#000">errs&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">log&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Errorf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;Options error: %s.&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">e&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">fmt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Errorf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;opts are illegal&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">content&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">os&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">ReadFile&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Filename&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">strings&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Contains&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">err&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Error&lt;/span>&lt;span style="color:#000;font-weight:bold">(),&lt;/span> &lt;span style="color:#4e9a06">&amp;#34;no such file or directory&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">status&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;filename&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Filename&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;content&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#204a87">string&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">content&lt;/span>&lt;span style="color:#000;font-weight:bold">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">status&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>关于返回值：&lt;/p>
+&lt;ul>
+&lt;li>如果文件不存在，返回 nil，没有 error，这意味着文件还没有被创建或者被某人删掉了。&lt;/li>
+&lt;li>如果文件存在，返回文件“状态，没有 error。&lt;/li>
+&lt;li>其他情况，返回 nil 还有对应的 error。&lt;/li>
+&lt;/ul>
+&lt;h3 id="增删改查之---update">增删改查之 - Update&lt;/h3>
+&lt;p>&lt;code>Update&lt;/code> 会在 &lt;code>Read&lt;/code> 返回的结果和 State 中的记录不一致时触发。&lt;/p>
+&lt;p>至于实现嘛，这个场景下 Update 的逻辑其实和 Create 重复，所以我们可以偷个懒，直接重用这块代码：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>internal/pkg/plugin/localfile/update.go&lt;/code>:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">package&lt;/span> &lt;span style="color:#000">localfile&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">Update&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span> &lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{})&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{},&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#000">Create&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="增删改查之---delete">增删改查之 - Delete&lt;/h3>
+&lt;p>终于到最后一个接口了，我们来实现 &lt;code>Delete&lt;/code> 吧！&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>internal/pkg/plugin/localfile/delete.go&lt;/code>:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">package&lt;/span> &lt;span style="color:#000">localfile&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">import&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;os&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/mitchellh/mapstructure&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/merico-dev/stream/pkg/util/log&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">Delete&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span> &lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{})&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">bool&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">var&lt;/span> &lt;span style="color:#000">opts&lt;/span> &lt;span style="color:#000">Options&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">mapstructure&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Decode&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">false&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">errs&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">validate&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">);&lt;/span> &lt;span style="color:#204a87">len&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">errs&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">for&lt;/span> &lt;span style="color:#000">_&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">e&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">range&lt;/span> &lt;span style="color:#000">errs&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">log&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Errorf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;Options error: %s.&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">e&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">false&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">fmt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Errorf&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;opts are illegal&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">os&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Remove&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">opts&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Filename&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">err&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">!=&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">false&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">true&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>删吧删吧，勇敢地删了它！&lt;/p>
+&lt;h2 id="编译">编译&lt;/h2>
+&lt;p>终于写完代码了，让我们来 build 一下刚才开发的新插件吧！&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>make build-plugin.localfile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>是不是很简单？现在我们的 Makefile 可以支持 build 单个插件了，漂亮！&lt;/p>
+&lt;h2 id="测试">测试&lt;/h2>
+&lt;p>首先，我们来创建一个新配置文件： &lt;code>config-localfile-test.yaml&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">tools&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">name&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">my-file&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">plugin&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">localfile&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">options&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">filename&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">foo.txt&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">content&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#4e9a06">&amp;#34;hello, world&amp;#34;&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>接着 &lt;code>apply&lt;/code> 一下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>$ ./dtm -y apply -f config-localfile-test.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply started.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Using dir &amp;lt;.devstream&amp;gt; to store plugins.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Tool my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> found in config but doesn&lt;span style="color:#a40000">&amp;#39;&lt;/span>t exist in the state, will be created.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Start executing the plan.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Changes count: 1.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing progress: 1/1. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Processing: my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> -&amp;gt; Create ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Plugin my-file&lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> Create &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> All plugins applied successfully.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:25:17 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply finished.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>如你所见，新插件创建了一个新文件！当然你可以打开这个文件看一下里面的内容是不是符合预期。&lt;/p>
+&lt;p>如果你再来一次 &lt;code>apply&lt;/code>, 啥也不会发生。因为这个文件没有发生变化。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>$ ./dtm -y apply -f config-localfile-test.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:30:43 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply started.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:30:43 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Using dir &amp;lt;.devstream&amp;gt; to store plugins.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:30:45 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> No changes &lt;span style="color:#204a87;font-weight:bold">done&lt;/span> since last apply. There is nothing to &lt;span style="color:#204a87;font-weight:bold">do&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:30:45 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply finished.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>但是，如果某人动了一下这个文件呢？试一下！试一下！试一下！&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>$ &lt;span style="color:#204a87">echo&lt;/span> &lt;span style="color:#4e9a06">&amp;#34;changed&amp;#34;&lt;/span> &amp;gt; foo.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ./dtm -y apply -f config-localfile-test.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply started.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Using dir &amp;lt;.devstream&amp;gt; to store plugins.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Tool my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> drifted from the state, will be updated.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Start executing the plan.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Changes count: 1.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing progress: 1/1. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Processing: my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> -&amp;gt; Update ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Plugin my-file&lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> Update &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> All plugins applied successfully.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:26:40 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply finished.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>看吧，文件和状态记录不一致了，所以它被更新了。一顿操作猛如虎，终于，还是该回来了。&lt;/p>
+&lt;p>额，玩大一点？删了如何？&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>$ rm foo.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ./dtm -y apply -f config-localfile-test.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply started.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Using dir &amp;lt;.devstream&amp;gt; to store plugins.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Tool my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> state found but it seems the tool isn&lt;span style="color:#a40000">&amp;#39;&lt;/span>t created, will be created.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Start executing the plan.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Changes count: 1.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing progress: 1/1. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Processing: my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> -&amp;gt; Create ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Plugin my-file&lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> Create &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> All plugins applied successfully.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:27:33 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Apply finished.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这时候，DevStream 认为这个文件应该存在，因为 State 里存着有这个文件。但是它被删了。所以，当然是恢复啦！&lt;/p>
+&lt;p>最后，我们试一下 &lt;code>delete&lt;/code> 命令吧：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>$ ./dtm -y delete -f config-localfile-test.yaml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Delete started.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Using dir &amp;lt;.devstream&amp;gt; to store plugins.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Tool my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> will be deleted.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Start executing the plan.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Changes count: 1.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing progress: 1/1. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Processing: my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> -&amp;gt; Delete ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Prepare to delete &lt;span style="color:#4e9a06">&amp;#39;my-file_localfile&amp;#39;&lt;/span> from States.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Plugin my-file &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>localfile&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> delete &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ℹ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>INFO&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> -------------------- &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span> Processing &lt;span style="color:#204a87;font-weight:bold">done&lt;/span>. &lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> --------------------
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> All plugins deleted successfully.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2022-03-29 11:32:24 ✔ &lt;span style="color:#ce5c00;font-weight:bold">[&lt;/span>SUCCESS&lt;span style="color:#ce5c00;font-weight:bold">]&lt;/span> Delete finished.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>酷啊我勒个乖乖～ No error No warning 啊～&lt;/p>
+&lt;h2 id="总结">总结&lt;/h2>
+&lt;p>对不起啦，这个时候才给你看总结。我没有把这段内容放在文章开头，是因为我希望你能够完整感受下 DevStream。但是如果你已经感受过一次了，或者感受过很多次了，那么或许下一次再开发一个新插件时，你只是需要一个 checklist：&lt;/p>
+&lt;ul>
+&lt;li>运行 &lt;code>dtm develop create-plugin --name=your-plugin&lt;/code>。&lt;/li>
+&lt;li>执行 &lt;code>git status&lt;/code>，然后：
+&lt;ul>
+&lt;li>找到生成的新文件&lt;/li>
+&lt;li>在所有新文件里找到 //TODO(dtm) 标记的地方，补充你的代码逻辑&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>留意所有接口的返回值，想清楚 &lt;em>State&lt;/em> 和 &lt;em>Resource&lt;/em> 之间的关系。具体返回什么值，取决于具体插件的逻辑。&lt;/li>
+&lt;li>最后，请一定记得更新插件文档，我知道可能你不喜欢写文档，但是，这很重要！&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Hello, World</title><link>https://dtm.dev/zh/blog/hello-world/</link><pubDate>Mon, 21 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/zh/blog/hello-world/</guid><description>
+&lt;img src="https://dtm.dev/zh/blog/hello-world/featured-background_hu34961e30f9257864937cf0fe28917ce5_796839_640x0_resize_q75_catmullrom.jpg" width="640" height="479"/>
+&lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
+&lt;img class="card-img-top" src="https://dtm.dev/zh/blog/hello-world/featured-background_hu34961e30f9257864937cf0fe28917ce5_796839_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
+&lt;div class="card-body px-0 pt-2 pb-0">
+&lt;p class="card-text">
+成都东安湖
+&lt;small class="text-muted">&lt;br/>Photo: Tiexin Guo / CC-BY-CA&lt;/small>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;hr>
+&lt;p>本文不算短，但是我知道你会读完。如果没读完，，不可能，绝对不可能！&lt;/p>
+&lt;p>在第一篇博文里，我要讲些啥呢？好像我也没有想好。但是他们喊我写，那我就写了。&lt;/p>
+&lt;p>好，让我们荡起双桨，不是，让我们开始吧！&lt;/p>
+&lt;blockquote>
+&lt;p>不用尝试切换中英文版本看下我翻译的好不好，我就不是从英文版翻译过来的。
+我们的文章如果是双语发布，那就一定是两次原创。虽然表达的主题一样，可能也只有主题一样了。&lt;/p>
+&lt;p>English version: &lt;a href="https://dtm.dev/blog/hello-world">《Hello, World》&lt;/a>Author: @Tiexin Guo(郭铁心)&lt;/p>
+&lt;p>中文版：&lt;a href="../hello-world/">《你好，世界》&lt;/a>作者：@胡涛(Daniel Hu)&lt;/p>
+&lt;/blockquote>
+&lt;hr>
+&lt;h2 id="别别别划走给我三分钟还你一天好心情">别别别划走，给我三分钟，还你一天好心情！&lt;/h2>
+&lt;p>别急，相信我，下文不会让你看着&amp;quot;心力憔悴&amp;quot;，你可以笑着看完全文，并且毫不费力地学到新姿势，不是，新知识，新知识！&lt;/p>
+&lt;p>很多时候，我像一个&amp;quot;小白&amp;quot;用户。（虽然我是，但是我知道你们不信。）我怎么个&amp;quot;小白&amp;quot;法呢？
+比如我喜欢用开源软件（白嫖谁不喜欢？），但是我绝对懒得在遇到问题的时候上 GitHub 给对应的开源项目开一个 issue 来反馈我遇到的问题，更别提开一个 pr 来修复我遇到的问题了。
+或许有一天我心情大好，我会给一些&amp;quot;反馈&amp;quot;，也许是在用户群里，也许是在其他地方。当然一般用着爽了，不可能开一个 issue 表示感谢。但是用着很不爽，或许我会忍不住开个 issue 问一句：
+啥破玩意？就这？好意思开源？WTFFF！！！&lt;/p>
+&lt;p>我做着朝九晚五的工作，我不加班，我下班后不工作。
+但是如果我遇到一个好玩的开源软件，或许下班后你会看到我还在参与某个开源项目，不管是写代码，还是参与社区例会。这不是我的工作，这是我的爱好，我的生活。
+后来我就没那么&amp;quot;小白&amp;quot;了！而一个&amp;quot;大白&amp;quot;用户的修养，就是学会了提提 issue，提一些小的 pr，参与一些社区活动，知道开源项目的最新动态，逐渐融入了开源社区。&lt;/p>
+&lt;p>说个笑话：我下班了不工作。我不觉得玩开源社区是工作。我喜欢没日没夜倒腾开源社区。然后老板给我的工作就是玩&amp;quot;开源社区&amp;quot;！！！WTF！！！&lt;/p>
+&lt;p>老板催我写正文了。好吧，本文还是要介绍 DevStream 的，不能全文胡扯。&lt;/p>
+&lt;hr>
+&lt;p>在这篇&amp;quot;创世&amp;quot;博文里，我准备：&lt;/p>
+&lt;ul>
+&lt;li>向你介绍 DevStream 的工作原理（不要担心，不会涉及到复杂的原理，复杂的我也不会）；&lt;/li>
+&lt;li>带你走读我们的代码库（不要担心，不会涉及到复杂的源码，复杂的我也不会）；&lt;/li>
+&lt;li>告诉你如何开发自定义插件（不要担心，看完了你只会知道一个大概，真想上手还是得看我们的官方文档）。&lt;/li>
+&lt;/ul>
+&lt;p>如果你没有听过 DevStream，不着急，请先花半分钟时间浏览下 DevStream 的 &lt;a href="https://github.com/merico-dev/stream">README&lt;/a>。&lt;/p>
+&lt;hr>
+&lt;h2 id="我想听到你的骂声">我想听到你的骂声&lt;/h2>
+&lt;p>我们在三月初发布了 &lt;a href="https://www.producthunt.com/posts/devstream-1">v0.1&lt;/a> 版本，总有人质疑我们是不是太早 release 了。
+其实不早。我们肯定也不是不小心 release。我们是故意的。没错，故意的。我们其实可以躲着偷偷再开发几个月，实现更多的功能，支持更多的插件，把 DevStream 做的更完美再 release。&lt;/p>
+&lt;p>&lt;strong>但是我们担心的是 &amp;ldquo;我们认为好的功能&amp;rdquo; != &amp;ldquo;你真正需要的功能&amp;rdquo;&lt;/strong>&lt;/p>
+&lt;p>我们有很多的想法，我们有很多想做的功能，但我们不是最终的用户。我们现在做的很多事情其实是在&amp;quot;假设&amp;quot;，在猜用户想要什么功能。
+既然是想要知道&amp;quot;用户&amp;quot;想要什么功能，为什么不早点 release 出去，让用户来告诉我们还缺什么，让用户告诉我们哪里做的不好呢？
+那就发出去吧，先 release，听听用户的骂声。我们要做的，就是不给用户第二次骂的机会，以最快的速度反馈用户的反馈，解决用户的问题。&lt;/p>
+&lt;p>行，废话了这么多，如果你对 DevStream 有一些兴趣，欢迎打开我们的 &lt;a href="https://github.com/merico-dev/stream">GitHub repo&lt;/a>，看下 README 和 quickstart，体验一下 DevStream 的功能。
+我相信你在第一次使用 dtm 命令的时候，肯定心中会多次燃起骂人的欲望：&lt;/p>
+&lt;p>&lt;strong>什么破玩意！！！&lt;/strong>&lt;/p>
+&lt;p>没关系，打开我们的 &lt;a href="https://github.com/merico-dev/stream/issues">Issues 页面&lt;/a>，畅所欲言！只要 GitHub 不&amp;quot;和谐&amp;quot;你，我们肯定不&amp;quot;和谐&amp;quot;你。
+你愿意骂我，就说明你心里还是有我，哈哈，谢谢！我心里也有你！&lt;/p>
+&lt;p>当然，提 Issues 是一种社区贡献行为，没错，不只是 pr，Issues 也算。对于&amp;quot;社区贡献者&amp;quot;我们会提供无比热情的帮助（绝对超过你的想象）。
+你可以不信，那么你提一个 pr 试试。当然也许你会说提不来，那你就提个 issue 告诉我你想提 pr，然后，你就有了被我感动的机会了！&lt;/p>
+&lt;p>至于给社区贡献者的&amp;quot;精神&amp;quot;上或者&amp;quot;物质&amp;quot;上的奖励，当然有，不过我暂时不想透露。如果你愿意尝试成为一个&amp;quot;社区贡献者&amp;quot;，那么相信我，你不会失望。&lt;/p>
+&lt;hr>
+&lt;h2 id="好奇心来了">好奇心来了?&lt;/h2>
+&lt;p>Good！让我们丢掉双桨，屏住呼吸，跳下去吧。深入看下 DevStream！&lt;/p>
+&lt;h3 id="架构">架构&lt;/h3>
+&lt;p>一张好图胜千言啊&lt;/p>
+&lt;p>&lt;img src="https://github.com/merico-dev/stream/blob/main/docs/images/architecture-overview.png?raw=true" alt="architecture-overview">&lt;/p>
+&lt;p>&lt;em>（如果你觉得这个图不够好，请移步英文版，英文版作者绘制的这个图，和我没关系）&lt;/em>&lt;/p>
+&lt;p>我们用了 &lt;a href="https://pkg.go.dev/plugin">Go plugin&lt;/a>. 这或许有很多值得讨论的点，但是这里我们简单先聊几句：&lt;/p>
+&lt;ul>
+&lt;li>首先，我们需要支持很多的 DevOps 工具，然后一种工具对应一个插件，听起来很自然；&lt;/li>
+&lt;li>接着，好像有很多可选的 &amp;ldquo;core-plugin&amp;rdquo; 可选架构，我们发现 Golang 的 Plugins 机制满足需求；&lt;/li>
+&lt;li>然后，最后，这里好像还有些点需要列，但是，不好意思，我想不起来了。&lt;/li>
+&lt;/ul>
+&lt;h3 id="状态">状态&lt;/h3>
+&lt;p>我们把 DevStream (CLI 工具名字叫 dtm，别问我为啥，这是一个很长的故事，如果你感兴趣，可以看&lt;a href="https://github.com/merico-dev/stream#why-dtm">这里&lt;/a>)
+当作一个 &amp;ldquo;&lt;a href="https://en.wikipedia.org/wiki/Finite-state_machine">状态机&lt;/a>&amp;quot;。&lt;/p>
+&lt;p>给一个输入，结合当前的状态，DevStream 会接着计算接下来该干什么。如果你对此感兴趣，那就跳到&lt;a href="https://github.com/merico-dev/stream/blob/main/docs/core_concept.md">这里&lt;/a> 再看几眼。&lt;/p>
+&lt;h3 id="目录结构">目录结构&lt;/h3>
+&lt;p>我们的一个主要依据是 &lt;a href="https://github.com/golang-standards/project-layout">standard project layout&lt;/a>。但是别去点这个链接，里面的内容太长了，或许不是你想看到的。看我的总结就行：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>/cmd&lt;/code>: 入口包，别放太多东西在里面。&lt;/li>
+&lt;li>&lt;code>/pkg&lt;/code>: 或许其他项目能用得到的一些代码，主要是一些 util。&lt;/li>
+&lt;li>&lt;code>/internal&lt;/code>: 项目内的主要逻辑，不能被其他项目 import。&lt;/li>
+&lt;li>&lt;code>/hack&lt;/code>: 一些主要的工具脚本等。&lt;/li>
+&lt;li>&lt;code>/build&lt;/code>: 打包相关的一些脚本等。&lt;/li>
+&lt;li>&lt;code>/docs&lt;/code>: 这个不需要解释了。&lt;/li>
+&lt;li>&lt;code>/examples&lt;/code>: 这里主要用来保存示例配置。&lt;/li>
+&lt;/ul>
+&lt;p>解释不动了，大家可以看看英文版怎么描述的。我说过我是&amp;quot;小白&amp;rdquo;，我不懂的。不过这个目录结构应该 Gopher 看起来很容易理解，大家望文生义吧。&lt;/p>
+&lt;h3 id="core--plugin">Core / Plugin&lt;/h3>
+&lt;ul>
+&lt;li>Core 代码: &lt;a href="https://github.com/merico-dev/stream/tree/main/internal/pkg/pluginengine">https://github.com/merico-dev/stream/tree/main/internal/pkg/pluginengine&lt;/a>&lt;/li>
+&lt;li>Plugins 代码: &lt;a href="https://github.com/merico-dev/stream/tree/main/internal/pkg/plugin">https://github.com/merico-dev/stream/tree/main/internal/pkg/plugin&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="dtm-apply-命令背后的逻辑是啥">&lt;code>dtm apply&lt;/code> 命令背后的逻辑是啥?&lt;/h3>
+&lt;ol>
+&lt;li>从这里开始： &lt;a href="https://github.com/merico-dev/stream/blob/main/cmd/devstream/main.go">&lt;code>/cmd/devstream/main.go&lt;/code>&lt;/a>.&lt;/li>
+&lt;li>接着 &lt;code>apply&lt;/code> 命令在 &lt;a href="https://github.com/merico-dev/stream/blob/main/cmd/devstream/apply.go">&lt;code>/cmd/devstream/apply.go&lt;/code>&lt;/a>.&lt;/li>
+&lt;li>然后 &lt;em>引擎&lt;/em> &lt;a href="https://github.com/merico-dev/stream/tree/main/internal/pkg/pluginengine">&lt;code>/internal/pkg/pluginengine&lt;/code>&lt;/a> 运行所有的 &lt;code>apply&lt;/code> 逻辑，
+在这里：&lt;a href="https://github.com/merico-dev/stream/blob/main/internal/pkg/pluginengine/cmd_apply.go">&lt;code>/internal/pkg/pluginengine/cmd_apply.go&lt;/code>&lt;/a>.&lt;/li>
+&lt;/ol>
+&lt;p>然后，靠你自己去挖掘其他细节了！&lt;/p>
+&lt;hr>
+&lt;h2 id="devstream-发版太慢了能不能快点就问你能不能">DevStream 发版太慢了！！！能不能快点？？？就问你能不能？？？&lt;/h2>
+&lt;p>能，当然能！&lt;/p>
+&lt;p>首先装个 Go，如果你没有装好，可以参考&lt;a href="https://go.dev/doc/install">官方文档&lt;/a>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>git clone https://github.com/merico-dev/stream.git &lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#204a87">cd&lt;/span> stream
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>go install golang.org/x/tools/cmd/goimports@latest
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># make sure your GOPATH/bin is in your PATH&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># for example, run this:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87">export&lt;/span> &lt;span style="color:#000">PATH&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>&lt;span style="color:#4e9a06">`&lt;/span>go env GOPATH&lt;span style="color:#4e9a06">`&lt;/span>/bin:&lt;span style="color:#000">$PATH&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make build
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># after you run &amp;#34;make build&amp;#34;, you DO NOT need to run &amp;#34;dtm init&amp;#34; anymore&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># run &amp;#34;dtm apply&amp;#34;, &amp;#34;dtm delete&amp;#34; directly&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># because &amp;#34;init&amp;#34; will try to download plugins from the internet,&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># instead of using what you just built&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>dtm apply -f path_to_your_config.yaml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;h2 id="没看够">没看够?&lt;/h2>
+&lt;p>恭喜你已经走到这步了，要不要玩一点刺激的？比如尝试开发一个新插件？&lt;/p>
+&lt;p>每个插件都需要实现一些接口，定义在这些地方：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/merico-dev/stream/blob/main/internal/pkg/pluginengine/plugin.go#L12">&lt;code>Create&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/merico-dev/stream/blob/main/internal/pkg/pluginengine/plugin.go#L13">&lt;code>Read&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/merico-dev/stream/blob/main/internal/pkg/pluginengine/plugin.go#L14">&lt;code>Update&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/merico-dev/stream/blob/main/internal/pkg/pluginengine/plugin.go#L16">&lt;code>Delete&lt;/code>&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>可以参考一个已经存在的插件，比如&lt;a href="https://github.com/merico-dev/stream/blob/main/cmd/argocd/main.go">这个&lt;/a>.&lt;/p>
+&lt;p>好好好，在你抱怨之前我想告诉你一个秘密武器！开发一个新插件时需要复制粘贴很多的代码，创建重复的目录结构，这种事情让人感觉很不爽！
+你觉得我会容忍这种不爽存在超过一天？？？&lt;/p>
+&lt;p>没错，不会，绝对不会！&lt;/p>
+&lt;p>我们开发了一个小工具，让你能够快速生成一个新插件的骨架：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>dtm develop create-plugin --name&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>my-pluing-name-here
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>好了。打完收工。也许你还没看爽，但是我写累了。我要休息了，I need a cup of coffee! now! bye!&lt;/p>
+&lt;blockquote>
+&lt;p>最后，记得去看一下英文版，你会看到不一样的风景！
+我不骗你哈，我是来搞笑的，你要严谨的知识，得去英文版看。&lt;/p>
+&lt;/blockquote></description></item></channel></rss>

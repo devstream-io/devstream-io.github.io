@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url>
-    <loc>https://dtm.dev/about/</loc>
-  </url><url>
-    <loc>https://dtm.dev/categories/</loc>
-  </url><url>
-    <loc>https://dtm.dev/</loc>
-  </url><url>
-    <loc>https://dtm.dev/tags/</loc>
-  </url>
-</urlset>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><sitemap><loc>https://dtm.dev/en/sitemap.xml</loc><lastmod>2022-04-01T11:06:59+08:00</lastmod></sitemap><sitemap><loc>https://dtm.dev/zh/sitemap.xml</loc><lastmod>2022-04-01T11:06:59+08:00</lastmod></sitemap></sitemapindex>
