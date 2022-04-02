@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – New Releases</title><link>https://dtm.dev/zh/blog/releases/</link><description>Recent content in New Releases on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://dtm.dev/zh/blog/releases/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: v0.3.1 Release Note</title><link>https://dtm.dev/zh/blog/v0.3.1-release-note/</link><pubDate>Thu, 31 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/zh/blog/v0.3.1-release-note/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – New Releases</title><link>https://www.devstream.io/zh/blog/releases/</link><description>Recent content in New Releases on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://www.devstream.io/zh/blog/releases/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: v0.3.1 Release Note</title><link>https://www.devstream.io/zh/blog/v0.3.1-release-note/</link><pubDate>Thu, 31 Mar 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/zh/blog/v0.3.1-release-note/</guid><description>
 &lt;h2 id="下载-devstream-v031">下载 DevStream v0.3.1&lt;/h2>
 &lt;p>官方版本:&lt;/p>
 &lt;ul>
@@ -21,12 +21,12 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0.3.1
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;em>开发者注：从技术上讲，这个版本并不能向后兼容v0.3.0; 所以它不应该是v0.3.1, 而是 v1.0.0. 但是，我们还没有准备好将其制作为&amp;quot;v1.0.0&amp;quot;。 因此请原谅我们一次不遵守SEMVER规则的例外情况.&lt;/em>&lt;/p>
 &lt;h2 id="自v030以来的主要改进">自v0.3.0以来的主要改进&lt;/h2>
-&lt;p>我们现在有了一个新logo！查看我们的 &lt;a href="https://github.com/merico-dev/stream#readme=">README.md&lt;/a>.&lt;/p>
+&lt;p>我们现在有了一个新logo！查看我们的 &lt;a href="https://github.com/devstream-io/devstream#readme=">README.md&lt;/a>.&lt;/p>
 &lt;p>另外，我们的网站现在也上线了:&lt;/p>
 &lt;ul>
-&lt;li>&lt;a href="https://dtm.dev/">homepage&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://blog.dtm.dev/">blog&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://docs.dtm.dev/en/latest/">docs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.devstream.io/">homepage&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.devstream.io/blog/">blog&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.devstream.io/en/latest/">docs&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://medium.com/devstream">Medium&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://dev.to/devstream">dev.to&lt;/a>&lt;/li>
 &lt;/ul>
@@ -37,7 +37,7 @@
 &lt;/ul>
 &lt;h2 id="开发">开发&lt;/h2>
 &lt;ul>
-&lt;li>&lt;code>dtm develop&lt;/code>命令现在可以为您生成更多的脚手架代码，以便您可以轻松地创建新插件. 如果您有兴趣，请阅读&lt;a href="https://blog.dtm.dev/post/2022-03/creating-a-plugin/">这篇博客&lt;/a>.&lt;/li>
+&lt;li>&lt;code>dtm develop&lt;/code>命令现在可以为您生成更多的脚手架代码，以便您可以轻松地创建新插件. 如果您有兴趣，请阅读&lt;a href="https://www.devstream.io/zh/blog/creating-a-devstream-dtm-plugin-for-anything/">这篇博客&lt;/a>.&lt;/li>
 &lt;li>多线程构建，感谢 @algobot76.&lt;/li>
 &lt;li>Makefile改进：当您创建新插件时，您不必更改 Makefile。感谢 @summingyu.&lt;/li>
 &lt;li>自动发布新版本。&lt;/li>
@@ -47,10 +47,10 @@
 &lt;ul>
 &lt;li>创建了一个关于&amp;quot;output&amp;quot;功能的新文档。&lt;/li>
 &lt;li>创建了一个关于&lt;code>dtm destroy&lt;/code>命令的新文档。&lt;/li>
-&lt;li>我们的文档可以在&lt;a href="https://docs.dtm.dev/en/latest/">readthedocs.io&lt;/a>查阅。&lt;/li>
+&lt;li>我们的文档可以在&lt;a href="https://docs.devstream.io/en/latest/">readthedocs.io&lt;/a>查阅。&lt;/li>
 &lt;/ul>
 &lt;h2 id="新晋贡献者">新晋贡献者&lt;/h2>
 &lt;ul>
-&lt;li>@algobot76 made their first contribution in &lt;a href="https://github.com/merico-dev/stream/pull/353">https://github.com/merico-dev/stream/pull/353&lt;/a>&lt;/li>
+&lt;li>@algobot76 made their first contribution in &lt;a href="https://github.com/devstream-io/devstream/pull/353">https://github.com/devstream-io/devstream/pull/353&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;p>&lt;strong>全部改动&lt;/strong>: &lt;a href="https://github.com/merico-dev/stream/compare/v0.3.0...v0.3.1">https://github.com/merico-dev/stream/compare/v0.3.0...v0.3.1&lt;/a>&lt;/p></description></item></channel></rss>
+&lt;p>&lt;strong>全部改动&lt;/strong>: &lt;a href="https://github.com/devstream-io/devstream/compare/v0.3.0...v0.3.1">https://github.com/devstream-io/devstream/compare/v0.3.0...v0.3.1&lt;/a>&lt;/p></description></item></channel></rss>

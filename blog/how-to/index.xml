@@ -1,5 +1,5 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – How-to About DevStream</title><link>https://dtm.dev/blog/how-to/</link><description>Recent content in How-to About DevStream on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://dtm.dev/blog/how-to/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Creating a DevStream (dtm) Plugin for Anything</title><link>https://dtm.dev/blog/creating-a-devstream-dtm-plugin-for-anything/</link><pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/blog/creating-a-devstream-dtm-plugin-for-anything/</guid><description>
-&lt;img src="https://dtm.dev/blog/creating-a-devstream-dtm-plugin-for-anything/featured-background_hubced0a870f76eab482d622a0dd2f964e_408122_640x0_resize_q75_catmullrom.jpg" width="640" height="427"/>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – How-to About DevStream</title><link>https://www.devstream.io/blog/how-to/</link><description>Recent content in How-to About DevStream on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://www.devstream.io/blog/how-to/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Creating a DevStream (dtm) Plugin for Anything</title><link>https://www.devstream.io/blog/creating-a-devstream-dtm-plugin-for-anything/</link><pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/blog/creating-a-devstream-dtm-plugin-for-anything/</guid><description>
+&lt;img src="https://www.devstream.io/blog/creating-a-devstream-dtm-plugin-for-anything/featured-background_hubced0a870f76eab482d622a0dd2f964e_408122_640x0_resize_q75_catmullrom.jpg" width="640" height="427"/>
 &lt;p>Yes, the title of this post isn&amp;rsquo;t bluffing: you can actually create a plugin for just about anything that takes your fancy.&lt;/p>
 &lt;blockquote>
 &lt;p>In my previous article, I walked you guys through DevStream&amp;rsquo;s codebase.&lt;/p>
@@ -9,7 +9,7 @@
 &lt;p>In this blog, we will walk you through the steps of creating a DevStream plugin from scratch with an example.&lt;/p>
 &lt;hr>
 &lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
-&lt;img class="card-img-top" src="https://dtm.dev/blog/creating-a-devstream-dtm-plugin-for-anything/featured-background_hubced0a870f76eab482d622a0dd2f964e_408122_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
+&lt;img class="card-img-top" src="https://www.devstream.io/blog/creating-a-devstream-dtm-plugin-for-anything/featured-background_hubced0a870f76eab482d622a0dd2f964e_408122_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
 &lt;div class="card-body px-0 pt-2 pb-0">
 &lt;p class="card-text">
 A cat outside a lake side Starbucks, Chengdu, China.
@@ -42,7 +42,7 @@ A cat outside a lake side Starbucks, Chengdu, China.
 &lt;li>OpenLDAP&lt;/li>
 &lt;/ul>
 &lt;p>We aim to have 50 plugins at the end of 2022!&lt;/p>
-&lt;p>Check out our &lt;a href="https://github.com/merico-dev/stream">README&lt;/a> for the latest status.&lt;/p>
+&lt;p>Check out our &lt;a href="https://github.com/devstream-io/devstream">README&lt;/a> for the latest status.&lt;/p>
 &lt;h2 id="why-would-i-want-to-create-a-devstream-plugin">Why Would I Want to Create a DevStream Plugin&lt;/h2>
 &lt;p>Wait. YOU ALREADY HAVE TONS OF PLUGINS! Why on earth would I want to create yet another one?&lt;/p>
 &lt;p>I agree with you.&lt;/p>
@@ -79,7 +79,7 @@ A cat outside a lake side Starbucks, Chengdu, China.
 &lt;p>The plugin will create a file with desired content according to this piece of config.&lt;/p>
 &lt;h2 id="scaffolding-automagically">Scaffolding Automagically&lt;/h2>
 &lt;p>First, let&amp;rsquo;s clone the DevStream repo and generate some scaffolding code:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>git clone git@github.com:merico-dev/stream.git
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>git clone git@github.com:devstream-io/devstream.git
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87">cd&lt;/span> stream
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># builds dtm locally to make sure it&amp;#39;s using the same dependencies as your new plugin&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make build-core
@@ -120,7 +120,7 @@ A cat outside a lake side Starbucks, Chengdu, China.
 &lt;li>&lt;em>Resource&lt;/em> is the tool that the plugin created. The &lt;code>Read&lt;/code> interface returns a description of that resource, which should be the same as the &lt;em>State&lt;/em> if nothing has been changed after &lt;code>dtm&lt;/code>&amp;rsquo;s last action.&lt;/li>
 &lt;/ul>
 &lt;p>DevStream decides what to do based on your &lt;em>Config&lt;/em>, the &lt;em>State&lt;/em>, and the &lt;em>Resource&lt;/em>&amp;rsquo;s status. See the flowchart below:&lt;/p>
-&lt;p>&lt;img src="https://dtm.dev/img/config_state_resource.png" alt="">&lt;/p>
+&lt;p>&lt;img src="https://www.devstream.io/img/config_state_resource.png" alt="">&lt;/p>
 &lt;h3 id="interfaces">Interfaces&lt;/h3>
 &lt;p>A quick recap: each DevStream plugin must satisfy the following four interfaces:&lt;/p>
 &lt;ul>
@@ -172,7 +172,7 @@ A cat outside a lake side Starbucks, Chengdu, China.
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/mitchellh/mapstructure&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/merico-dev/stream/pkg/util/log&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/devstream-io/devstream/pkg/util/log&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">Create&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span> &lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{})&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{},&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
@@ -235,7 +235,7 @@ A cat outside a lake side Starbucks, Chengdu, China.
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/mitchellh/mapstructure&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/merico-dev/stream/pkg/util/log&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/devstream-io/devstream/pkg/util/log&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">Read&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span> &lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{})&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{},&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
@@ -292,7 +292,7 @@ A cat outside a lake side Starbucks, Chengdu, China.
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/mitchellh/mapstructure&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/merico-dev/stream/pkg/util/log&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#4e9a06">&amp;#34;github.com/devstream-io/devstream/pkg/util/log&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">Delete&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">options&lt;/span> &lt;span style="color:#204a87;font-weight:bold">map&lt;/span>&lt;span style="color:#000;font-weight:bold">[&lt;/span>&lt;span style="color:#204a87;font-weight:bold">string&lt;/span>&lt;span style="color:#000;font-weight:bold">]&lt;/span>&lt;span style="color:#204a87;font-weight:bold">interface&lt;/span>&lt;span style="color:#000;font-weight:bold">{})&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">bool&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#204a87;font-weight:bold">error&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
@@ -405,8 +405,8 @@ A cat outside a lake side Starbucks, Chengdu, China.
 &lt;li>Pay special attention to the return value of the interfaces. Figure out the relationship between &lt;em>State&lt;/em> and &lt;em>Resource&lt;/em>. What the interfaces return decides how this plugin will behave.&lt;/li>
 &lt;li>Last but not least, update the documentation.&lt;/li>
 &lt;/ul>
-&lt;p>If you enjoy reading this post, please like, comment, and subscribe! I will see you next time.&lt;/p></description></item><item><title>Blog: Hello, World</title><link>https://dtm.dev/blog/hello-world/</link><pubDate>Mon, 21 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/blog/hello-world/</guid><description>
-&lt;img src="https://dtm.dev/blog/hello-world/featured-background_hu34961e30f9257864937cf0fe28917ce5_796839_640x0_resize_q75_catmullrom.jpg" width="640" height="479"/>
+&lt;p>If you enjoy reading this post, please like, comment, and subscribe! I will see you next time.&lt;/p></description></item><item><title>Blog: Hello, World</title><link>https://www.devstream.io/blog/hello-world/</link><pubDate>Mon, 21 Mar 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/blog/hello-world/</guid><description>
+&lt;img src="https://www.devstream.io/blog/hello-world/featured-background_hu34961e30f9257864937cf0fe28917ce5_796839_640x0_resize_q75_catmullrom.jpg" width="640" height="479"/>
 &lt;p>Hello, and welcome to the DevStream blog!&lt;/p>
 &lt;p>In this very first &amp;ldquo;hello world&amp;rdquo; post, I will:&lt;/p>
 &lt;ul>
@@ -414,11 +414,11 @@ A cat outside a lake side Starbucks, Chengdu, China.
 &lt;li>walk you through our codebase;&lt;/li>
 &lt;li>explain briefly how to create your own plugin.&lt;/li>
 &lt;/ul>
-&lt;p>If you haven&amp;rsquo;t heard of DevStream yet, please have a quick glance over our &lt;a href="https://github.com/merico-dev/stream">README&lt;/a>.&lt;/p>
+&lt;p>If you haven&amp;rsquo;t heard of DevStream yet, please have a quick glance over our &lt;a href="https://github.com/devstream-io/devstream">README&lt;/a>.&lt;/p>
 &lt;p>Without further adieu, let&amp;rsquo;s get started.&lt;/p>
 &lt;hr>
 &lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
-&lt;img class="card-img-top" src="https://dtm.dev/blog/hello-world/featured-background_hu34961e30f9257864937cf0fe28917ce5_796839_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
+&lt;img class="card-img-top" src="https://www.devstream.io/blog/hello-world/featured-background_hu34961e30f9257864937cf0fe28917ce5_796839_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
 &lt;div class="card-body px-0 pt-2 pb-0">
 &lt;p class="card-text">
 Dong'an Lake, Chengdu, China.
@@ -443,13 +443,13 @@ Dong'an Lake, Chengdu, China.
 &lt;p>I mean, technically, we could work on it for a much longer period, polish it up, add more features, support more tools, and what have you. But in that case, we might end up with something &lt;em>we&lt;/em> thought is perfect but utterly useless to &lt;em>you&lt;/em>, which is what really matters.&lt;/p>
 &lt;p>All we had was an idea. We didn&amp;rsquo;t know &amp;ldquo;how&amp;rdquo;, or even &amp;ldquo;what&amp;rdquo;. All we knew is, we wanted to build something that is useful for the end-users. So why not release it to the users and ask them to tell us what to build and how to build?&lt;/p>
 &lt;p>The idea isn&amp;rsquo;t mine, though. It would be arrogant if I said that I invented that. In fact, I learned it from lean manufacturing and agile development. To be honest, if I learned only one thing from lean manufacturing and agile, it&amp;rsquo;s that we should reduce the product-to-customer cycle. It&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/The_Toyota_Way">The Toyota Way&lt;/a>.&lt;/p>
-&lt;p>OK, enough rambling. If you are interested in DevStream, simply go to our &lt;a href="https://github.com/merico-dev/stream">GitHub repo&lt;/a>, follow our README and quickstart, and have a go. I&amp;rsquo;m sure you will have some &amp;ldquo;WTF&amp;rdquo; moments during your first try, in which case, don&amp;rsquo;t hesitate to head to our &lt;a href="https://github.com/merico-dev/stream/issues">GitHub Issues page&lt;/a> and hit the &amp;ldquo;New Issue&amp;rdquo; button hard. We have prepared a few templates there to help you quickly get your dissatisfaction out of your system. Heck, you can even create an issue about the issue templates themselves. For helpful contributions, we will give you a &amp;ldquo;good first issue&amp;rdquo; label and who knows, probably the marketing team will reach out and award you with a little physical prize as well!&lt;/p>
+&lt;p>OK, enough rambling. If you are interested in DevStream, simply go to our &lt;a href="https://github.com/devstream-io/devstream">GitHub repo&lt;/a>, follow our README and quickstart, and have a go. I&amp;rsquo;m sure you will have some &amp;ldquo;WTF&amp;rdquo; moments during your first try, in which case, don&amp;rsquo;t hesitate to head to our &lt;a href="https://github.com/devstream-io/devstream/issues">GitHub Issues page&lt;/a> and hit the &amp;ldquo;New Issue&amp;rdquo; button hard. We have prepared a few templates there to help you quickly get your dissatisfaction out of your system. Heck, you can even create an issue about the issue templates themselves. For helpful contributions, we will give you a &amp;ldquo;good first issue&amp;rdquo; label and who knows, probably the marketing team will reach out and award you with a little physical prize as well!&lt;/p>
 &lt;hr>
 &lt;h2 id="intrigued">Intrigued?&lt;/h2>
 &lt;p>Then let&amp;rsquo;s dive a little deeper into it.&lt;/p>
 &lt;h3 id="architecture">Architecture&lt;/h3>
 &lt;p>A picture is worth a thousand words:&lt;/p>
-&lt;p>&lt;img src="https://github.com/merico-dev/stream/blob/main/docs/images/architecture-overview.png?raw=true" alt="architecture-overview">&lt;/p>
+&lt;p>&lt;img src="https://github.com/devstream-io/devstream/blob/main/docs/images/architecture-overview.png?raw=true" alt="architecture-overview">&lt;/p>
 &lt;p>We use the &lt;a href="https://pkg.go.dev/plugin">Go plugin&lt;/a>. I know this is kind of a big topic so here I&amp;rsquo;m only going to talk about it briefly:&lt;/p>
 &lt;ul>
 &lt;li>First of all, we want to support many DevOps tools, and one tool corresponding to one plugin sounds natural.&lt;/li>
@@ -457,9 +457,9 @@ Dong'an Lake, Chengdu, China.
 &lt;li>Oops, I thought there was a &amp;ldquo;third&amp;rdquo; or &amp;ldquo;last but not least&amp;rdquo;, but there isn&amp;rsquo;t. Sorry.&lt;/li>
 &lt;/ul>
 &lt;h3 id="state">State&lt;/h3>
-&lt;p>We consider DevStream (CLI tool &lt;code>dtm&lt;/code>, don&amp;rsquo;t ask me why; it&amp;rsquo;s another whole story. Read &lt;a href="https://github.com/merico-dev/stream#why-dtm">this&lt;/a> if you enjoy stories) as a &amp;ldquo;&lt;a href="https://en.wikipedia.org/wiki/Finite-state_machine">state machine&lt;/a>&amp;rdquo;.&lt;/p>
+&lt;p>We consider DevStream (CLI tool &lt;code>dtm&lt;/code>, don&amp;rsquo;t ask me why; it&amp;rsquo;s another whole story. Read &lt;a href="https://github.com/devstream-io/devstream#why-dtm">this&lt;/a> if you enjoy stories) as a &amp;ldquo;&lt;a href="https://en.wikipedia.org/wiki/Finite-state_machine">state machine&lt;/a>&amp;rdquo;.&lt;/p>
 &lt;p>Simply put, given input and the current state, DevStream will calculate what to do, so that &amp;ldquo;what you want&amp;rdquo; (what you described in the input) is &amp;ldquo;what you get&amp;rdquo;.&lt;/p>
-&lt;p>If you are interested, read more &lt;a href="https://github.com/merico-dev/stream/blob/main/docs/core_concept.md">here&lt;/a>.&lt;/p>
+&lt;p>If you are interested, read more &lt;a href="https://github.com/devstream-io/devstream/blob/main/docs/core_concept.md">here&lt;/a>.&lt;/p>
 &lt;h3 id="directory-structure">Directory structure&lt;/h3>
 &lt;p>We follow Golang&amp;rsquo;s &lt;a href="https://github.com/golang-standards/project-layout">standard project layout&lt;/a>. But don&amp;rsquo;t click that link, it&amp;rsquo;s too long and too verbose and contains probably many things you don&amp;rsquo;t immediately need right now. Continue to read the TL;DR version:&lt;/p>
 &lt;ul>
@@ -474,21 +474,21 @@ Dong'an Lake, Chengdu, China.
 &lt;p>Of course, this isn&amp;rsquo;t the only way to set up a repo structure for a Golang app. If you are a beginner, though, this can save you some time. For example, after reading this, you should know that if you want to find the entrance of the app, you shall look into the &lt;code>cmd&lt;/code> folder. That&amp;rsquo;s where the main app lives.&lt;/p>
 &lt;h3 id="core--plugin">Core / Plugin&lt;/h3>
 &lt;ul>
-&lt;li>Core code: &lt;a href="https://github.com/merico-dev/stream/tree/main/internal/pkg/pluginengine">https://github.com/merico-dev/stream/tree/main/internal/pkg/pluginengine&lt;/a>&lt;/li>
-&lt;li>Plugins Code: &lt;a href="https://github.com/merico-dev/stream/tree/main/internal/pkg/plugin">https://github.com/merico-dev/stream/tree/main/internal/pkg/plugin&lt;/a>&lt;/li>
+&lt;li>Core code: &lt;a href="https://github.com/devstream-io/devstream/tree/main/internal/pkg/pluginengine">https://github.com/devstream-io/devstream/tree/main/internal/pkg/pluginengine&lt;/a>&lt;/li>
+&lt;li>Plugins Code: &lt;a href="https://github.com/devstream-io/devstream/tree/main/internal/pkg/plugin">https://github.com/devstream-io/devstream/tree/main/internal/pkg/plugin&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h3 id="how-exactly-does-dtm-apply-work-is-it-automatic-or-automagic">How Exactly Does &lt;code>dtm apply&lt;/code> Work? Is it &amp;ldquo;Automatic&amp;rdquo;, or &amp;ldquo;Automagic&amp;rdquo;?&lt;/h3>
 &lt;ol>
-&lt;li>It all starts with &lt;a href="https://github.com/merico-dev/stream/blob/main/cmd/devstream/main.go">&lt;code>/cmd/devstream/main.go&lt;/code>&lt;/a>.&lt;/li>
-&lt;li>It executes the &lt;code>apply&lt;/code> command in &lt;a href="https://github.com/merico-dev/stream/blob/main/cmd/devstream/apply.go">&lt;code>/cmd/devstream/apply.go&lt;/code>&lt;/a>.&lt;/li>
-&lt;li>The &lt;em>Engine&lt;/em> &lt;a href="https://github.com/merico-dev/stream/tree/main/internal/pkg/pluginengine">&lt;code>/internal/pkg/pluginengine&lt;/code>&lt;/a> runs the logic for &lt;code>apply&lt;/code> at &lt;a href="https://github.com/merico-dev/stream/blob/main/internal/pkg/pluginengine/cmd_apply.go">&lt;code>/internal/pkg/pluginengine/cmd_apply.go&lt;/code>&lt;/a>.&lt;/li>
+&lt;li>It all starts with &lt;a href="https://github.com/devstream-io/devstream/blob/main/cmd/devstream/main.go">&lt;code>/cmd/devstream/main.go&lt;/code>&lt;/a>.&lt;/li>
+&lt;li>It executes the &lt;code>apply&lt;/code> command in &lt;a href="https://github.com/devstream-io/devstream/blob/main/cmd/devstream/apply.go">&lt;code>/cmd/devstream/apply.go&lt;/code>&lt;/a>.&lt;/li>
+&lt;li>The &lt;em>Engine&lt;/em> &lt;a href="https://github.com/devstream-io/devstream/tree/main/internal/pkg/pluginengine">&lt;code>/internal/pkg/pluginengine&lt;/code>&lt;/a> runs the logic for &lt;code>apply&lt;/code> at &lt;a href="https://github.com/devstream-io/devstream/blob/main/internal/pkg/pluginengine/cmd_apply.go">&lt;code>/internal/pkg/pluginengine/cmd_apply.go&lt;/code>&lt;/a>.&lt;/li>
 &lt;/ol>
 &lt;p>Then, happy digging around in the &amp;ldquo;Apply&amp;rdquo; function!&lt;/p>
 &lt;hr>
 &lt;h2 id="you-release-waaaaay-too-slow-i-want-the-latest-stuff-now">You Release Waaaaay Too Slow! I WANT THE LATEST STUFF!! NOW!!!&lt;/h2>
 &lt;p>Alright, alright, here you go.&lt;/p>
 &lt;p>First, install Go. If you haven&amp;rsquo;t done so, please refer to the &lt;a href="https://go.dev/doc/install">official doc here&lt;/a>.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>git clone https://github.com/merico-dev/stream.git &lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#204a87">cd&lt;/span> stream
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>git clone https://github.com/devstream-io/devstream.git &lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#204a87">cd&lt;/span> stream
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>go install golang.org/x/tools/cmd/goimports@latest
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># make sure your GOPATH/bin is in your PATH&lt;/span>
@@ -507,12 +507,12 @@ Dong'an Lake, Chengdu, China.
 &lt;p>Congratulations if you have followed so far. Why not go the extra mile by creating a new plugin of your own and play with it?&lt;/p>
 &lt;p>Each plugin needs to implement four interfaces, defined as follows:&lt;/p>
 &lt;ul>
-&lt;li>&lt;a href="https://github.com/merico-dev/stream/blob/main/internal/pkg/pluginengine/plugin.go#L12">&lt;code>Create&lt;/code>&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://github.com/merico-dev/stream/blob/main/internal/pkg/pluginengine/plugin.go#L13">&lt;code>Read&lt;/code>&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://github.com/merico-dev/stream/blob/main/internal/pkg/pluginengine/plugin.go#L14">&lt;code>Update&lt;/code>&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://github.com/merico-dev/stream/blob/main/internal/pkg/pluginengine/plugin.go#L16">&lt;code>Delete&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/devstream-io/devstream/blob/main/internal/pkg/pluginengine/plugin.go#L12">&lt;code>Create&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/devstream-io/devstream/blob/main/internal/pkg/pluginengine/plugin.go#L13">&lt;code>Read&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/devstream-io/devstream/blob/main/internal/pkg/pluginengine/plugin.go#L14">&lt;code>Update&lt;/code>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/devstream-io/devstream/blob/main/internal/pkg/pluginengine/plugin.go#L16">&lt;code>Delete&lt;/code>&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;p>Refer to an existing plugin for more detail. For example, &lt;a href="https://github.com/merico-dev/stream/blob/main/cmd/argocd/main.go">this one&lt;/a>.&lt;/p>
+&lt;p>Refer to an existing plugin for more detail. For example, &lt;a href="https://github.com/devstream-io/devstream/blob/main/cmd/argocd/main.go">this one&lt;/a>.&lt;/p>
 &lt;p>I know, I know, before you complain, let me tell you this: due to the nature that each plugin is in fact a separate thing from others, there will be some duplicated scaffolding, copying, and pasting when you try to create a new plugin.&lt;/p>
 &lt;p>EXCEPT I WON&amp;rsquo;T ALLOW IT TO HAPPEN.&lt;/p>
 &lt;p>Good news! We created a tool to make it a whole lot easier for you. NO COPY-PASTE. Run:&lt;/p>
