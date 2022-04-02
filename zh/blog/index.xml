@@ -50,7 +50,62 @@
 &lt;p>&lt;img src="./yusuming.jpeg" alt="">&lt;/p>
 &lt;h3 id="谢开天">谢开天&lt;/h3>
 &lt;hr>
-&lt;p>&lt;img src="./xiekaitian.jpeg" alt="">&lt;/p></description></item><item><title>Blog: Creating a DevStream (dtm) Plugin for Anything</title><link>https://dtm.dev/zh/blog/creating-a-devstream-dtm-plugin-for-anything/</link><pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/zh/blog/creating-a-devstream-dtm-plugin-for-anything/</guid><description>
+&lt;p>&lt;img src="./xiekaitian.jpeg" alt="">&lt;/p></description></item><item><title>Blog: v0.3.1 Release Note</title><link>https://dtm.dev/zh/blog/v0.3.1-release-note/</link><pubDate>Thu, 31 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/zh/blog/v0.3.1-release-note/</guid><description>
+&lt;h2 id="下载-devstream-v031">下载 DevStream v0.3.1&lt;/h2>
+&lt;p>官方版本:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://devstream.gateway.scarf.sh/releases/v0.3.1/dtm-darwin-arm64">dtm-darwin-arm64&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://devstream.gateway.scarf.sh/releases/v0.3.1/dtm-darwin-amd64">dtm-darwin-amd64&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://devstream.gateway.scarf.sh/releases/v0.3.1/dtm-linux-amd64">dtm-linux-amd64&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>从v0.3.1起，我们还支持通过brew安装: &lt;code>brew install devstream-io/devstream/dtm&lt;/code>. 例:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>$ brew install devstream-io/devstream/dtm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ce5c00;font-weight:bold">==&lt;/span>&amp;gt; Downloading https://github.com/devstream-io/homebrew-devstream/releases/download/dtm-0.3.1/dtm-0.3.1.arm64_monterey.bottle.tar.gz
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ce5c00;font-weight:bold">==&lt;/span>&amp;gt; Downloading from https://objects.githubusercontent.com/github-production-release-asset-2e65be/474804179/268d59c6-9b12-419e-ac75-e77e87428d3b?X-Amz-Algorit
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic">######################################################################## 100.0%&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ce5c00;font-weight:bold">==&lt;/span>&amp;gt; Installing dtm from devstream-io/devstream
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ce5c00;font-weight:bold">==&lt;/span>&amp;gt; Pouring dtm-0.3.1.arm64_monterey.bottle.tar.gz
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>🍺 /opt/homebrew/Cellar/dtm/0.3.1: &lt;span style="color:#0000cf;font-weight:bold">3&lt;/span> files, 13.5MB
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ce5c00;font-weight:bold">==&lt;/span>&amp;gt; Running &lt;span style="color:#4e9a06">`&lt;/span>brew cleanup dtm&lt;span style="color:#4e9a06">`&lt;/span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Hide these hints with HOMEBREW_NO_ENV_HINTS &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>see &lt;span style="color:#4e9a06">`&lt;/span>man brew&lt;span style="color:#4e9a06">`&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ dtm version
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0.3.1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;em>开发者注：从技术上讲，这个版本并不能向后兼容v0.3.0; 所以它不应该是v0.3.1, 而是 v1.0.0. 但是，我们还没有准备好将其制作为&amp;quot;v1.0.0&amp;quot;。 因此请原谅我们一次不遵守SEMVER规则的例外情况.&lt;/em>&lt;/p>
+&lt;h2 id="自v030以来的主要改进">自v0.3.0以来的主要改进&lt;/h2>
+&lt;p>我们现在有了一个新logo！查看我们的 &lt;a href="https://github.com/merico-dev/stream#readme=">README.md&lt;/a>.&lt;/p>
+&lt;p>另外，我们的网站现在也上线了:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://dtm.dev/">homepage&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.dtm.dev/">blog&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.dtm.dev/en/latest/">docs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://medium.com/devstream">Medium&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://dev.to/devstream">dev.to&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="核心">核心&lt;/h2>
+&lt;ul>
+&lt;li>插件版本的改进。这是一个不能向前兼容的变化。现在，&lt;code>dtm&lt;/code>将自动下载匹配版本的插件，而无需在配置中指定每个插件的版本。&lt;/li>
+&lt;li>现在支持通过brew安装：&lt;code>brew install devstream-io/devstream/dtm&lt;/code>. 感谢 @algobot76.&lt;/li>
+&lt;/ul>
+&lt;h2 id="开发">开发&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>dtm develop&lt;/code>命令现在可以为您生成更多的脚手架代码，以便您可以轻松地创建新插件. 如果您有兴趣，请阅读&lt;a href="https://blog.dtm.dev/post/2022-03/creating-a-plugin/">这篇博客&lt;/a>.&lt;/li>
+&lt;li>多线程构建，感谢 @algobot76.&lt;/li>
+&lt;li>Makefile改进：当您创建新插件时，您不必更改 Makefile。感谢 @summingyu.&lt;/li>
+&lt;li>自动发布新版本。&lt;/li>
+&lt;li>重构目录名、文档名等，感谢 @imxw, @summingyu, etc.&lt;/li>
+&lt;/ul>
+&lt;h2 id="文档">文档&lt;/h2>
+&lt;ul>
+&lt;li>创建了一个关于&amp;quot;output&amp;quot;功能的新文档。&lt;/li>
+&lt;li>创建了一个关于&lt;code>dtm destroy&lt;/code>命令的新文档。&lt;/li>
+&lt;li>我们的文档可以在&lt;a href="https://docs.dtm.dev/en/latest/">readthedocs.io&lt;/a>查阅。&lt;/li>
+&lt;/ul>
+&lt;h2 id="新晋贡献者">新晋贡献者&lt;/h2>
+&lt;ul>
+&lt;li>@algobot76 made their first contribution in &lt;a href="https://github.com/merico-dev/stream/pull/353">https://github.com/merico-dev/stream/pull/353&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>全部改动&lt;/strong>: &lt;a href="https://github.com/merico-dev/stream/compare/v0.3.0...v0.3.1">https://github.com/merico-dev/stream/compare/v0.3.0...v0.3.1&lt;/a>&lt;/p></description></item><item><title>Blog: Creating a DevStream (dtm) Plugin for Anything</title><link>https://dtm.dev/zh/blog/creating-a-devstream-dtm-plugin-for-anything/</link><pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/zh/blog/creating-a-devstream-dtm-plugin-for-anything/</guid><description>
 &lt;img src="https://dtm.dev/zh/blog/creating-a-devstream-dtm-plugin-for-anything/featured-background_hubced0a870f76eab482d622a0dd2f964e_408122_640x0_resize_q75_catmullrom.jpg" width="640" height="427"/>
 &lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
 &lt;img class="card-img-top" src="https://dtm.dev/zh/blog/creating-a-devstream-dtm-plugin-for-anything/featured-background_hubced0a870f76eab482d622a0dd2f964e_408122_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
