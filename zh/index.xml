@@ -1,18 +1,32 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – DevStream 博客</title><link>https://dtm.dev/zh/</link><description>Recent content in DevStream 博客 on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://dtm.dev/zh/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: DevStream Community New Members</title><link>https://dtm.dev/zh/blog/devstream-community-new-members/</link><pubDate>Sat, 02 Apr 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/zh/blog/devstream-community-new-members/</guid><description>
 &lt;img src="https://dtm.dev/zh/blog/devstream-community-new-members/featured-background_hu4ad02ea3c73fd5dac6e4f6f5b80bff75_1180936_640x0_resize_q75_catmullrom.jpg" width="640" height="351"/>
-&lt;p>2022 年 3 月 DevStream 正式发布 v0.1 版本以来，在短短一个月内收获了数位贡献者！不止是提交代码，
-包括 bug 反馈、文档完善、技术布道等等都是我们认可的贡献方式。所有的&amp;quot;认证&amp;quot;贡献者可以在 &lt;a href="https://blog.dtm.dev/zh-cn/devstream-community-contributors/">Contributors&lt;/a> 看到。&lt;/p>
+&lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
+&lt;img class="card-img-top" src="https://dtm.dev/zh/blog/devstream-community-new-members/featured-background_hu4ad02ea3c73fd5dac6e4f6f5b80bff75_1180936_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
+&lt;div class="card-body px-0 pt-2 pb-0">
+&lt;p class="card-text">
+玉石公园-自行车
+&lt;small class="text-muted">&lt;br/>Photo: 胡涛 / CC-BY-CA&lt;/small>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;p>2022 年 3 月 DevStream 正式发布 v0.1 版本以来，在短短一个月内收获了数位贡献者！他们都在 DevStream 社区非常活跃，
+以很高对积极性参与 bug 反馈、文档完善、技术布道、bugfix、feature 开发等等社区工作！这些全部都是我们非常认可的贡献方式！
+所有的&amp;quot;认证&amp;quot;贡献者可以在 &lt;a href="https://dtm.dev/zh/blog/devstream-community-contributors/">Contributors&lt;/a> 看到。&lt;/p>
 &lt;p>没错，在这短短一个月里已经有数位 Contributors 由于其贡献突出，我们决定邀请他们加入 DevStream GitHub Organization，成为 DevStream Member！&lt;/p>
-&lt;h2 id="三月新晋-member">三月新晋 Member&lt;/h2>
-&lt;p>经过 DevStream PMC 内部投票表决，我们决定邀请徐武、陈映初和余苏明三位 Contributor 晋升为 Member！&lt;/p>
-&lt;p>胡涛：请几位新晋 Member 说说你们的故事，内容不限。比如：&lt;/p>
-&lt;ul>
-&lt;li>你是怎么开始参与 DevStream 社区的？背后有没有有趣的故事？&lt;/li>
-&lt;li>你有什么相对 DevStream 说的？&lt;/li>
-&lt;/ul>
+&lt;h2 id="2022-年-3-月新晋-member">2022 年 3 月新晋 Member&lt;/h2>
+&lt;p>经过 DevStream PMC 内部投票表决，我们决定邀请徐武、陈映初和余苏明和谢开天四位 Contributor 晋升为 Member！&lt;/p>
+&lt;hr>
 &lt;h3 id="徐武">徐武&lt;/h3>
+&lt;hr>
+&lt;p>&lt;img src="./xuwu.jpeg" alt="">&lt;/p>
 &lt;h3 id="陈映初">陈映初&lt;/h3>
-&lt;h3 id="余苏明">余苏明&lt;/h3></description></item><item><title>Blog: DevStream Community Contributors</title><link>https://dtm.dev/zh/blog/devstream-community-contributors/</link><pubDate>Thu, 31 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/zh/blog/devstream-community-contributors/</guid><description>
+&lt;hr>
+&lt;p>&lt;img src="./chenyingchu.jpeg" alt="">&lt;/p>
+&lt;h3 id="余苏明">余苏明&lt;/h3>
+&lt;hr>
+&lt;p>&lt;img src="./yusuming.jpeg" alt="">&lt;/p>
+&lt;h3 id="谢开天">谢开天&lt;/h3>
+&lt;hr>
+&lt;p>&lt;img src="./xiekaitian.jpeg" alt="">&lt;/p></description></item><item><title>Blog: DevStream Community Contributors</title><link>https://dtm.dev/zh/blog/devstream-community-contributors/</link><pubDate>Thu, 31 Mar 2022 00:00:00 +0000</pubDate><guid>https://dtm.dev/zh/blog/devstream-community-contributors/</guid><description>
 &lt;img src="https://dtm.dev/zh/blog/devstream-community-contributors/featured-background_hu7daadfa63160154b78ca53981d447506_4746096_640x0_resize_q75_catmullrom.jpg" width="640" height="404"/>
 &lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
 &lt;img class="card-img-top" src="https://dtm.dev/zh/blog/devstream-community-contributors/featured-background_hu7daadfa63160154b78ca53981d447506_4746096_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
