@@ -24,9 +24,8 @@
 &lt;p>First things first: we have a new logo now! Check out our &lt;a href="https://github.com/devstream-io/devstream#readme=">README.md&lt;/a>.&lt;/p>
 &lt;p>Our website is live now, too. Visit us:&lt;/p>
 &lt;ul>
-&lt;li>&lt;a href="https://dtm.dev/">homepage&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://blog.dtm.dev/">blog&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://docs.dtm.dev/en/latest/">docs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.devstream.io">homepage&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.devstream.io/en/latest/">docs&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://medium.com/devstream">Medium&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://dev.to/devstream">dev.to&lt;/a>&lt;/li>
 &lt;/ul>
@@ -37,7 +36,7 @@
 &lt;/ul>
 &lt;h2 id="develop">Develop&lt;/h2>
 &lt;ul>
-&lt;li>dtm develop now generates more scaffolding code for you so that you can easily create a new plugin. If you are interested, read &lt;a href="https://blog.dtm.dev/post/2022-03/creating-a-plugin/">this blog post&lt;/a>.&lt;/li>
+&lt;li>dtm develop now generates more scaffolding code for you so that you can easily create a new plugin. If you are interested, read &lt;a href="https://www.devstream.io/blog/creating-a-devstream-dtm-plugin-for-anything/">this blog post&lt;/a>.&lt;/li>
 &lt;li>We support multi-threaded build now, thanks to @algobot76.&lt;/li>
 &lt;li>Makefile is greatly improved so that when you create a new plugin, you don&amp;rsquo;t have to change the Makefile at all. Thanks to @summingyu.&lt;/li>
 &lt;li>We can automatically release a new version now.&lt;/li>
@@ -47,7 +46,7 @@
 &lt;ul>
 &lt;li>A new doc about the &amp;ldquo;output&amp;rdquo; feature is created.&lt;/li>
 &lt;li>A new doc about the dtm destroy command is created.&lt;/li>
-&lt;li>Our docs are now available on &lt;a href="https://docs.dtm.dev/en/latest/">readthedocs.io&lt;/a>&lt;/li>
+&lt;li>Our docs are now available on &lt;a href="https://docs.devstream.io/en/latest/">readthedocs.io&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="detailed-changes">Detailed Changes&lt;/h2>
 &lt;ul>
@@ -114,7 +113,7 @@ A cat outside a lake side Starbucks, Chengdu, China.
 &lt;h2 id="what-is-devstream">What is DevStream&lt;/h2>
 &lt;p>DevStream is an amazing tool that lets you install, update, manage, and integrate your DevOps tools quickly and flexibly.&lt;/p>
 &lt;p>Not to brag, but with DevStream, you can have your own DevOps toolchain that is specifically tailored to your need up and running in 5 minutes.&lt;/p>
-&lt;p>Don&amp;rsquo;t believe it? Check out our &lt;a href="https://docs.dtm.dev/en/latest/">docs&lt;/a> and follow the quickstart guide!&lt;/p>
+&lt;p>Don&amp;rsquo;t believe it? Check out our &lt;a href="https://docs.devstream.io/en/latest/">docs&lt;/a> and follow the quickstart guide!&lt;/p>
 &lt;h2 id="existing-plugins">Existing Plugins&lt;/h2>
 &lt;p>At the moment of publishing this article, we already support the following tools:&lt;/p>
 &lt;ul>
