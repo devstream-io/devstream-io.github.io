@@ -1,0 +1,89 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – General Articles</title><link>https://www.devstream.io/blog/general/</link><description>Recent content in General Articles on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://www.devstream.io/blog/general/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Dagger (the CI/CD Tool, not the Knife) In-Depth: Everything You Need to Know (as of Apr 2022)</title><link>https://www.devstream.io/blog/dagger-the-ci/cd-tool-not-the-knife-in-depth-everything-you-need-to-know-as-of-apr-2022/</link><pubDate>Tue, 12 Apr 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/blog/dagger-the-ci/cd-tool-not-the-knife-in-depth-everything-you-need-to-know-as-of-apr-2022/</guid><description>
+&lt;img src="https://www.devstream.io/blog/dagger-the-ci/cd-tool-not-the-knife-in-depth-everything-you-need-to-know-as-of-apr-2022/featured-background_hu8915b1886940075ec02a53536d606ede_167855_640x0_resize_q75_catmullrom.jpg" width="640" height="355"/>
+&lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
+&lt;img class="card-img-top" src="https://www.devstream.io/blog/dagger-the-ci/cd-tool-not-the-knife-in-depth-everything-you-need-to-know-as-of-apr-2022/featured-background_hu8915b1886940075ec02a53536d606ede_167855_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
+&lt;div class="card-body px-0 pt-2 pb-0">
+&lt;p class="card-text">
+Chaotianmen, Chongqing, China
+&lt;small class="text-muted">&lt;br/>Photo: Tiexin Guo / CC-BY-CA&lt;/small>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;h2 id="1-what-is-dagger">1 What is Dagger?&lt;/h2>
+&lt;p>TL;DR: Dagger runs your CI/CD pipelines locally in a Docker container, and can run the container in any CI environment (as long as that CI can run a container, of course.)&lt;/p>
+&lt;p>Do you want the long answer to this million-dollar question? It&amp;rsquo;s hard to answer, honestly. News is calling it a &amp;ldquo;DevOps platform&amp;rdquo;; the VC that funded Dagger even called it a &amp;ldquo;DevOps operating system.&amp;rdquo;&lt;/p>
+&lt;p>But, in fact, Dagger is neither of those things.&lt;/p>
+&lt;p>Before we can answer what Dagger is, let&amp;rsquo;s have a look at it in-depth:&lt;/p>
+&lt;h2 id="2-quirks-and-features">2 Quirks and Features&lt;/h2>
+&lt;h3 id="21-buildkit">2.1 BuildKit&lt;/h3>
+&lt;p>In Dagger, the configuration is executed in BuildKit, which is the execution engine at the heart of Docker.&lt;/p>
+&lt;p>BuildKit was developed as part of the Moby project, the latter of which is an open framework to assemble specialized container systems without reinventing the wheel by Docker. Basically, it&amp;rsquo;s a toolkit for converting source code to build artifacts in an efficient, expressive, and repeatable manner. It was announced in 2017 and began shipping with Docker Engine in 2018’s version 18.09.&lt;/p>
+&lt;h3 id="22-cue">2.2 CUE&lt;/h3>
+&lt;p>Unlike most popular CI systems out there, you don&amp;rsquo;t write YAML in Dagger; you write CUE.&lt;/p>
+&lt;p>I feel you because I didn&amp;rsquo;t know what&amp;rsquo;s CUE either. Turned out, CUE is an open-source data validation language and inference engine with its roots in logic programming.&lt;/p>
+&lt;p>It aims to simplify tasks involving defining and using data. It&amp;rsquo;s actually a superset of JSON, so users familiar with JSON should feel comfortable with it already and can get started quickly. It also has got built-in auto-formatting (yay.)&lt;/p>
+&lt;p>Although the language is not a general-purpose programming language, it has many applications, such as data validation, data templating, configuration (that&amp;rsquo;s probably why Dagger decided to use it in the first place), querying, code generation, and even scripting.&lt;/p>
+&lt;h3 id="23-wait-a-minute">2.3 Wait a Minute&lt;/h3>
+&lt;p>Since it&amp;rsquo;s already reusing Docker&amp;rsquo;s parts for configuration execution, why not reuse Docker&amp;rsquo;s other part, Dockerfile, for configuration?&lt;/p>
+&lt;p>What&amp;rsquo;s the purpose of using another language just for the configuration?&lt;/p>
+&lt;p>Solomon Hykes, the founder of Dagger, actually answered exact this question on their official Discord channel:&lt;/p>
+&lt;blockquote>
+&lt;p>We needed a modern declarative language with a type system, a package manager, native yaml and json interop, a formal spec, and a standalone community not locked to one tool.&lt;/p>
+&lt;p>Also Dockerfiles are specific to build, but Dagger is more general-purpose automation&lt;/p>
+&lt;p>There was no way at all Dockerfile could support our requirements (speaking as one of the original authors of the Dockerfile syntax)&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="3-enough-tech-spec-what-does-dagger-do">3 Enough Tech Spec. What Does Dagger Do?&lt;/h2>
+&lt;h3 id="31-what-dagger-isnt">3.1 What Dagger Isn&amp;rsquo;t&lt;/h3>
+&lt;p>First, let me tell you what Dagger isn&amp;rsquo;t by quoting the official documentation:&lt;/p>
+&lt;blockquote>
+&lt;p>Dagger does not replace your CI: it improves it by adding a portable development layer on top of it.&lt;/p>
+&lt;/blockquote>
+&lt;p>OK, so it&amp;rsquo;s not yet another CI (or CD, for that matter).&lt;/p>
+&lt;p>Dagger didn&amp;rsquo;t even try to &lt;em>replace&lt;/em> your existing CI, at all. But rather, it &lt;em>improves&lt;/em> your CI, by adding a wrapper layer.&lt;/p>
+&lt;p>I know the term &amp;ldquo;wrapper&amp;rdquo; doesn&amp;rsquo;t sound fancy, so let&amp;rsquo;s call it by its official reference, and that is &amp;ldquo;portable development layer&amp;rdquo;.&lt;/p>
+&lt;h3 id="32-so-just-a-wrapper">3.2 So, Just a Wrapper?&lt;/h3>
+&lt;p>Disappointed? Don&amp;rsquo;t conclude too quick; follow me. First, let&amp;rsquo;s look at some other DevOps/cloud related examples:&lt;/p>
+&lt;ul>
+&lt;li>Think of Terraform. You&amp;rsquo;ve got multiple environments to manage. Even with reuseable modules and roles, you still have duplicated code across envs. Then comes Terragrunt, which is a (thin) wrapper that provides extra tools for keeping your configurations simple without repeating yourself.&lt;/li>
+&lt;li>Think of AWS CDK. It actually is a wrapper layer on top of CloudFormation, which lets you use your familiar programming languages to define and provision AWS cloud infrastructure, so that you don&amp;rsquo;t have to deal with CloudFormation&amp;rsquo;s non-human-readable configurations. Of course, your code still converts to a format that CloudFormation understands, and your infrastructure is still managed by CloudFormation; AWS CDK doesn&amp;rsquo;t really interact with AWS APIs directly. That&amp;rsquo;s why it&amp;rsquo;s only a wrapper layer on top of CloudFormation.&lt;/li>
+&lt;li>Think of CDKTF (CDK for Terraform); it&amp;rsquo;s no different than AWS CDK, perhaps because CDKTF is inspired by AWS CDK and also uses AWS&amp;rsquo;s &lt;code>jsii&lt;/code> library to be polyglot. It&amp;rsquo;s a wrapper layer on top of Terraform that translates your code into Terraform HCL so that you don&amp;rsquo;t have to learn HCL. But in essence, your infrastructure is still managed by Terraform HCL, not your code directly. So, it&amp;rsquo;s yet another wrapper.&lt;/li>
+&lt;/ul>
+&lt;p>You must have already figured out where I am going with this, and you are right: yes, Dagger is no different. It is a wrapper.&lt;/p>
+&lt;p>But, of course, the wrapper has to do something to be useful, right? Then what exactly does Dagger do? What exactly does Dagger wrap? Good Questions.&lt;/p>
+&lt;h3 id="33-what-dagger-can-do">3.3 What Dagger Can Do&lt;/h3>
+&lt;p>In any CI system, you define some steps and actions in a certain format (YAML, most likely) and run it in your CI system. For example, in Jenkins, maybe you will write some groovy file. In GitHub Actions, you write some YAML with multiple steps.&lt;/p>
+&lt;p>Basically, Dagger runs those &amp;ldquo;steps and actions&amp;rdquo; in a Docker container. Then where do you run the Dagger docker container itself? Great question: you can either run it locally (because you can install Docker desktop, right?) or in your existing CI (since most CIs can run a docker container.)&lt;/p>
+&lt;p>If you think about it: Dagger doesn&amp;rsquo;t wrap your CI pipelines or systems. It wraps those detailed steps and actions into a Docker container and still runs in your existing CI. It&amp;rsquo;s like writing a big Dockerfile, and when you run the container, it does git clone, source code static scan, test, build, artifact upload, and what have you.&lt;/p>
+&lt;h2 id="4-what-dagger-really-is">4 What Dagger Really Is&lt;/h2>
+&lt;p>Yes, Dagger is a wrapper, that part is true.&lt;/p>
+&lt;p>But, it doesn&amp;rsquo;t wrap CI systems; it wraps your pipeline steps and actions into a container (you have to rewrite those steps and actions in Dagger&amp;rsquo;s syntax, though), and the wrapped result can run in another CI (as long as that CI can run a container.)&lt;/p>
+&lt;p>In this sense, Dagger &lt;em>is&lt;/em> yet another CI, except that CI runs in a container and most CI systems happen to be able to run containers.&lt;/p>
+&lt;h2 id="5-benefits">5 Benefits&lt;/h2>
+&lt;p>I think there are 3 major advantages of using Dagger&lt;/p>
+&lt;h3 id="51-local-development">5.1 Local Development&lt;/h3>
+&lt;p>Firstly, there is no need to install &lt;em>any&lt;/em> dependencies specific to this application, because Dagger manages all the intermediate steps and transient dependencies inside the Docker container.&lt;/p>
+&lt;p>This might not be an advantage if we are talking about CI, but it is an advantage if we are talking about local development.&lt;/p>
+&lt;p>Think of Go where you have to install modules or think of Nodejs where you might even need to switch Node versions then do an NPM install. Now you can do all of those inside a container and only get the final result to your local laptop.&lt;/p>
+&lt;h3 id="52-on-premise-ci">5.2 &amp;ldquo;On-Premise&amp;rdquo; CI&lt;/h3>
+&lt;p>You can run your pipeline locally now since you can easily have the Docker desktop up and running locally.&lt;/p>
+&lt;p>I&amp;rsquo;m not sure if this is a solid requirement, though. Maybe it is? Because we all have powerful laptops now; why waste money on some CI systems when you can run them locally?&lt;/p>
+&lt;p>The idea of running it anywhere as long as Docker is available is intriguing, though. If you don&amp;rsquo;t want to buy CI as a service, you can run Dagger in your own infrastructure.&lt;/p>
+&lt;h3 id="53-migrate-to-another-ci">5.3 Migrate to Another CI&lt;/h3>
+&lt;p>Since your &amp;ldquo;steps and actions&amp;rdquo; now are running in a container, you can run it elsewhere, in another CI system.&lt;/p>
+&lt;p>Should you need to migrate to another CI, you do not need to rewrite your CI steps anymore. For example, you don&amp;rsquo;t want to use your company&amp;rsquo;s old Jenkins instance anymore, but you are already using Dagger with Jenkins, and now you want to give GitHub Actions a try.&lt;/p>
+&lt;p>It&amp;rsquo;s worth noting that in this scenario, there are still two things to do:&lt;/p>
+&lt;ul>
+&lt;li>If you are using Jenkins now, and want to migrate those Jenkins pipelines into Dagger, you need to do it manually. The cost is the same (if not more) as rewriting your whole pipeline in GitHub Actions&amp;rsquo; syntax.&lt;/li>
+&lt;li>You will still need to learn about your new CI system: how a job is triggered, the syntax, etc.&lt;/li>
+&lt;/ul>
+&lt;p>Here you can see Dagger does provide a solution to avoid CI lock-in (to some extent.) But it is not a game changing solution that could resolve your flexibility concern.&lt;/p>
+&lt;p>For a DevOps engineer, a DevOps toolchain that could accommodate different needs and priorities from different teams is more than appealing. That being said, each component is modular and pluggable, and you could free yourself from tedious work like launching, integrating, and managing all these pieces.&lt;/p>
+&lt;p>Ideally, you could define your desired DevOps tools in a single human-readable YAML config file, and with one single command, you have your whole DevOps toolchain and SDLC workflow set up or changed.&lt;/p>
+&lt;p>If you are intrigued by the simplicity of &amp;ldquo;DevOps toolchain as code&amp;rdquo;, don&amp;rsquo;t hesitate to check out DevStream &lt;a href="https://github.com/devstream-io/devstream">here&lt;/a>.&lt;/p>
+&lt;h2 id="6-should-i-use-dagger-now">6 Should I use Dagger Now?&lt;/h2>
+&lt;p>Is it promising? Maybe. Should I start using it now? My answer is No. Three reasons:&lt;/p>
+&lt;ul>
+&lt;li>The Dagger project itself still uses GitHub Actions. Why? Probably because it has limitations and can&amp;rsquo;t do everything you can achieve with GitHub Actions.&lt;/li>
+&lt;li>You probably won&amp;rsquo;t change your CI system every 6 months. If you only change it one time in 4 years, why bother adding that wrapper?&lt;/li>
+&lt;li>Dagger is only recently announced. It hasn&amp;rsquo;t supported a whole lot of CI systems yet. Maybe the CI you want to switch to doesn&amp;rsquo;t support it yet.&lt;/li>
+&lt;/ul>
+&lt;p>Like, comment, subscribe. See you in the next article!&lt;/p></description></item></channel></rss>
