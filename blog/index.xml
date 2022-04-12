@@ -1,4 +1,128 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – DevStream Blog</title><link>https://www.devstream.io/blog/</link><description>Recent content in DevStream Blog on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://www.devstream.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Dagger (the CI/CD Tool, not the Knife) In-Depth: Everything You Need to Know (as of Apr 2022)</title><link>https://www.devstream.io/blog/dagger-the-ci/cd-tool-not-the-knife-in-depth-everything-you-need-to-know-as-of-apr-2022/</link><pubDate>Tue, 12 Apr 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/blog/dagger-the-ci/cd-tool-not-the-knife-in-depth-everything-you-need-to-know-as-of-apr-2022/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – DevStream Blog</title><link>https://www.devstream.io/blog/</link><description>Recent content in DevStream Blog on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://www.devstream.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: 9 Extraordinary Terraform Best Practices That Will Change Your Infra World</title><link>https://www.devstream.io/blog/9-extraordinary-terraform-best-practices-that-will-change-your-infra-world/</link><pubDate>Tue, 12 Apr 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/blog/9-extraordinary-terraform-best-practices-that-will-change-your-infra-world/</guid><description>
+&lt;img src="https://www.devstream.io/blog/9-extraordinary-terraform-best-practices-that-will-change-your-infra-world/featured-background_hue3380180632e3277a681d06ca14cda6b_666339_640x0_resize_q75_catmullrom.jpg" width="640" height="427"/>
+&lt;p>&lt;em>Note: this article is orignally published at &lt;a href="https://blog.gitguardian.com/9-extraordinary-terraform-best-practices/">GitGuardian Blog&lt;/a>.&lt;/em>&lt;/p>
+&lt;p>Before you quickly glance over the title and think &amp;ldquo;Oh god, yet another tutorial on how to give proper names to variables, how to use modules, how to manage states; nothing I haven&amp;rsquo;t already know&amp;rdquo; then close the tab right away, let me assure you this: this article is none of those.&lt;/p>
+&lt;p>This &amp;ldquo;best practices&amp;rdquo; article aims to tell you something you haven&amp;rsquo;t read a hundred times. This article won&amp;rsquo;t give you the answer to everything because there isn&amp;rsquo;t one right answer that fits all. This article aims to make you think about your unique situation and make the best decisions by you and for you.&lt;/p>
+&lt;p>Without further adieu, let&amp;rsquo;s start with writing Terraform code:&lt;/p>
+&lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
+&lt;img class="card-img-top" src="https://www.devstream.io/blog/9-extraordinary-terraform-best-practices-that-will-change-your-infra-world/featured-background_hue3380180632e3277a681d06ca14cda6b_666339_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
+&lt;div class="card-body px-0 pt-2 pb-0">
+&lt;p class="card-text">
+Pidu District, Chengdu, China.
+&lt;small class="text-muted">&lt;br/>Photo: Tiexin Guo / CC-BY-CA&lt;/small>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;hr>
+&lt;h2 id="1-clean-code">1 Clean Code&lt;/h2>
+&lt;p>No tool or programming language is perfect, and Terraform is no different. It has limitations.&lt;/p>
+&lt;p>For example, for old Terraform users from 0.12 or even earlier age, you might remember that before Terraform 0.13, you can&amp;rsquo;t even use &lt;code>for_each&lt;/code> for modules. In August 2020, with the release of Terraform 0.13, HashiCorp finally introduced the ability to loop over modules with a single module call.&lt;/p>
+&lt;p>Once you have accepted the quirks and features, you can utilize a bunch of best practices to organize your code and to use it better. Even though Terraform isn&amp;rsquo;t strictly a programming language, similar rules of writing code apply to Terraform as well.&lt;/p>
+&lt;p>But before we talk about Terraform code, let&amp;rsquo;s have a quick look at coding or programming in general.&lt;/p>
+&lt;h3 id="11-on-code">1.1 On &amp;ldquo;Code&amp;rdquo;&lt;/h3>
+&lt;p>I want to start this conversation by quoting Knuth:&lt;/p>
+&lt;blockquote>
+&lt;p>Programs are meant to be read by humans and only incidentally for computers to execute.&lt;/p>
+&lt;/blockquote>
+&lt;p>The computer has no problem with ambiguous variable names, extended functions, or a single file of thousands of lines of code. It will still execute properly. All the methodologies and ideas like refactoring, clean code, naming conventions, modules, packages, code smell, etc., are invented so that we &lt;em>humans&lt;/em> can read the code better, not computers can run it better.&lt;/p>
+&lt;h3 id="12-code-evolving-code">1.2 Code, Evolving Code&lt;/h3>
+&lt;p>Programs evolve. Code changes.&lt;/p>
+&lt;p>It&amp;rsquo;s rare that you finished a piece of code and leave it there for the rest of your life. But that&amp;rsquo;s not how projects work. If that was the case, we wouldn&amp;rsquo;t be talking about Terraform best practices: you would only use it once anyway.&lt;/p>
+&lt;p>It&amp;rsquo;s normal that when we are at work, we have projects all the time. The time when there isn&amp;rsquo;t any project is scarce. Because business wants to improve, and the project is the way to move from the current state to the next desired state. Changing from one state to another is &amp;ldquo;project&amp;rdquo;. By Nature, &amp;ldquo;project&amp;rdquo; means change, and the code is also changing constantly.&lt;/p>
+&lt;h3 id="13-writing-clean-code">1.3 Writing Clean Code&lt;/h3>
+&lt;p>In order to make the change more manageable, we write clean code.&lt;/p>
+&lt;p>We limit the length of the line width because humans are not good at reading very wide lines of words; we carefully choose the names of the variables so that we immediately know what it means the next time we read it; we try to reduce the length of functions because shorter functions are not only easier to test but also easier to understand; we try to split a file with thousands of lines of code into smaller chunks.&lt;/p>
+&lt;p>Computers don&amp;rsquo;t care about any of these, at all. Be it one large file or ten smaller chunks of files, it will run. Clean code makes it easier and faster to read, to understand, to build upon it.&lt;/p>
+&lt;p>You may already understand where I&amp;rsquo;m going with this, and you are right: we want to do whatever it is so that our code is easier to read, manage, and change.&lt;/p>
+&lt;h3 id="14-write-clean-terraform-code">1.4 Write Clean Terraform Code&lt;/h3>
+&lt;p>I don&amp;rsquo;t need to tell you how to name your variables, why it&amp;rsquo;s a bad practice to name a server &amp;ldquo;test-server&amp;rdquo; while it&amp;rsquo;s in the production environment, should you add a tag to a resource or not, etc.&lt;/p>
+&lt;p>Use your best judgment.&lt;/p>
+&lt;p>Do whatever it is to make the code manageable (or just Google and read any other available Terraform best practices out there.)&lt;/p>
+&lt;hr>
+&lt;h2 id="2-know-your-stuff">2 Know Your Stuff&lt;/h2>
+&lt;h3 id="21-play-with-it-first">2.1 Play with It First&lt;/h3>
+&lt;p>For people who are new to the cloud or new to a specific service in the cloud, I don&amp;rsquo;t recommend using Terraform as the first attempt to create that resource. This is true no matter which IaC tool you are using, not specific to Terraform.&lt;/p>
+&lt;p>First, go to the console, try things manually, read the official documents and FAQs, figure out what parameters are mandatory and what are optional, and what are the possible values for each specific parameter. This would definitely help. Don&amp;rsquo;t worry because some big guy in the DevOps world told you that &amp;ldquo;the moment you click a button in the console, you create technical debt.&amp;rdquo; Forget about it. Get comfortable with it first.&lt;/p>
+&lt;p>Once you grasp the keys of the resource you are going to create, you can automate it using Terraform.&lt;/p>
+&lt;p>For experienced Terraform users, see if this relates to you: AWS released a new service or a new resource. You haven&amp;rsquo;t used it yet. You tell yourself: &amp;ldquo;I&amp;rsquo;m a veteran; only noob plays with console. I&amp;rsquo;ll just get started with a perfect Terraform module right away. Why bother playing with it in the console first anyway?&amp;rdquo; Then after hours of working and debugging, you find out that you are stuck only because of a small parameter or configuration of the resource which you didn&amp;rsquo;t figure out clearly in the first place.&lt;/p>
+&lt;h3 id="22-know-your-infrastructure">2.2 Know Your Infrastructure&lt;/h3>
+&lt;p>You need to know what exactly is created and managed by your Terraform code.&lt;/p>
+&lt;p>This is especially important when using third-party modules because there are so many parameters and different use cases, it&amp;rsquo;s hard to know exactly which scenario to pick, what resources will be created, and what values to set for those bunch of parameters.&lt;/p>
+&lt;p>Oftentimes, when I need to provision some resources in the cloud using Terraform, I find that I can do it quicker if I write the resources and modules myself (of course, I could also re-use modules I wrote before) than finding a third-party module off the internet because a lot of third-party modules are heavily future-proofed; they try to solve everybody&amp;rsquo;s problem with the same module: they are doing it the &amp;ldquo;monolithic&amp;rdquo; way.&lt;/p>
+&lt;p>Here I don&amp;rsquo;t mean to assign blame to anybody, but for example, if you try to search a module, like EKS, from Terraform registry, you will find out that it has a whopping 62 input parameters. If you want to create an EKS cluster in an existing VPC, using self-managed worker nodes, with certain launch templates, what parameters to set? Have fun figuring that out.&lt;/p>
+&lt;p>Sometimes, &amp;ldquo;do not re-use the wheel&amp;rdquo; is the better way to go: Terraform isn&amp;rsquo;t easy to get started, but once you get fluent with it, it&amp;rsquo;s relatively easy to use. Creating a resource or a module isn&amp;rsquo;t rocket science. You can manage it within a reasonable period of time. Weigh the advantages and disadvantages of using third-party modules before you decide.&lt;/p>
+&lt;hr>
+&lt;h2 id="3-the-myth-of-future-proof">3 The Myth of Future-Proof&lt;/h2>
+&lt;p>When you only need one feature, implement one, don&amp;rsquo;t even try to implement another feature you might use in the future. Premature future-proof or over-future-proof generates not-so-clean code. This is also true even if you are using another Infrastructure as Code tool other than Terraform.&lt;/p>
+&lt;p>Many &amp;ldquo;best practices&amp;rdquo; would tell you to never use a local backend, always use a remote backend, run your Terraform from within a CI tool, always use modules, etc.&lt;/p>
+&lt;p>I&amp;rsquo;m telling you none of those.&lt;/p>
+&lt;p>Because &lt;em>there is no &amp;ldquo;one-size-fits-all&amp;rdquo; answer; it all depends.&lt;/em>&lt;/p>
+&lt;p>For a simple example, if I&amp;rsquo;m working with a minimum viable product (MVP) or even a proof of concept (POC), why bother wasting time creating a remote state with state lock and executing the job from a CI running in K8s in the cloud and creating ridiculously small modules just to have modules because others told you it&amp;rsquo;s &amp;ldquo;best practice&amp;rdquo; to do so?&lt;/p>
+&lt;p>You can&amp;rsquo;t possibly know what you exactly are going to need in the future. Chances are, even if you did some future-proof work, created some perfect module, and set up perfect remote state management, in the future, when you really need to use it, you would probably refactor it anyway. It&amp;rsquo;s not like creating a module is hard. It isn&amp;rsquo;t; it&amp;rsquo;s not rocket science.&lt;/p>
+&lt;p>When you try to future-proof your code, you write if-else. You write conditions and branches so that your code could work for more than one scenario. Refactor is all about reducing if-else and simplifying the code. Why introduce complexity when you don&amp;rsquo;t really need it now?&lt;/p>
+&lt;p>But hey, don&amp;rsquo;t get me wrong: I&amp;rsquo;m not telling you to give up modules and remote states and some fancy features and what have you; the point is, creating a flexible base so that it could adapt to possible future changes, but don&amp;rsquo;t waste too much time and energy future-proofing it.&lt;/p>
+&lt;hr>
+&lt;h2 id="4-do-one-thing-and-do-it-right">4 Do One Thing and Do It Right&lt;/h2>
+&lt;p>Just like the example given in the previous section, there are too many examples of Terraform modules and code that try to be the &amp;ldquo;complete package&amp;rdquo; by supporting every single possible scenario.&lt;/p>
+&lt;p>For experienced Terraform users, you might already be familiar with this: to make your module &amp;ldquo;complete&amp;rdquo; and useful in every scenario, you use complicated input variable structure, you create even more complicated local variables with short-hand conditions, you even need to use built-in functions to merge multiple variables as one so that if one variable is empty, you can still get the value from another variable and no exception would be thrown.&lt;/p>
+&lt;p>For starters, when you look at the code like this, it&amp;rsquo;s not &amp;ldquo;declarative&amp;rdquo; anymore, because when you read something as complicated as that, you can&amp;rsquo;t really know the description of the infrastructure that you are going to create with that code, you can&amp;rsquo;t know what value is being set to this specific parameter.&lt;/p>
+&lt;p>Maybe writing a module for a specific scenario isn&amp;rsquo;t that bad. When you have a slightly different use case, create another module. This might generate duplicated code, so you need to:&lt;/p>
+&lt;hr>
+&lt;h2 id="5-the-art-of-finding-the-balance-dry-vs-readability">5 The Art of Finding the Balance: DRY V.S. Readability&lt;/h2>
+&lt;p>DRY means Don&amp;rsquo;t Repeat Yourself, and this principle is loved by many programmers.&lt;/p>
+&lt;p>Yet, you also have to find the right balance between &amp;ldquo;duplicated code&amp;rdquo; and &amp;ldquo;readability.&amp;rdquo; This is also true for any programming language because code is for humans to read.&lt;/p>
+&lt;p>When you want to achieve two things in one piece of code, you will need extra input parameters. You will need if-else. You will need to generate various outputs too. Adding too many features into one piece of code will invariably reduce the readability because brains are not so great with if-else and parameters.&lt;/p>
+&lt;p>On the other hand, you can choose to have two pieces of code for two slightly different features, with both having straight-forward logic flow and easy to read, but in this way, you probably will have some duplicated code. Using the right technique, for example, extracting the similar part out and creating a small module for it (if it will be commonly used) might be an answer.&lt;/p>
+&lt;p>Finding the right balance between duplicated code and readability is an art that requires experience to be made perfect, and only you can decide for yourself. &amp;ldquo;You must have less than 10% duplicated code&amp;rdquo; or &amp;ldquo;reuse modules as much as possible&amp;rdquo; are simply not pragmatic or helpful suggestions.&lt;/p>
+&lt;hr>
+&lt;h2 id="6-separate-infrastructure-with-configuration">6 Separate Infrastructure with Configuration&lt;/h2>
+&lt;h3 id="61-a-story">6.1 A Story&lt;/h3>
+&lt;p>Once, I was in a project where we use IaC to create Kubernetes clusters; then, some customization is done on top of it to install required components inside the cluster.&lt;/p>
+&lt;p>In that project, Terraform is used, then Terraform Kubernetes provider is also used to install things inside the cluster. So far, so good, because Terraform is idempotent (more on that later) by design.&lt;/p>
+&lt;p>The thing is, if a certain resource is already in the cluster, like a ConfigMap, the Kubernetes provider can&amp;rsquo;t &amp;ldquo;upsert&amp;rdquo; it, and it would fail because it already existed. The provider breaks the idempotency.&lt;/p>
+&lt;p>This is an example of why you want to separate your IaC part from the configuration management part because not only does it make sense logically, but also it reduces the complexity.&lt;/p>
+&lt;p>In the example above, if we used Terraform only to create the cluster and nothing else, then use CI/CD tools to do &lt;code>kubectl apply&lt;/code>, there would be no trouble at all.&lt;/p>
+&lt;h3 id="62-whats-infrastructure-as-code-iac">6.2 What&amp;rsquo;s Infrastructure as Code (IaC)&lt;/h3>
+&lt;p>Infrastructure as Code (IaC) manages infrastructure in a descriptive model:&lt;/p>
+&lt;ul>
+&lt;li>It uses code files as the definition rather than interactive tools.&lt;/li>
+&lt;li>It tries to achieve 100% automation.&lt;/li>
+&lt;li>It doesn&amp;rsquo;t matter if you run your own data center or you use the public cloud.&lt;/li>
+&lt;/ul>
+&lt;p>You write code to manage your networks, servers (physical servers or virtual machines), connections, connection topology, load balancers, etc.&lt;/p>
+&lt;h3 id="63-whats-configuration-management-cm">6.3 What&amp;rsquo;s Configuration Management (CM)&lt;/h3>
+&lt;p>Configuration Management (CM), on the other hand, maintains computer systems, software, dependencies, settings, etc., in a desired, consistent state.&lt;/p>
+&lt;p>Think physical data center as another example: purchasing servers, putting a newly purchased server onto a rack, installing servers, connecting networking cables to the switches so that it&amp;rsquo;s connected to the existing networks (or think of launching a new virtual machine and assigning network interfaces to it) belongs to the definition of &amp;ldquo;infrastructure.&amp;rdquo; These are infrastructure parts, done by specific teams. In contrast, after the server is launched, configuring the servers to run specific software, for example, installing an HTTP server software and configuring it belongs to &amp;ldquo;configuration management&amp;rdquo;, and it probably can be done by another team which doesn&amp;rsquo;t need to worry about the underlying infrastructure at all.&lt;/p>
+&lt;h3 id="64-the-iac-and-cm-separation">6.4 The IaC and CM Separation&lt;/h3>
+&lt;p>In the real world, things are not as simple as the &amp;ldquo;black or white&amp;rdquo; example above because we have many different tools and technologies allowing us to do Infrastructure as Code, or configuration management, or both at the same time.&lt;/p>
+&lt;p>For example, although Terraform is considered an IaC tool, it can do some configurations and installations on certain servers. And although Ansible is considered a configuration management tool, it can launch virtual machines.&lt;/p>
+&lt;p>Finding the right boundary for you, figuring out which part you would like Terraform to manage, and how Terraform interacts with your choice of CM tools is crucial, especially for large projects.&lt;/p>
+&lt;p>In an ever-changing world, the entropy in your system is only increasing. In the long run, you will benefit greatly from &amp;ldquo;simplify&amp;rdquo; and &amp;ldquo;do one thing and do it right.&amp;rdquo;&lt;/p>
+&lt;hr>
+&lt;h2 id="7-make-your-terraform-code-idempotent">7 Make Your Terraform Code Idempotent&lt;/h2>
+&lt;p>Idempotent means no matter how many times you run your IaC and, what your starting state is, you will end up with the same end state.&lt;/p>
+&lt;p>The same principle applies to configuration management too.&lt;/p>
+&lt;p>Why Do We Need Idempotency?&lt;/p>
+&lt;p>Idempotency is nice to have because infrastructure and configuration are not getting simpler as time goes on. Even if you just started fresh, you will handle complicated situations in no time. Idempotency simplifies the provisioning of infrastructure and the management of configurations, and it reduces the chances of inconsistent results.&lt;/p>
+&lt;p>For example, you need to set up A, then set up B after A is finished. If setting up A failed, you want to re-run your automation so that it can retry setting up B without trying to create A again (if it tries to create A again, it will fail because A already exists).&lt;/p>
+&lt;p>How to make it idempotent? Read on.&lt;/p>
+&lt;hr>
+&lt;h2 id="8-make-your-terraform-code-declarative">8 Make Your Terraform Code Declarative&lt;/h2>
+&lt;p>To achieve idempotency, a declarative style of code is preferred in most cases.&lt;/p>
+&lt;p>Declarative means defining the final state you want to have, rather than what command to execute in the code.&lt;/p>
+&lt;p>For example, you want to install an HTTP webserver. The task should be described as &amp;ldquo;ensure an HTTP server is installed&amp;rdquo; (i.e., if the HTTP server isn&amp;rsquo;t installed, install it; if already installed, do nothing), instead of &amp;ldquo;run this apt command to install the server.&amp;rdquo;&lt;/p>
+&lt;p>When you look at your Infrastructure as Code, it should be like reading a document, a description of what you will have if you run this code, no matter how many times you run it.&lt;/p>
+&lt;p>When writing your infrastructure code or even creating a Terraform provider, you need to have &amp;ldquo;side effects&amp;rdquo; in mind. If this part runs a shell command or script, what happens if I run &amp;ldquo;terraform apply&amp;rdquo; again?&lt;/p>
+&lt;hr>
+&lt;h2 id="9-forget-about-cloud-agnostic--vendor-lock-in">9 Forget about Cloud Agnostic / Vendor Lock-in&lt;/h2>
+&lt;p>This might be controversial, but I&amp;rsquo;d like to make it clear: Terraform isn&amp;rsquo;t &amp;ldquo;Cloud-Agnostic&amp;rdquo;, and vendor lock-in doesn&amp;rsquo;t matter (at least it not as much as you might think.)&lt;/p>
+&lt;p>In many cases, people are fighting hard to avoid vendor lock-in. Because we want to have a &amp;ldquo;backup plan&amp;rdquo; if things don&amp;rsquo;t work out nicely with the current vendor. We want to have the option of moving to another vendor with as little trouble as possible.&lt;/p>
+&lt;p>It&amp;rsquo;s not the case in the real world.&lt;/p>
+&lt;p>When you buy servers in bulk, you probably sign multi-year contracts with the vendor for a better price. When you are using the cloud, you rarely decide to move to another cloud. Having a multi-cloud setup, maybe yes, but migrating from one cloud to another isn&amp;rsquo;t common, although situations like that do exist.&lt;/p>
+&lt;p>Even if you want to use Terraform to manage your AWS resource because you might want to move to GCP or Azure in the future, and you know Terraform works with GCP and Azure, in reality, you can&amp;rsquo;t re-use your code. It goes without saying that if you want to switch from one cloud to another, you need to rewrite all your Terraform code: different cloud has different Terraform providers, and their resource name and parameters differ greatly.&lt;/p>
+&lt;p>Admit it or not, you are vendor locked-in, one way or another.&lt;/p>
+&lt;p>Once you are clear of this, it&amp;rsquo;s, in fact, easier for you to choose the right tool for the job: because you are not afraid of vendor lock-in anymore, and you don&amp;rsquo;t put it as the top priority one when making comparisons. Instead, you start to see the features, advantages, and disadvantages of each choice. For example, if you are already using Terraform with AWS, but for this specific piece of infrastructure, it might be even easier to use AWS CDK or some other tool (for example, &lt;code>eksctl&lt;/code> to create a K8s cluster), why not?&lt;/p>
+&lt;h2 id="summary">Summary&lt;/h2>
+&lt;p>With a not-so-flat learning curve, Terraform can be intimidating, but once mastered, it provides you enough flexibility to manage your infrastructure. There are pitfalls and issues if you don&amp;rsquo;t use it properly, but with some care and continuous refactoring, it can be manageable, and the code can be kept clean and easy to read. I hope these &amp;ldquo;best practices&amp;rdquo; help!&lt;/p></description></item><item><title>Blog: Dagger (the CI/CD Tool, not the Knife) In-Depth: Everything You Need to Know (as of Apr 2022)</title><link>https://www.devstream.io/blog/dagger-the-ci/cd-tool-not-the-knife-in-depth-everything-you-need-to-know-as-of-apr-2022/</link><pubDate>Tue, 12 Apr 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/blog/dagger-the-ci/cd-tool-not-the-knife-in-depth-everything-you-need-to-know-as-of-apr-2022/</guid><description>
 &lt;img src="https://www.devstream.io/blog/dagger-the-ci/cd-tool-not-the-knife-in-depth-everything-you-need-to-know-as-of-apr-2022/featured-background_hu8915b1886940075ec02a53536d606ede_167855_640x0_resize_q75_catmullrom.jpg" width="640" height="355"/>
 &lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
 &lt;img class="card-img-top" src="https://www.devstream.io/blog/dagger-the-ci/cd-tool-not-the-knife-in-depth-everything-you-need-to-know-as-of-apr-2022/featured-background_hu8915b1886940075ec02a53536d606ede_167855_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
