@@ -1,4 +1,73 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – DevStream blog</title><link>https://www.devstream.io/</link><description>Recent content in DevStream blog on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://www.devstream.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: 9 Extraordinary Terraform Best Practices That Will Change Your Infra World</title><link>https://www.devstream.io/blog/9-extraordinary-terraform-best-practices-that-will-change-your-infra-world/</link><pubDate>Tue, 12 Apr 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/blog/9-extraordinary-terraform-best-practices-that-will-change-your-infra-world/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – DevStream blog</title><link>https://www.devstream.io/</link><description>Recent content in DevStream blog on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://www.devstream.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: v0.4.0 Release Note</title><link>https://www.devstream.io/blog/v0.4.0-release-note/</link><pubDate>Fri, 15 Apr 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/blog/v0.4.0-release-note/</guid><description>
+&lt;h2 id="download-devstream-v040">Download DevStream v0.4.0&lt;/h2>
+&lt;p>Official Releases for Different Platforms:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://devstream.gateway.scarf.sh/releases/v0.4.0/dtm-darwin-arm64">dtm-darwin-arm64&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://devstream.gateway.scarf.sh/releases/v0.4.0/dtm-darwin-amd64">dtm-darwin-amd64&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://devstream.gateway.scarf.sh/releases/v0.4.0/dtm-linux-amd64">dtm-linux-amd64&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="major-changes-since-last-release-v032">Major Changes since Last Release (v0.3.2)&lt;/h2>
+&lt;h3 id="plugin">Plugin&lt;/h3>
+&lt;ul>
+&lt;li>a new gitlabci-generic plugin&lt;/li>
+&lt;li>GitHub related plugins now support organization&lt;/li>
+&lt;/ul>
+&lt;h3 id="core">Core&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>dtm list plugins&lt;/code> command, which shows all supported plugins, thanks to @summingyu&lt;/li>
+&lt;li>&lt;code>dtm show config&lt;/code> command, which shows the default configuration of a given plugin&lt;/li>
+&lt;li>&lt;code>dtm show status&lt;/code> command, which shows the status of a given plugin&lt;/li>
+&lt;li>outputs now support string interpolation&lt;/li>
+&lt;li>variables support in the config file&lt;/li>
+&lt;li>&lt;code>dtm&lt;/code> command autocomplete, thanks to @imxw&lt;/li>
+&lt;/ul>
+&lt;h3 id="docs">Docs&lt;/h3>
+&lt;ul>
+&lt;li>a new doc on how to create a doc (for readthedocs.io)&lt;/li>
+&lt;li>installation doc for macOS, thanks to @algobot76&lt;/li>
+&lt;li>a new doc on configuration&lt;/li>
+&lt;li>a new doc on &lt;code>dtm&lt;/code> command autocomplete&lt;/li>
+&lt;/ul>
+&lt;h3 id="bug-fix">Bug Fix&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>dtm destroy&lt;/code> and &lt;code>dtm delete --force&lt;/code> now honor the &lt;code>dependsOn&lt;/code> order.&lt;/li>
+&lt;/ul>
+&lt;h3 id="others">Others&lt;/h3>
+&lt;ul>
+&lt;li>CI optimization, thanks to @imxw&lt;/li>
+&lt;/ul>
+&lt;h2 id="detailed-changes">Detailed Changes&lt;/h2>
+&lt;ul>
+&lt;li>docs: update stream to devstream by @daniel-hutao in &lt;a href="https://github.com/devstream-io/devstream/pull/382">https://github.com/devstream-io/devstream/pull/382&lt;/a>&lt;/li>
+&lt;li>fix: golang lint ci failed by @daniel-hutao in &lt;a href="https://github.com/devstream-io/devstream/pull/386">https://github.com/devstream-io/devstream/pull/386&lt;/a>&lt;/li>
+&lt;li>doc: installation on mac by @algobot76 in &lt;a href="https://github.com/devstream-io/devstream/pull/385">https://github.com/devstream-io/devstream/pull/385&lt;/a>&lt;/li>
+&lt;li>docs: change &lt;code>demo&lt;/code> to &lt;code>repo&lt;/code> by @imxw in &lt;a href="https://github.com/devstream-io/devstream/pull/390">https://github.com/devstream-io/devstream/pull/390&lt;/a>&lt;/li>
+&lt;li>feat: remove dtm md5 validation and uploading .md5 file by @lfbdev in &lt;a href="https://github.com/devstream-io/devstream/pull/389">https://github.com/devstream-io/devstream/pull/389&lt;/a>&lt;/li>
+&lt;li>feat(cmd): support list command by @summingyu in &lt;a href="https://github.com/devstream-io/devstream/pull/391">https://github.com/devstream-io/devstream/pull/391&lt;/a>&lt;/li>
+&lt;li>Feat: support &amp;ldquo;default config print&amp;rdquo; logic by @daniel-hutao in &lt;a href="https://github.com/devstream-io/devstream/pull/392">https://github.com/devstream-io/devstream/pull/392&lt;/a>&lt;/li>
+&lt;li>docs: add a doc of docs, and refactor existing docs by @IronCore864 in &lt;a href="https://github.com/devstream-io/devstream/pull/394">https://github.com/devstream-io/devstream/pull/394&lt;/a>&lt;/li>
+&lt;li>feat: new plugin - gitlabci-generic by @IronCore864 in &lt;a href="https://github.com/devstream-io/devstream/pull/396">https://github.com/devstream-io/devstream/pull/396&lt;/a>&lt;/li>
+&lt;li>ci: optimize ci pipeline by @imxw in &lt;a href="https://github.com/devstream-io/devstream/pull/398">https://github.com/devstream-io/devstream/pull/398&lt;/a>&lt;/li>
+&lt;li>docs: update roadmap accordig to recent changes by @IronCore864 in &lt;a href="https://github.com/devstream-io/devstream/pull/397">https://github.com/devstream-io/devstream/pull/397&lt;/a>&lt;/li>
+&lt;li>Feat: support default config print logic by @imxw in &lt;a href="https://github.com/devstream-io/devstream/pull/399">https://github.com/devstream-io/devstream/pull/399&lt;/a>&lt;/li>
+&lt;li>Feat: Support default config print logic by @summingyu by @summingyu in &lt;a href="https://github.com/devstream-io/devstream/pull/400">https://github.com/devstream-io/devstream/pull/400&lt;/a>&lt;/li>
+&lt;li>feat: outputs support interpolation; add more e2e tests by @IronCore864 in &lt;a href="https://github.com/devstream-io/devstream/pull/403">https://github.com/devstream-io/devstream/pull/403&lt;/a>&lt;/li>
+&lt;li>feat: &lt;code>util/github&lt;/code> org supporting by @daniel-hutao in &lt;a href="https://github.com/devstream-io/devstream/pull/405">https://github.com/devstream-io/devstream/pull/405&lt;/a>&lt;/li>
+&lt;li>fix: blog URL updated by @daniel-hutao in &lt;a href="https://github.com/devstream-io/devstream/pull/407">https://github.com/devstream-io/devstream/pull/407&lt;/a>&lt;/li>
+&lt;li>docs(README): replace discord badge with slack by @basicthinker in &lt;a href="https://github.com/devstream-io/devstream/pull/408">https://github.com/devstream-io/devstream/pull/408&lt;/a>&lt;/li>
+&lt;li>Feat: decuple the dtm with personal account by @daniel-hutao in &lt;a href="https://github.com/devstream-io/devstream/pull/409">https://github.com/devstream-io/devstream/pull/409&lt;/a>&lt;/li>
+&lt;li>Fix destroy force delete order issue by @IronCore864 in &lt;a href="https://github.com/devstream-io/devstream/pull/411">https://github.com/devstream-io/devstream/pull/411&lt;/a>&lt;/li>
+&lt;li>feat: new command &lt;code>dtm show status&lt;/code> implementation by @daniel-hutao in &lt;a href="https://github.com/devstream-io/devstream/pull/410">https://github.com/devstream-io/devstream/pull/410&lt;/a>&lt;/li>
+&lt;li>fix: make state.ToList stable by @daniel-hutao in &lt;a href="https://github.com/devstream-io/devstream/pull/412">https://github.com/devstream-io/devstream/pull/412&lt;/a>&lt;/li>
+&lt;li>ci: use the test account to run the e2e by @daniel-hutao in &lt;a href="https://github.com/devstream-io/devstream/pull/414">https://github.com/devstream-io/devstream/pull/414&lt;/a>&lt;/li>
+&lt;li>feat: config supports variables by @IronCore864 in &lt;a href="https://github.com/devstream-io/devstream/pull/415">https://github.com/devstream-io/devstream/pull/415&lt;/a>&lt;/li>
+&lt;li>docs: add &lt;code>fig&lt;/code> doc by @imxw in &lt;a href="https://github.com/devstream-io/devstream/pull/413">https://github.com/devstream-io/devstream/pull/413&lt;/a>&lt;/li>
+&lt;li>chore: adding the missing config field for most plugins. by @daniel-hutao in &lt;a href="https://github.com/devstream-io/devstream/pull/416">https://github.com/devstream-io/devstream/pull/416&lt;/a>&lt;/li>
+&lt;li>docs: update roadmap with more plugins by @IronCore864 in &lt;a href="https://github.com/devstream-io/devstream/pull/418">https://github.com/devstream-io/devstream/pull/418&lt;/a>&lt;/li>
+&lt;li>docs/tests: add docs and e2e tests for variables by @IronCore864 in &lt;a href="https://github.com/devstream-io/devstream/pull/419">https://github.com/devstream-io/devstream/pull/419&lt;/a>&lt;/li>
+&lt;li>release: v0.4.0 by @daniel-hutao in &lt;a href="https://github.com/devstream-io/devstream/pull/420">https://github.com/devstream-io/devstream/pull/420&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Full Changelog&lt;/strong>: &lt;a href="https://github.com/devstream-io/devstream/compare/v0.3.2...v0.4.0">https://github.com/devstream-io/devstream/compare/v0.3.2...v0.4.0&lt;/a>&lt;/p></description></item><item><title>Blog: 9 Extraordinary Terraform Best Practices That Will Change Your Infra World</title><link>https://www.devstream.io/blog/9-extraordinary-terraform-best-practices-that-will-change-your-infra-world/</link><pubDate>Tue, 12 Apr 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/blog/9-extraordinary-terraform-best-practices-that-will-change-your-infra-world/</guid><description>
 &lt;img src="https://www.devstream.io/blog/9-extraordinary-terraform-best-practices-that-will-change-your-infra-world/featured-background_hue3380180632e3277a681d06ca14cda6b_666339_640x0_resize_q75_catmullrom.jpg" width="640" height="427"/>
 &lt;p>&lt;em>Note: this article is orignally published at &lt;a href="https://blog.gitguardian.com/9-extraordinary-terraform-best-practices/">GitGuardian Blog&lt;/a>.&lt;/em>&lt;/p>
 &lt;p>Before you quickly glance over the title and think &amp;ldquo;Oh god, yet another tutorial on how to give proper names to variables, how to use modules, how to manage states; nothing I haven&amp;rsquo;t already know&amp;rdquo; then close the tab right away, let me assure you this: this article is none of those.&lt;/p>
