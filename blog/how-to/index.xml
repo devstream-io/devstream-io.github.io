@@ -24,15 +24,15 @@ Miyuan Cafe, Qinglong Lake Park, Chengdu, China
 &lt;h2 id="install-docker">Install Docker&lt;/h2>
 &lt;p>Docker works in a way using Linux&amp;rsquo;s Namespace and Cgroup. It&amp;rsquo;s quite easy to install Docker on Linux. On macOS and Windows, Docker runs with virtualization. However, we do not need to worry too much detail here, because it&amp;rsquo;s quite simple to download and run Docker Desktop.&lt;/p>
 &lt;p>Go to &lt;a href="https://www.docker.com/products/docker-desktop">https://www.docker.com/products/docker-desktop&lt;/a>, find the correct version of Docker Desktop (Intel/amd64, or M1/arm64):&lt;/p>
-&lt;p>&lt;img src="../../../../zh/blog/how-to/deploy-k8s-from-scrash/a.png" alt="docker download">&lt;/p>
+&lt;p>&lt;img src="./a.png" alt="docker download">&lt;/p>
 &lt;p>Double click on the &lt;code>Docker.dmg&lt;/code> file, and we see the installation interface like the following:&lt;/p>
-&lt;p>&lt;img src="../../../../zh/blog/how-to/deploy-k8s-from-scrash/b.png" alt="docker install">&lt;/p>
+&lt;p>&lt;img src="./b.png" alt="docker install">&lt;/p>
 &lt;p>Simply drag &amp;ldquo;Docker&amp;rdquo; to our &amp;ldquo;Applications,&amp;rdquo; and within a few seconds, it&amp;rsquo;s done! We can start it from the Launchpad:&lt;/p>
-&lt;p>&lt;img src="../../../../zh/blog/how-to/deploy-k8s-from-scrash/c.png" alt="docker logo">&lt;/p>
+&lt;p>&lt;img src="./c.png" alt="docker logo">&lt;/p>
 &lt;p>Wait a few seconds and we can see the starting page:&lt;/p>
-&lt;p>&lt;img src="../../../../zh/blog/how-to/deploy-k8s-from-scrash/d.png" alt="docker started">&lt;/p>
+&lt;p>&lt;img src="./d.png" alt="docker started">&lt;/p>
 &lt;p>Click the “gear&amp;quot; ⚙️ icon to change settings about Docker Desktop. For example, if we need to run a lot of containers, we might need to increase the memory. Here, we changed the memory to 4.00 GB:&lt;/p>
-&lt;p>&lt;img src="../../../../zh/blog/how-to/deploy-k8s-from-scrash/d.png" alt="docker setup">&lt;/p>
+&lt;p>&lt;img src="./d.png" alt="docker setup">&lt;/p>
 &lt;p>Remember to &amp;ldquo;Apply &amp;amp; Restart&amp;rdquo; to ensure the changes are effective.&lt;/p>
 &lt;hr>
 &lt;h2 id="introduction-to-kind">Introduction to &lt;code>kind&lt;/code>&lt;/h2>
