@@ -28,7 +28,7 @@
 &lt;p>稍等几秒钟，就可以看到启动页面了：&lt;/p>
 &lt;p>&lt;img src="./d.png" alt="docker started">&lt;/p>
 &lt;p>我们可以点击右上角的“齿轮⚙️”按钮来修改 Docker Desktop 的一些配置，比如调整 Docker 可以使用的资源等。如果后面我们需要启动的容器稍多一些，内存不够用了，可以回到这里来调整，比如我这里把 Memory 调大到 4.00 GB：&lt;/p>
-&lt;p>&lt;img src="./d.png" alt="docker setup">&lt;/p>
+&lt;p>&lt;img src="./e.png" alt="docker setup">&lt;/p>
 &lt;p>修改后记得点击右下角的“Apply &amp;amp; Restart”才会生效。&lt;/p>
 &lt;h2 id="kind-介绍">Kind 介绍&lt;/h2>
 &lt;p>Kind(Kubernetes-in-docker) 是一个使用 Docker 容器作为“节点”实现部署 Kubernetes 集群环境的工具。Kind 工具主要用于 Kubernetes 本身的测试，目前在很多需要部署到 Kubernetes 环境测试的项目在 ci 流程中都会选择用 Kind 来快速拉起一个 Kubernetes 环境，然后运行相关测试用例。&lt;/p>

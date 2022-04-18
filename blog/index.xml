@@ -32,7 +32,7 @@ Miyuan Cafe, Qinglong Lake Park, Chengdu, China
 &lt;p>Wait a few seconds and we can see the starting page:&lt;/p>
 &lt;p>&lt;img src="./d.png" alt="docker started">&lt;/p>
 &lt;p>Click the “gear&amp;quot; ⚙️ icon to change settings about Docker Desktop. For example, if we need to run a lot of containers, we might need to increase the memory. Here, we changed the memory to 4.00 GB:&lt;/p>
-&lt;p>&lt;img src="./d.png" alt="docker setup">&lt;/p>
+&lt;p>&lt;img src="./e.png" alt="docker setup">&lt;/p>
 &lt;p>Remember to &amp;ldquo;Apply &amp;amp; Restart&amp;rdquo; to ensure the changes are effective.&lt;/p>
 &lt;hr>
 &lt;h2 id="introduction-to-kind">Introduction to &lt;code>kind&lt;/code>&lt;/h2>
