@@ -184,7 +184,7 @@ Miyuan Cafe, Qinglong Lake Park, Chengdu, China
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>$ kind create cluster --config ha-config.yaml &lt;span style="color:#4e9a06">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#4e9a06">&lt;/span> --image&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>kindest/node:v1.22.0 --name&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>dev6
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can see familiar outputs, with the exception being &amp;ldquo;Configuring the external load balancer”和“Joining more control-plane nodes&amp;rdquo;:&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can see familiar outputs, with the exception being &amp;ldquo;Configuring the external load balancer” and “Joining more control-plane nodes&amp;rdquo;:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>Creating cluster &lt;span style="color:#4e9a06">&amp;#34;dev6&amp;#34;&lt;/span> ...
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Ensuring node image &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>kindest/node:v1.22.0&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> 🖼
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Preparing nodes 📦 📦 📦 📦 📦 📦
