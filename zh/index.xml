@@ -1,11 +1,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – DevStream 博客</title><link>https://www.devstream.io/zh/</link><description>Recent content in DevStream 博客 on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://www.devstream.io/zh/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Deploy k8s with Kind</title><link>https://www.devstream.io/zh/blog/deploy-k8s-with-kind/</link><pubDate>Mon, 18 Apr 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/zh/blog/deploy-k8s-with-kind/</guid><description>
-&lt;img src="https://www.devstream.io/zh/blog/deploy-k8s-with-kind/featured-background_hu34961e30f9257864937cf0fe28917ce5_796839_640x0_resize_q75_catmullrom.jpg" width="640" height="479"/>
+&lt;img src="https://www.devstream.io/zh/blog/deploy-k8s-with-kind/featured-background_hu21989ddc8b66511e4b50f875ce8b0608_6786932_640x0_resize_q75_catmullrom.jpg" width="640" height="480"/>
 &lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
-&lt;img class="card-img-top" src="https://www.devstream.io/zh/blog/deploy-k8s-with-kind/featured-background_hu34961e30f9257864937cf0fe28917ce5_796839_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
+&lt;img class="card-img-top" src="https://www.devstream.io/zh/blog/deploy-k8s-with-kind/featured-background_hu21989ddc8b66511e4b50f875ce8b0608_6786932_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
 &lt;div class="card-body px-0 pt-2 pb-0">
 &lt;p class="card-text">
-成都东安湖
-&lt;small class="text-muted">&lt;br/>Photo: Tiexin Guo / CC-BY-CA&lt;/small>&lt;/p>
+成都青龙湖弥远咖啡
+&lt;small class="text-muted">&lt;br/>Photo: Daniel Hu / CC-BY-CA&lt;/small>&lt;/p>
 &lt;/div>
 &lt;/div>
 &lt;hr>
@@ -228,13 +228,13 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">protocol&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">tcp&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这样我们搭建出来到 Kubernetes 集群中使用 NodePort 暴露的 80 端口或者是 hostNetwork 方式暴露 80 端口的 Pod 就可以通过主机的 80 端口来访问到了。&lt;/p>
 &lt;h3 id="暴露-kube-apiserver">暴露 kube-apiserver&lt;/h3>
-&lt;p>有时候我们会在一台机子上使用 Kind 搭建一套 Kubernetes 环境，在另外一台机器上写代码，这时候会发现我们无法连接到 Kind 集群中的 kube-apiserver 来调试 Operator 程序。其实是因为默认配置下 kube-apiserver 监听 127.0.0.1 加随机端口，我们要从外部访问就需要把 kube-apiserver 监听的网卡改成非 lo 的对外网卡，比如 eth0。&lt;/p>
+&lt;p>有时候我们会在一台机子上使用 Kind 搭建一套 Kubernetes 环境，在另外一台机器上写代码，这时候会发现我们无法连接到 Kind 集群中的 kube-apiserver 来调试程序。其实是因为默认配置下 kube-apiserver 监听 127.0.0.1 加随机端口，我们要从外部访问就需要把 kube-apiserver 监听的网卡改成非 lo 的对外网卡，比如 eth0。&lt;/p>
 &lt;p>同样我们通过配置文件自定义来实现，添加 networking.apiServerAddress 配置项，值是本地网卡 ip，根据实际情况修改：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">kind&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Cluster&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">apiVersion&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">kind.x-k8s.io/v1alpha4&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">networking&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">apiServerAddress&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#4e9a06">&amp;#34;192.168.39.1&amp;#34;&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="3启用-feature-gates">3. 启用 Feature Gates&lt;/h3>
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="启用-feature-gates">启用 Feature Gates&lt;/h3>
 &lt;p>如果我们要使用一些 alpha 阶段的特性，就需要通过配置 Feature Gates 来实现了。在使用 kubeadm 搭建环境的时候，是可以通过配置 ClusterConfiguration 来实现这个需求的，kubeadm 被 Kind 封装后，我们在 Kind 里如何启用 Feature Gates 呢？&lt;/p>
 &lt;p>方案如下，FeatureGateName 就是我们需要启用的 Feature Gate 名字：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">kind&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Cluster&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
@@ -243,14 +243,14 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">FeatureGateName&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">true&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="导入镜像">导入镜像&lt;/h3>
 &lt;p>通过 kind 搭建的环境本质是运行在一个容器内，宿主机上的镜像默认不能被 Kind 环境所识别到，这时我们可以通过如下方式导入镜像：&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># 假如需要的镜像是 my-operator:v1&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kind load docker-image my-operator:v1 --name dev
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># 假如需要的镜像是一个 tar 包 my-operator.tar&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kind load image-archive my-operator.tar --name dev
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># 假如需要的镜像是 my-image:v1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kind load docker-image my-image:v1 --name dev
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># 假如需要的镜像是一个 tar 包 my-image.tar&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kind load image-archive my-image.tar --name dev
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>知道了这个方法后，我们构建一个新镜像需要放到 Kind 环境里运行，就可以通过类似如下步骤来实现了：&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>docker build -t my-operator:v1 ./my-operator-dir
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kind load docker-image my-operator:v1
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl apply -f my-operator.yaml
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>docker build -t my-image:v1 ./my-image-dir
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kind load docker-image my-image:v1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl apply -f my-image.yaml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>怎么查看当前 Kind 环境里有哪些镜像呢？也很简单，可以这样：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>docker &lt;span style="color:#204a87">exec&lt;/span> -it dev-control-plane crictl images
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>其中 dev-control-plane 是 node 容器名，有多套环境时这个名字需要对应灵活切换。另外可以通过 crictl -h 查看 crictl 所支持的其他命令，比如 crictl rmi &amp;lt;image_name&amp;gt; 可以用于删除镜像等。&lt;/p></description></item><item><title>Blog: DevStream Community New Members</title><link>https://www.devstream.io/zh/blog/devstream-community-new-members/</link><pubDate>Sat, 02 Apr 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/zh/blog/devstream-community-new-members/</guid><description>
