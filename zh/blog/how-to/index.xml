@@ -253,7 +253,10 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl apply -f my-image.yaml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>怎么查看当前 Kind 环境里有哪些镜像呢？也很简单，可以这样：&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>docker &lt;span style="color:#204a87">exec&lt;/span> -it dev-control-plane crictl images
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>其中 dev-control-plane 是 node 容器名，有多套环境时这个名字需要对应灵活切换。另外可以通过 crictl -h 查看 crictl 所支持的其他命令，比如 crictl rmi &amp;lt;image_name&amp;gt; 可以用于删除镜像等。&lt;/p></description></item><item><title>Blog: Creating a DevStream (dtm) Plugin for Anything</title><link>https://www.devstream.io/zh/blog/creating-a-devstream-dtm-plugin-for-anything/</link><pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/zh/blog/creating-a-devstream-dtm-plugin-for-anything/</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>其中 dev-control-plane 是 node 容器名，有多套环境时这个名字需要对应灵活切换。另外可以通过 crictl -h 查看 crictl 所支持的其他命令，比如 crictl rmi &amp;lt;image_name&amp;gt; 可以用于删除镜像等。&lt;/p>
+&lt;h2 id="小结">小结&lt;/h2>
+&lt;p>没啥好总结的，总之希望大家搭环境顺利！&lt;/p>
+&lt;p>I have to AFK and have a cup of coffee NOW!&lt;/p></description></item><item><title>Blog: Creating a DevStream (dtm) Plugin for Anything</title><link>https://www.devstream.io/zh/blog/creating-a-devstream-dtm-plugin-for-anything/</link><pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/zh/blog/creating-a-devstream-dtm-plugin-for-anything/</guid><description>
 &lt;img src="https://www.devstream.io/zh/blog/creating-a-devstream-dtm-plugin-for-anything/featured-background_hubced0a870f76eab482d622a0dd2f964e_408122_640x0_resize_q75_catmullrom.jpg" width="640" height="427"/>
 &lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
 &lt;img class="card-img-top" src="https://www.devstream.io/zh/blog/creating-a-devstream-dtm-plugin-for-anything/featured-background_hubced0a870f76eab482d622a0dd2f964e_408122_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
