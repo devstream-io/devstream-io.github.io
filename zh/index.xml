@@ -35,6 +35,7 @@
 &lt;p>Kind 本身很简单，只包含一个简单的命令行工具“kind”和一个用来启动 Kubernetes 和 systemd等的 Docker 镜像。我们可以这样理解 Kind 的原理：它通过 Host 主机上的 Docker 使用封装了 Kubernetes 等工具的容器镜像拉起一个容器，这个容器里运行了 systemd，容器中的 systemd 进一步可以运行 Docker 和 Kubelet 等 Kubernetes 节点所需基础进程，然后这些进程就可以进一步运行 kube-apiserver、kube-controller-manager、kube-scheduler、kube-proxy、CoreDNS 等集群所需组件，从而一个这样的容器就组成了一个 Kubernetes 集群的“节点”。&lt;/p>
 &lt;p>所以 Kind 可以通过一个容器运行“单节点 Kubernetes 集群”，也可以进一步通过运行三个或更多容器实现在一台主机上运行一个“多节点Kubernetes 集群”。&lt;/p>
 &lt;h2 id="一键搭建-kind-测试环节">一键搭建 Kind 测试环节&lt;/h2>
+&lt;p>秘籍：&lt;/p>
 &lt;ol>
 &lt;li>下载 DevStream 项目主库：https://github.com/devstream-io/devstream&lt;/li>
 &lt;li>在 devstream 目录内执行一条命令：&lt;code>make e2e-up&lt;/code>&lt;/li>
