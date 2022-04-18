@@ -1,4 +1,275 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – DevStream blog</title><link>https://www.devstream.io/</link><description>Recent content in DevStream blog on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://www.devstream.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: v0.4.0 Release Note</title><link>https://www.devstream.io/blog/v0.4.0-release-note/</link><pubDate>Fri, 15 Apr 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/blog/v0.4.0-release-note/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevStream – DevStream blog</title><link>https://www.devstream.io/</link><description>Recent content in DevStream blog on DevStream</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://www.devstream.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Creating a Local Kubernetes Cluster from the Ground Up</title><link>https://www.devstream.io/blog/creating-a-local-kubernetes-cluster-from-the-ground-up/</link><pubDate>Mon, 18 Apr 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/blog/creating-a-local-kubernetes-cluster-from-the-ground-up/</guid><description>
+&lt;img src="https://www.devstream.io/blog/creating-a-local-kubernetes-cluster-from-the-ground-up/featured-background_hu21989ddc8b66511e4b50f875ce8b0608_6786932_640x0_resize_q75_catmullrom.jpg" width="640" height="480"/>
+&lt;div class="card rounded p-2 td-post-card mb-4 mt-4" style="max-width: 1210px">
+&lt;img class="card-img-top" src="https://www.devstream.io/blog/creating-a-local-kubernetes-cluster-from-the-ground-up/featured-background_hu21989ddc8b66511e4b50f875ce8b0608_6786932_1200x800_fill_q75_catmullrom_smart1.jpg" width="1200" height="800">
+&lt;div class="card-body px-0 pt-2 pb-0">
+&lt;p class="card-text">
+Miyuan Cafe, Qinglong Lake Park, Chengdu, China
+&lt;small class="text-muted">&lt;br/>Photo: Daniel Hu / CC-BY-CA&lt;/small>&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;hr>
+&lt;h1 id="creating-a-local-kubernetes-cluster-from-the-groud-up---a-tutorial-of-kind">Creating a Local Kubernetes Cluster from the Groud Up - a Tutorial of &lt;code>kind&lt;/code>&lt;/h1>
+&lt;p>From the ground up? Yep, from the ground up!&lt;/p>
+&lt;hr>
+&lt;h2 id="overview">Overview&lt;/h2>
+&lt;p>Creating a Kubernetes cluster can be tricky.&lt;/p>
+&lt;p>There are multiple tools designed just for that job. There are even companies that provide &amp;ldquo;installing K8s&amp;rdquo; as a service. And, to create a production-ready Kubernetes cluster with all the best practices in mind requires detailed designing and planning.&lt;/p>
+&lt;p>So, the scope of this article isn&amp;rsquo;t to help you to create a &amp;ldquo;production-ready&amp;rdquo; cluster.&lt;/p>
+&lt;p>However, after reading this article, you should be able to create a local &amp;ldquo;testing&amp;rdquo; Kubernetes cluster, and for the developing and testing of DevStream, it should more than suffice.&lt;/p>
+&lt;p>Even for a local testing cluster, there are multiple tools you can choose from. For example, there is &lt;a href="https://minikube.sigs.k8s.io/docs/start/">&lt;code>minikube&lt;/code>&lt;/a>, and there is &lt;a href="https://kind.sigs.k8s.io/">&lt;code>kind&lt;/code>&lt;/a>. &lt;code>kind&lt;/code> is a tool for running local Kubernetes clusters using Docker container “nodes”. &lt;code>kind&lt;/code> was primarily designed for testing Kubernetes.&lt;/p>
+&lt;p>In this article, we are going with &lt;code>kind&lt;/code>. We are not opinionated; we are not saying that &lt;code>kind&lt;/code> is better than &lt;code>minikube&lt;/code> or vice versa; we are merely choosing a tool to get the job done. If you are more familiar with other tools, it&amp;rsquo;s completely fine!&lt;/p>
+&lt;p>This article uses macOS as our local development environment. If you are using Windows or Linux, you can still read this post to get a general idea and achieve the same.&lt;/p>
+&lt;hr>
+&lt;h2 id="install-docker">Install Docker&lt;/h2>
+&lt;p>Docker works in a way using Linux&amp;rsquo;s Namespace and Cgroup. It&amp;rsquo;s quite easy to install Docker on Linux. On macOS and Windows, Docker runs with virtualization. However, we do not need to worry too much detail here, because it&amp;rsquo;s quite simple to download and run Docker Desktop.&lt;/p>
+&lt;p>Go to &lt;a href="https://www.docker.com/products/docker-desktop">https://www.docker.com/products/docker-desktop&lt;/a>, find the correct version of Docker Desktop (Intel/amd64, or M1/arm64):&lt;/p>
+&lt;p>&lt;img src="../../../../zh/blog/how-to/deploy-k8s-from-scrash/a.png" alt="docker download">&lt;/p>
+&lt;p>Double click on the &lt;code>Docker.dmg&lt;/code> file, and we see the installation interface like the following:&lt;/p>
+&lt;p>&lt;img src="../../../../zh/blog/how-to/deploy-k8s-from-scrash/b.png" alt="docker install">&lt;/p>
+&lt;p>Simply drag &amp;ldquo;Docker&amp;rdquo; to our &amp;ldquo;Applications,&amp;rdquo; and within a few seconds, it&amp;rsquo;s done! We can start it from the Launchpad:&lt;/p>
+&lt;p>&lt;img src="../../../../zh/blog/how-to/deploy-k8s-from-scrash/c.png" alt="docker logo">&lt;/p>
+&lt;p>Wait a few seconds and we can see the starting page:&lt;/p>
+&lt;p>&lt;img src="../../../../zh/blog/how-to/deploy-k8s-from-scrash/d.png" alt="docker started">&lt;/p>
+&lt;p>Click the “gear&amp;quot; ⚙️ icon to change settings about Docker Desktop. For example, if we need to run a lot of containers, we might need to increase the memory. Here, we changed the memory to 4.00 GB:&lt;/p>
+&lt;p>&lt;img src="../../../../zh/blog/how-to/deploy-k8s-from-scrash/d.png" alt="docker setup">&lt;/p>
+&lt;p>Remember to &amp;ldquo;Apply &amp;amp; Restart&amp;rdquo; to ensure the changes are effective.&lt;/p>
+&lt;hr>
+&lt;h2 id="introduction-to-kind">Introduction to &lt;code>kind&lt;/code>&lt;/h2>
+&lt;p>&lt;code>kind&lt;/code> (Kubernetes-in-docker) uses a Docker container as a &amp;ldquo;node&amp;rdquo; to deploy Kubernetes. It&amp;rsquo;s mainly used for testing Kubernetes itself.&lt;/p>
+&lt;p>&lt;code>kind&lt;/code> is simple, containing a command-line tool named &lt;code>kind&lt;/code> and a Docker image which has Kubernetes and &lt;code>systemd&lt;/code>. &lt;code>kind&lt;/code> uses Docker on the host machine to create a container, which runs &lt;code>systemd&lt;/code>, which in turn runs the container runtime, &lt;code>kubelet&lt;/code>, and other Kubernetes components. So, we end up with a whole Kubernetes cluster in one container.&lt;/p>
+&lt;p>Note that although in the explanation above, the Cluster is only a single node cluster, it&amp;rsquo;s possible to create a multi-node Kubernetes cluster.&lt;/p>
+&lt;hr>
+&lt;h2 id="creating-a-kubernetes-cluster-with-kind-at-the-click-of-a-button">Creating a Kubernetes Cluster with Kind at the Click of a Button&lt;/h2>
+&lt;ol>
+&lt;li>clone DevStream&amp;rsquo;s repo: &lt;a href="https://github.com/devstream-io/devstream">https://github.com/devstream-io/devstream&lt;/a>&lt;/li>
+&lt;li>cd devstream; &lt;code>make e2e-up&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;p>That&amp;rsquo;s it.&lt;/p>
+&lt;p>If you check out the Makefile, you will see it actually runs a shell script that runs &lt;code>kind&lt;/code> to create the cluster.&lt;/p>
+&lt;p>However, you wouldn&amp;rsquo;t be satisfied if we end this article right here, right now, would you.&lt;/p>
+&lt;p>So, let&amp;rsquo;s have a deep dive into &lt;code>kind&lt;/code>. Fasten your seat belt, because we are gonna fly!&lt;/p>
+&lt;hr>
+&lt;h2 id="creating-a-kubernetes-cluster-with-kind-at-two-clicks-of-a-button">Creating a Kubernetes Cluster with Kind at Two Clicks of a Button&lt;/h2>
+&lt;p>On GitHub, we can find the latest release of &lt;code>kind&lt;/code>: &lt;a href="https://github.com/kubernetes-sigs/kind/releases">https://github.com/kubernetes-sigs/kind/releases&lt;/a>.&lt;/p>
+&lt;p>Choose relatively new versions, and install:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># method 1: download pre-compiled binary&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87">cd&lt;/span> /tmp
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>curl -Lo ./kind https://github.com/kubernetes-sigs/kind/releases/download/v0.12.0/kind-darwin-arm64
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>chmod +x ./kind
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo mv kind /usr/local/bin/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># method 2: go get and compile locally&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>go get sigs.k8s.io/kind@v0.12.1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can also download the Docker image beforehand. Here we choose v1.22 of Kubernetes:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kindest/node:v1.22.0@sha256:b8bda84bb3a190e6e028b1760d277454a72267a5454b57db34437c34a588d047
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Create cluster:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kind create cluster --image&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>kindest/node:v1.22.0 --name&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>dev
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Sample output:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>Creating cluster &lt;span style="color:#4e9a06">&amp;#34;dev&amp;#34;&lt;/span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Ensuring node image &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>kindest/node:v1.22.0&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> 🖼
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Preparing nodes 📦
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Writing configuration 📜
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Starting control-plane 🕹️
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Installing CNI 🔌
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Installing StorageClass 💾
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Set kubectl context to &lt;span style="color:#4e9a06">&amp;#34;kind-dev&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>You can now use your cluster with:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl cluster-info --context kind-dev
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/#community 🙂
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Follow the hints above, next, let&amp;rsquo;s run &lt;code>kubectl cluster-info --context kind-dev&lt;/code> to switch the context and make sure you are in the right Kubernetes context.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>$ kubectl get node
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>NAME STATUS ROLES AGE VERSION
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>dev-control-plane Ready control-plane,master 7m4s v1.22.0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ kubectl get pod -n kube-system
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>NAME READY STATUS RESTARTS AGE
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>coredns-78fcd69978-hch75 1/1 Running &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> 10m
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>coredns-78fcd69978-ztqn4 1/1 Running &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> 10m
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>etcd-dev-control-plane 1/1 Running &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> 10m
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kindnet-l8qxq 1/1 Running &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> 10m
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-apiserver-dev-control-plane 1/1 Running &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> 10m
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-controller-manager-dev-control-plane 1/1 Running &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> 10m
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-proxy-mzfgc 1/1 Running &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> 10m
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kube-scheduler-dev-control-plane 1/1 Running &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span> 10m
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now we have a local cluster for testing and developing Kubernetes.&lt;/p>
+&lt;hr>
+&lt;h2 id="creating-a-kubernetes-cluster-with-kind-at-three-clicks-of-a-button">Creating a Kubernetes Cluster with Kind at Three Clicks of a Button&lt;/h2>
+&lt;p>A minimum highly-available Kubernetes cluster is composed of 3 nodes. In this section, let&amp;rsquo;s see how to create a multi-node, highly-available cluster locally using &lt;code>kind&lt;/code>.&lt;/p>
+&lt;h3 id="kind-cluster-config">&lt;code>kind&lt;/code> Cluster Config&lt;/h3>
+&lt;p>We can pass a config file to &lt;code>kind&lt;/code> by using the &lt;code>--config&lt;/code> parameter. Let&amp;rsquo;s have a look at a &lt;code>kind&lt;/code> config file:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># this config file contains all config fields with comments&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#8f5902;font-style:italic"># NOTE: this is not a particularly useful config file&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">kind&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Cluster&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">apiVersion&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">kind.x-k8s.io/v1alpha4&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#8f5902;font-style:italic"># patch the generated kubeadm config with some extra settings&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">kubeadmConfigPatches&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#000;font-weight:bold">|&lt;/span>&lt;span style="color:#8f5902;font-style:italic">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"> apiVersion: kubelet.config.k8s.io/v1beta1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"> kind: KubeletConfiguration
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"> evictionHard:
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"> nodefs.available: &amp;#34;0%&amp;#34;&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#8f5902;font-style:italic"># patch it further using a JSON 6902 patch&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">kubeadmConfigPatchesJSON6902&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">group&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">kubeadm.k8s.io&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">version&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">v1beta2&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">kind&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">ClusterConfiguration&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">patch&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000;font-weight:bold">|&lt;/span>&lt;span style="color:#8f5902;font-style:italic">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"> - op: add
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"> path: /apiServer/certSANs/-
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"> value: my-hostname&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#8f5902;font-style:italic"># 1 control plane node and 3 workers&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">nodes&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#8f5902;font-style:italic"># the control plane node config&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">role&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">control-plane&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#8f5902;font-style:italic"># the three workers&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">role&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">worker&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">role&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">worker&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">role&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">worker&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can see that the config has two sections: the upper part being &lt;code>kubeadm&lt;/code> related stuff and the lower part being nodes related settings. Apparently, the &amp;ldquo;nodes&amp;rdquo; part is where we are going to edit to achieve a multi-node cluster.&lt;/p>
+&lt;h3 id="1-control-plane-node-3-worker-nodes-cluster">1 Control Plane Node, 3 Worker Nodes Cluster&lt;/h3>
+&lt;p>Let&amp;rsquo;s create a config named &lt;code>multi-node-config.yaml&lt;/code> with the following content:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">kind&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Cluster&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">apiVersion&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">kind.x-k8s.io/v1alpha4&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">nodes&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">role&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">control-plane&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">role&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">worker&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">role&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">worker&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">role&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">worker&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then run:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>$ kind create cluster --config multi-node-config.yaml &lt;span style="color:#4e9a06">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#4e9a06">&lt;/span> --image&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>kindest/node:v1.22.0 --name&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>dev4
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We will get some output similar to the previous single-node cluster output, except for the &amp;ldquo;Joining worker nodes&amp;rdquo; part:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>Creating cluster &lt;span style="color:#4e9a06">&amp;#34;dev4&amp;#34;&lt;/span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Ensuring node image &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>kindest/node:v1.22.0&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> 🖼
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Preparing nodes 📦 📦 📦 📦
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Writing configuration 📜
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Starting control-plane 🕹️
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Installing CNI 🔌
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Installing StorageClass 💾
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Joining worker nodes 🚜
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Set kubectl context to &lt;span style="color:#4e9a06">&amp;#34;kind-dev4&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>You can now use your cluster with:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl cluster-info --context kind-dev4
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Thanks &lt;span style="color:#204a87;font-weight:bold">for&lt;/span> using kind! 😊
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Let&amp;rsquo;s run the following command to check out our new cluster:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>$ kubectl cluster-info --context kind-dev4
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Kubernetes control plane is running at https://127.0.0.1:51851
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>CoreDNS is running at https://127.0.0.1:51851/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>To further debug and diagnose cluster problems, use &lt;span style="color:#4e9a06">&amp;#39;kubectl cluster-info dump&amp;#39;&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ kubectl get node
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>NAME STATUS ROLES AGE VERSION
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>dev4-control-plane Ready control-plane,master 3m28s v1.22.0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>dev4-worker Ready &amp;lt;none&amp;gt; 2m54s v1.22.0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>dev4-worker2 Ready &amp;lt;none&amp;gt; 2m54s v1.22.0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>dev4-worker3 Ready &amp;lt;none&amp;gt; 2m54s v1.22.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>From the result above, we can see that this cluster has 1 control plane node and 3 worker nodes.&lt;/p>
+&lt;h3 id="3-control-plane-nodes-3-worker-nodes-highly-available-cluster">3 Control Plane Nodes, 3 Worker Nodes, Highly Available Cluster&lt;/h3>
+&lt;p>&lt;em>Note: &amp;ldquo;Highly available&amp;rdquo; here only means that we have three control plane nodes. It&amp;rsquo;s not strictly &amp;ldquo;highly available&amp;rdquo; because apparently, the three control plane nodes are actually on the same host, so when the host is down, everything is gone.&lt;/em>&lt;/p>
+&lt;p>Prepare the &lt;code>ha-config.yaml&lt;/code> with the following content:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">kind&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Cluster&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">apiVersion&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">kind.x-k8s.io/v1alpha4&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">nodes&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">role&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">control-plane&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">role&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">control-plane&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">role&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">control-plane&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">role&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">worker&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">role&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">worker&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">role&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">worker&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Run:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>$ kind create cluster --config ha-config.yaml &lt;span style="color:#4e9a06">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#4e9a06">&lt;/span> --image&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>kindest/node:v1.22.0 --name&lt;span style="color:#ce5c00;font-weight:bold">=&lt;/span>dev6
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can see familiar outputs, with the exception being &amp;ldquo;Configuring the external load balancer”和“Joining more control-plane nodes&amp;rdquo;:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>Creating cluster &lt;span style="color:#4e9a06">&amp;#34;dev6&amp;#34;&lt;/span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Ensuring node image &lt;span style="color:#ce5c00;font-weight:bold">(&lt;/span>kindest/node:v1.22.0&lt;span style="color:#ce5c00;font-weight:bold">)&lt;/span> 🖼
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Preparing nodes 📦 📦 📦 📦 📦 📦
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Configuring the external load balancer ⚖️
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Writing configuration 📜
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Starting control-plane 🕹️
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Installing CNI 🔌
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Installing StorageClass 💾
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Joining more control-plane nodes 🎮
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ✓ Joining worker nodes 🚜
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Set kubectl context to &lt;span style="color:#4e9a06">&amp;#34;kind-dev6&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>You can now use your cluster with:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl cluster-info --context kind-dev6
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Have a nice day! 👋
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Some fun facts:&lt;/p>
+&lt;ul>
+&lt;li>the number of boxes after &amp;ldquo;Preparing nodes&amp;rdquo; equals the number of nodes&lt;/li>
+&lt;li>the final greeting message is different: it was &amp;ldquo;Thanks for using kind! 😊&amp;rdquo; previously and now it&amp;rsquo;s &amp;ldquo;Have a nice day! 👋&amp;rdquo;&lt;/li>
+&lt;/ul>
+&lt;p>Heck, those &lt;code>kind&lt;/code> developers sure went some extra miles to enhance the user experience!&lt;/p>
+&lt;p>Check the cluster:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>$ kubectl cluster-info --context kind-dev6
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Kubernetes control plane is running at https://127.0.0.1:52937
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>CoreDNS is running at https://127.0.0.1:52937/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>To further debug and diagnose cluster problems, use &lt;span style="color:#4e9a06">&amp;#39;kubectl cluster-info dump&amp;#39;&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ kubectl get node
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>NAME STATUS ROLES AGE VERSION
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>dev6-control-plane Ready control-plane,master 8m19s v1.22.0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>dev6-control-plane2 Ready control-plane,master 7m46s v1.22.0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>dev6-control-plane3 Ready control-plane,master 7m20s v1.22.0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>dev6-worker Ready &amp;lt;none&amp;gt; 7m v1.22.0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>dev6-worker2 Ready &amp;lt;none&amp;gt; 7m v1.22.0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>dev6-worker3 Ready &amp;lt;none&amp;gt; 7m v1.22.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can see this cluster has 3 control plane nodes.&lt;/p>
+&lt;p>So far, we have mastered how to use &lt;code>kind&lt;/code> to create a multi-node Kubernetes cluster locally.&lt;/p>
+&lt;hr>
+&lt;h2 id="advanced-kind-features">Advanced &lt;code>kind&lt;/code> Features&lt;/h2>
+&lt;p>Now that we know how to create clusters using &lt;code>kind&lt;/code>, let&amp;rsquo;s have a look at some advanced operations which could help you better use the clusters.&lt;/p>
+&lt;h3 id="port-mapping">Port Mapping&lt;/h3>
+&lt;p>Imagine you are running an Nginx container listening on port 8080 in a &lt;code>kind&lt;/code> cluster but you wish the outside world (outside of the cluster) to access the Nginx port. To achieve this, we can add the &lt;code>extraPortMappings&lt;/code> configuration:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">kind&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Cluster&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">apiVersion&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">kind.x-k8s.io/v1alpha4&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">nodes&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>- &lt;span style="color:#204a87;font-weight:bold">role&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">control-plane&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">extraPortMappings&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>- &lt;span style="color:#204a87;font-weight:bold">containerPort&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#0000cf;font-weight:bold">8080&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">hostPort&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#0000cf;font-weight:bold">8080&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">listenAddress&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#4e9a06">&amp;#34;0.0.0.0&amp;#34;&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">protocol&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">tcp&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>In this way, the port on the pod 8080 is mapped to the port on the host.&lt;/p>
+&lt;h3 id="expose-kube-apiserver">Expose &lt;code>kube-apiserver&lt;/code>&lt;/h3>
+&lt;p>Sometimes we want to install Kubernetes with &lt;code>kind&lt;/code> on one host, but access the cluster from another host. By default, the &lt;code>kube-apiserver&lt;/code> installed by &lt;code>kind&lt;/code> listens on 127.0.0.1 (with a random port.) To make the &lt;code>kind&lt;/code> cluster accessible from another host, we need to make &lt;code>kube-apiserver&lt;/code> listen on a network interface (for example, eth0.)&lt;/p>
+&lt;p>In the config file, we add &lt;code>networking.apiServerAddress&lt;/code>. The IP is your local nic&amp;rsquo;s IP:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">kind&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Cluster&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">apiVersion&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">kind.x-k8s.io/v1alpha4&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">networking&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">apiServerAddress&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#4e9a06">&amp;#34;192.168.39.1&amp;#34;&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="enable-feature-gates">Enable Feature Gates&lt;/h3>
+&lt;p>Feature gates are a set of &lt;code>key=value&lt;/code> pairs that describe Kubernetes features that are only available in Alpha, Beta or GA stage.&lt;/p>
+&lt;p>If we want to try some of those features, we can enable Feature Gates. In the config file, use:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">kind&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">Cluster&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">apiVersion&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#000">kind.x-k8s.io/v1alpha4&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline">&lt;/span>&lt;span style="color:#204a87;font-weight:bold">featureGates&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">FeatureGateName&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline"> &lt;/span>&lt;span style="color:#204a87;font-weight:bold">true&lt;/span>&lt;span style="color:#f8f8f8;text-decoration:underline">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="importing-images">Importing Images&lt;/h3>
+&lt;p>Because the Kubernetes cluster is in fact running in a Docker container, by default, it can&amp;rsquo;t access Docker images that are on the host. However, we can import those images from hosts to the Kubernetes cluster created by &lt;code>kind&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># import my-image:v1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kind load docker-image my-image:v1 --name dev
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8f5902;font-style:italic"># import my-image.tar&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kind load image-archive my-image.tar --name dev
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>With this method, when we are building a new Docker image on the host which we want to run in a &lt;code>kind&lt;/code> Kubernetes cluster, we can:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>docker build -t my-image:v1 ./my-image-dir
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kind load docker-image my-image:v1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl apply -f my-image.yaml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>How to see the images that are available in the &lt;code>kind&lt;/code> Kubernetes cluster? Easy:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>docker &lt;span style="color:#204a87">exec&lt;/span> -it dev-control-plane crictl images
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>dev-control-plane&lt;/code> is the name of the &lt;code>kind&lt;/code> cluster.&lt;/p>
+&lt;p>You can also use &lt;code>crictl -h&lt;/code> to see all the supported commands. For example, we can delete an image by using &lt;code>crictl rmi &amp;lt;image_name&amp;gt;&lt;/code>.&lt;/p>
+&lt;hr>
+&lt;h2 id="summary">Summary&lt;/h2>
+&lt;p>Have fun playing with Kubernetes locally!&lt;/p>
+&lt;p>If you like this article, please like, comment, and subscribe. See you in the next article!&lt;/p></description></item><item><title>Blog: v0.4.0 Release Note</title><link>https://www.devstream.io/blog/v0.4.0-release-note/</link><pubDate>Fri, 15 Apr 2022 00:00:00 +0000</pubDate><guid>https://www.devstream.io/blog/v0.4.0-release-note/</guid><description>
 &lt;h2 id="download-devstream-v040">Download DevStream v0.4.0&lt;/h2>
 &lt;p>Official Releases for Different Platforms:&lt;/p>
 &lt;ul>
